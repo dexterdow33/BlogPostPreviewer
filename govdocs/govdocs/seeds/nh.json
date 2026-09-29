@@ -1,0 +1,47 @@
+{
+  "_about": "Start points for the NH crawler. 'checked' records how each host was confirmed on 2026-09-29; none could be fetched from the build environment (network policy blocked .gov), so confirm each on the first real run. Edit freely: add agencies, narrow start_urls, or delete seeds.",
+  "seeds": [
+    {
+      "name": "NH Judicial Branch",
+      "start_urls": ["https://www.courts.nh.gov/"],
+      "allowed_domains": ["courts.nh.gov"],
+      "checked": "CourtListener record for In re Guardianship of K.S. (2025-11-07) links to a PDF on www.courts.nh.gov"
+    },
+    {
+      "name": "NH General Court (Legislature)",
+      "start_urls": ["https://gc.nh.gov/"],
+      "allowed_domains": ["gc.nh.gov"],
+      "checked": "host named in user's standing instructions (RSA text at gc.nh.gov); not fetched"
+    },
+    {
+      "name": "NH Secretary of State",
+      "start_urls": ["https://www.sos.nh.gov/"],
+      "allowed_domains": ["sos.nh.gov"],
+      "checked": "web search result naming sos.nh.gov; not fetched"
+    },
+    {
+      "name": "NH Department of Justice",
+      "start_urls": ["https://www.doj.nh.gov/"],
+      "allowed_domains": ["doj.nh.gov"],
+      "checked": "web search result naming www.doj.nh.gov; not fetched"
+    },
+    {
+      "name": "NH Department of Administrative Services / TransparentNH",
+      "start_urls": ["https://www.das.nh.gov/", "https://www.transparentnh.das.nh.gov/"],
+      "allowed_domains": ["das.nh.gov"],
+      "checked": "web search results for das.nh.gov and www.transparentnh.das.nh.gov; not fetched"
+    },
+    {
+      "name": "NH Department of Transportation",
+      "start_urls": ["https://www.dot.nh.gov/"],
+      "allowed_domains": ["dot.nh.gov"],
+      "checked": "web search result naming www.dot.nh.gov; not fetched"
+    },
+    {
+      "name": "NH.gov agency directory (discovery sweep across *.nh.gov)",
+      "start_urls": ["https://www.nh.gov/government/state-government-agencies"],
+      "allowed_domains": ["nh.gov"],
+      "checked": "web search result for this exact URL; not fetched"
+    }
+  ]
+}
