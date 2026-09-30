@@ -26,7 +26,8 @@ site outside 6 a.m. to 9 p.m. Eastern, and the schedule respects that. The
 workflow commits the refreshed `data/` files and, on the default branch,
 publishes the site to GitHub Pages. It can also be run from the Actions tab.
 Runs started by a push or pull request during the day rebuild from the last
-saved raw files instead of fetching.
+saved raw files instead of fetching, and pull-request runs validate the build
+without committing data.
 
 ### Run it yourself
 

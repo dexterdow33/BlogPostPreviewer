@@ -92,7 +92,9 @@ jobs:
 
       - name: Commit refreshed data
         id: commit
-        if: always()
+        # Pull-request runs validate the build only. A bot commit on a PR branch
+        # would start another pull_request run that GitHub holds for approval.
+        if: always() && github.event_name != 'pull_request'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
