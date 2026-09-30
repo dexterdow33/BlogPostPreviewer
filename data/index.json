@@ -1,35 +1,30 @@
 {
-  "generated_at": "2026-09-30T03:29:31+00:00",
+  "generated_at": "2026-09-30T03:44:45+00:00",
+  "as_of": "2026-09-30",
   "sessions": [
     {
       "session": "2025",
       "file": "nh_bills_2025.json",
       "bills": 847,
-      "by_status": {
-        "killed": 399,
-        "passed_chamber": 28,
-        "law": 285,
-        "unknown": 118,
-        "veto_sustained": 12,
-        "enrolled": 4,
-        "in_committee": 1
+      "with_title": 0,
+      "by_group": {
+        "killed": 501,
+        "law": 305,
+        "vetoed": 12,
+        "process": 29
       }
     },
     {
       "session": "2026",
       "file": "nh_bills_2026.json",
       "bills": 1387,
-      "by_status": {
-        "passed_chamber": 94,
-        "killed": 535,
-        "hearing": 7,
-        "unknown": 242,
-        "interim_study": 148,
-        "law": 301,
-        "enrolled": 18,
-        "conference": 10,
-        "veto_sustained": 21,
-        "veto_overridden": 11
+      "with_title": 1387,
+      "by_group": {
+        "killed": 654,
+        "process": 97,
+        "parked": 267,
+        "law": 344,
+        "vetoed": 25
       }
     }
   ],

@@ -48,6 +48,9 @@
     <label>Beat
       <select id="f-beat"><option value="">All beats</option></select>
     </label>
+    <label>Subject (General Court code)
+      <select id="f-subject"><option value="">All subjects</option></select>
+    </label>
     <label>Sort
       <select id="f-sort">
         <option value="number">Bill number</option>
@@ -63,6 +66,7 @@
   </section>
 
   <div id="loading" class="status-line">Loading…</div>
+  <div id="session-note" class="note" hidden></div>
 
   <section class="kpis" id="kpis" aria-label="Summary" hidden></section>
 
@@ -120,6 +124,7 @@
     <p><strong>Source.</strong> The New Hampshire General Court publishes its bill-status database as text files at <a href="https://gc.nh.gov/downloads/" rel="noopener">gc.nh.gov/downloads</a>. This page reads a copy refreshed daily by an automated job, early in the morning Eastern, when the General Court asks automated clients to use the site. <span id="src-note"></span></p>
     <p><strong>Read this before you quote it.</strong> Outcome labels are assigned by rules that read the docket text. They are a sorting aid. The docket, the bill page, and the roll-call record on gc.nh.gov are the record. Every bill here links to them.</p>
     <p><strong>Links.</strong> LegiScan, Plural, and news-search links are built from the bill number, not checked bill by bill. A search may return nothing for a bill nobody has written about.</p>
+    <p><strong>Subjects and counties.</strong> The General Court's subject codes and county codes come without a published key. The labels here were inferred from the bills filed under each code and are shown next to the raw code. Legislator party comes from the roster file.</p>
     <p>Granite State Report · <a href="https://granitestatereport.com" rel="noopener">granitestatereport.com</a> · Code and data: <a href="https://github.com/dexterdow33/BlogPostPreviewer" rel="noopener">GitHub</a></p>
   </footer>
 </div>

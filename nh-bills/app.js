@@ -7,13 +7,20 @@
   // ------------------------------------------------------------------ config
   const GROUPS = [
     { key: "law",     label: "Became law",          codes: ["law", "veto_overridden"] },
-    { key: "process", label: "In process / other",  codes: ["enrolled", "conference", "passed_chamber", "hearing", "in_committee", "unknown"] },
+    { key: "process", label: "In process / other",  codes: ["enrolled", "conference", "passed_chamber", "committee_report", "recommitted", "hearing", "in_committee", "unknown"] },
     { key: "parked",  label: "Parked",              codes: ["interim_study", "retained", "rereferred", "tabled"] },
-    { key: "killed",  label: "Killed",              codes: ["killed"] },
+    { key: "killed",  label: "Killed",              codes: ["killed", "died_on_table", "conference_failed", "nonconcurred", "returned_to_house"] },
     { key: "vetoed",  label: "Vetoed",              codes: ["vetoed", "veto_sustained"] },
   ];
   const GROUP_OF = {};
   GROUPS.forEach(g => g.codes.forEach(c => (GROUP_OF[c] = g.key)));
+  const PARTY = { R: "R", D: "D", I: "I" };
+  const who = (s) => {
+    const r = (state.roster && state.roster[s.id]) || {};
+    const party = s.party || r.party || "";
+    const district = r.district ? (r.body === "S" ? "Dist. " + r.district : (r.county ? r.county + " " : "") + r.district) : "";
+    return party ? `${s.name} (${PARTY[party] || party}${district ? ", " + district : ""})` : s.name;
+  };
   const GROUP_LABEL = Object.fromEntries(GROUPS.map(g => [g.key, g.label]));
   const PAGE = 150;
 
@@ -79,9 +86,10 @@
     bills: [],
     view: [],
     byLabel: new Map(),
+    roster: null,
     shown: PAGE,
     leadTab: null,
-    filters: { q: "", chamber: "", group: "", beat: "", sort: "number", rc: false },
+    filters: { q: "", chamber: "", group: "", beat: "", subject: "", sort: "number", rc: false },
     lastFocus: null,
   };
 
@@ -94,6 +102,7 @@
       $("loading").className = "status-line err";
       return;
     }
+    try { const lj = await loadJSON("legislators.json"); state.roster = lj.roster || null; } catch { state.roster = null; }
     const sessions = (state.index.sessions || []).slice().sort((a, b) => String(a.session).localeCompare(String(b.session)));
     if (!sessions.length) {
       $("loading").textContent = "The refresh job has not produced any session data yet.";
@@ -136,9 +145,22 @@
     state.bills = state.payload.bills || [];
     state.byLabel = new Map();
     for (const b of state.bills) {
-      b.group = GROUP_OF[b.status] || "process";
+      b.group = b.group || GROUP_OF[b.status] || "process";
       if (b.bill_id) state.byLabel.set(b.bill_id, b);
     }
+    // subject filter options
+    const subjSel = $("f-subject");
+    const keepSubj = state.filters.subject;
+    subjSel.replaceChildren(el("option", { value: "", text: "All subjects" }));
+    const subjCounts = {};
+    state.bills.forEach(b => { if (b.subject_code) subjCounts[b.subject_code] = (subjCounts[b.subject_code] || 0) + 1; });
+    Object.entries(state.payload.subject_codes || {}).sort((a, b) => (subjCounts[b[0]] || 0) - (subjCounts[a[0]] || 0))
+      .forEach(([code, label]) => subjSel.append(el("option", { value: code, text: `${label}${label !== code ? " · " + code : ""} (${fmtInt(subjCounts[code] || 0)})` })));
+    subjSel.value = Object.prototype.hasOwnProperty.call(state.payload.subject_codes || {}, keepSubj) ? keepSubj : "";
+    state.filters.subject = subjSel.value;
+    const note = $("session-note");
+    note.hidden = !state.payload.session_note;
+    note.textContent = state.payload.session_note || "";
     // beat filter options
     const beatSel = $("f-beat");
     const keep = state.filters.beat;
@@ -166,11 +188,12 @@
     $("f-chamber").addEventListener("change", (e) => { state.filters.chamber = e.target.value; state.shown = PAGE; apply(); });
     $("f-group").addEventListener("change", (e) => { state.filters.group = e.target.value; state.shown = PAGE; apply(); });
     $("f-beat").addEventListener("change", (e) => { state.filters.beat = e.target.value; state.shown = PAGE; apply(); });
+    $("f-subject").addEventListener("change", (e) => { state.filters.subject = e.target.value; state.shown = PAGE; apply(); });
     $("f-sort").addEventListener("change", (e) => { state.filters.sort = e.target.value; apply(); });
     $("f-rc").addEventListener("change", (e) => { state.filters.rc = e.target.checked; state.shown = PAGE; apply(); });
     $("f-reset").addEventListener("click", () => {
-      state.filters = { q: "", chamber: "", group: "", beat: "", sort: "number", rc: false };
-      $("f-q").value = ""; $("f-chamber").value = ""; $("f-group").value = ""; $("f-beat").value = ""; $("f-sort").value = "number"; $("f-rc").checked = false;
+      state.filters = { q: "", chamber: "", group: "", beat: "", subject: "", sort: "number", rc: false };
+      $("f-q").value = ""; $("f-chamber").value = ""; $("f-group").value = ""; $("f-beat").value = ""; $("f-subject").value = ""; $("f-sort").value = "number"; $("f-rc").checked = false;
       state.shown = PAGE; apply();
     });
     $("stack-toggle").addEventListener("click", () => toggleTable("stack"));
@@ -210,9 +233,10 @@
       if (f.chamber && b.origin_chamber !== f.chamber) return false;
       if (f.group && b.group !== f.group) return false;
       if (f.beat && !(b.beats || []).includes(f.beat)) return false;
+      if (f.subject && b.subject_code !== f.subject) return false;
       if (f.rc && !b.n_roll_calls) return false;
       if (q) {
-        const hay = `${b.title} ${b.prime_sponsor} ${b.committee || ""} ${b.lsr_id} ${b.status_label} ${(b.sponsors || []).map(s => s.name).join(" ")}`.toLowerCase();
+        const hay = `${b.title} ${b.prime_sponsor} ${b.committee || ""} ${b.lsr_id} ${b.status_label} ${b.subject || ""} ${b.chapter ? "chapter " + b.chapter : ""} ${(b.sponsors || []).map(s => s.name).join(" ")}`.toLowerCase();
         if (!(b.bill_id && b.bill_id.startsWith(qBill)) && !hay.includes(q)) return false;
       }
       return true;
@@ -241,15 +265,16 @@
   function renderKPIs() {
     const v = state.view;
     const counts = Object.fromEntries(GROUPS.map(g => [g.key, 0]));
-    let overrides = 0, sustained = 0, withRC = 0;
+    let overrides = 0, sustained = 0, withRC = 0, upcoming = 0;
     for (const b of v) {
       counts[b.group]++;
       if (b.status === "veto_overridden") overrides++;
       if (b.status === "veto_sustained") sustained++;
       if (b.n_roll_calls) withRC++;
+      if ((b.next_events || []).length) upcoming++;
     }
     const tiles = [
-      tile("Bills in view", v.length, `${fmtInt(withRC)} had at least one roll call`, null, true),
+      tile("Bills in view", v.length, `${fmtInt(withRC)} with roll calls · ${fmtInt(upcoming)} with sessions scheduled`, null, true),
       tile("Became law", counts.law, overrides ? `${fmtInt(overrides)} by veto override` : "signed or allowed to become law", "law"),
       tile("Vetoed", counts.vetoed, sustained ? `${fmtInt(sustained)} vetoes sustained` : "veto stands unless overridden", "vetoed"),
       tile("Killed", counts.killed, "inexpedient to legislate or postponed", "killed"),
@@ -401,7 +426,8 @@
   function hideTip() { $("tip").hidden = true; }
 
   // ------------------------------------------------------------------ story leads
-  const LEAD_ORDER = ["recent_activity", "vetoes", "close_votes", "died_in_other_chamber", "parked", "effective_soon", "most_roll_calls", "top_prime_sponsors"];
+  const LEAD_ORDER = ["upcoming_events", "recent_activity", "vetoes", "close_votes", "party_line_votes", "died_in_other_chamber", "parked", "effective_soon", "most_roll_calls", "top_prime_sponsors", "attendance", "party_breakers"];
+  const NO_BILL = new Set(["top_prime_sponsors", "attendance", "party_breakers"]);
   function renderLeads() {
     const leads = state.payload.story_leads || {};
     const tabs = $("lead-tabs"); const list = $("lead-list");
@@ -409,7 +435,7 @@
     if (!keys.length) { tabs.replaceChildren(); list.replaceChildren(el("li", { class: "empty", text: "No story leads in this dataset." })); return; }
     if (!state.leadTab || !leads[state.leadTab]) state.leadTab = keys[0];
     const inView = new Set(state.view.map(b => b.bill_id));
-    const rowsOf = (k) => leadRows(k, leads[k]).filter(r => !r.bill || inView.has(r.bill.replace(/\s+/g, "")) || k === "top_prime_sponsors");
+    const rowsOf = (k) => leadRows(k, leads[k]).filter(r => !r.bill || inView.has(r.bill.replace(/\s+/g, "")) || NO_BILL.has(k));
     tabs.replaceChildren(...keys.map(k => {
       const rows = rowsOf(k);
       return el("button", { class: "tab", role: "tab", type: "button", "aria-selected": String(k === state.leadTab), onClick: () => { state.leadTab = k; renderLeads(); } },
@@ -428,16 +454,28 @@
   function leadRows(kind, lead) {
     const b = (x) => el("b", { text: x });
     switch (kind) {
-      case "vetoes": return (lead.bills || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(x.outcome), ` · ${fmtDate(x.date)} · `, x.last_action] }));
-      case "close_votes": return (lead.votes || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(`${x.chamber} ${x.yeas}–${x.nays}`), ` (margin ${x.margin}) · ${fmtDate(x.date)} · ${x.motion} · now: ${x.status}`] }));
+      case "vetoes": return (lead.bills || []).map(x => {
+        const v = x.veto || {}; const hv = v.house ? `House ${v.house.vote} ${v.house.result}` : ""; const sv = v.senate ? `Senate ${v.senate.vote} ${v.senate.result}` : "";
+        return { bill: x.bill, left: x.bill, title: x.title, detail: [b(x.outcome), v.veto_date ? ` · vetoed ${fmtDate(v.veto_date)}` : "", hv ? ` · ${hv}` : "", sv ? ` · ${sv}` : ""] };
+      });
+      case "upcoming_events": return (lead.bills || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(`${fmtDate(x.next.date)} · ${x.next.kind}`), ` · ${x.next.text}`, ` · now: ${x.status}`] }));
+      case "party_line_votes": return (lead.votes || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(`${x.chamber} ${x.yeas}–${x.nays}`), ` · ${splitText(x.party_split)} · ${fmtDate(x.date)} · ${x.motion}`] }));
+      case "attendance": return (lead.legislators || []).map(x => ({ bill: null, left: `${x.not_voting} missed`, title: `${x.name} (${x.party}${x.district ? ", " + (x.chamber === "Senate" ? "Dist. " : (x.county ? x.county + " " : "")) + x.district : ""}) · ${x.chamber}`, detail: [b(`${x.not_voting_pct}% of ${x.roll_calls} roll calls not voting, not excused`), x.excused ? ` · ${x.excused} excused` : ""], onClick: () => searchFor(x.name) }));
+      case "party_breakers": return (lead.legislators || []).map(x => ({ bill: null, left: `${x.against_party_pct}%`, title: `${x.name} (${x.party}${x.district ? ", " + (x.chamber === "Senate" ? "Dist. " : (x.county ? x.county + " " : "")) + x.district : ""}) · ${x.chamber}`, detail: [b(`${x.against_party} of ${x.party_votes} votes against the caucus majority`)], onClick: () => searchFor(x.name) }));
+      case "close_votes": return (lead.votes || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(`${x.chamber} ${x.yeas}–${x.nays}`), ` (margin ${x.margin}) · ${splitText(x.party_split)} · ${fmtDate(x.date)} · ${x.motion} · now: ${x.status}`] }));
       case "parked": return (lead.bills || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(x.how), ` · ${fmtDate(x.date)}`, x.committee ? ` · ${x.committee}` : ""] }));
       case "effective_soon": return (lead.bills || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(`Effective ${fmtDate(x.effective)}`), x.chapter ? ` · Chapter ${x.chapter}` : ""] }));
       case "most_roll_calls": return (lead.bills || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(`${x.roll_calls} roll calls`), ` · ${x.status}`] }));
       case "died_in_other_chamber": return (lead.bills || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(`Passed ${x.origin}, ${x.how.toLowerCase()} in ${x.died_in}`), ` · ${fmtDate(x.date)}`] }));
       case "recent_activity": return (lead.bills || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(fmtDate(x.date)), ` · ${x.last_action}`] }));
-      case "top_prime_sponsors": return (lead.sponsors || []).map(x => ({ bill: null, left: `${x.bills} bills`, title: x.name, detail: [b(`${x.laws} became law`)], onClick: () => { $("f-q").value = x.name; state.filters.q = x.name; state.shown = PAGE; apply(); } }));
+      case "top_prime_sponsors": return (lead.sponsors || []).map(x => ({ bill: null, left: `${x.bills} bills`, title: `${x.name}${x.party ? " (" + x.party + ")" : ""}`, detail: [b(`${x.laws} became law`), ` · ${x.killed} killed`], onClick: () => searchFor(x.name) }));
       default: return [];
     }
+  }
+  function searchFor(text) { $("f-q").value = text; state.filters.q = text; state.shown = PAGE; apply(); window.scrollTo({ top: $("table-section").offsetTop - 120, behavior: "smooth" }); }
+  function splitText(ps) {
+    if (!ps) return "";
+    return ["R", "D", "I"].filter(p => ps[p]).map(p => `${p} ${ps[p].yea}–${ps[p].nay}`).join(", ");
   }
 
   // ------------------------------------------------------------------ table
@@ -446,11 +484,11 @@
     const rows = state.view.slice(0, state.shown);
     body.replaceChildren(...rows.map(b => el("tr", null,
       el("td", { class: "bill" }, el("button", { type: "button", text: b.bill_label || b.lsr_id, onClick: (e) => { state.lastFocus = e.currentTarget; openBill(b); } })),
-      el("td", { class: "title", text: b.title }),
+      el("td", { class: "title" }, b.title || el("span", { class: "muted", text: "(title not in the current data dump)" }), b.subject ? el("span", { class: "subj", text: b.subject }) : null),
       el("td", { text: b.prime_sponsor || "" }),
       el("td", { text: b.committee || "" }),
       el("td", null, pill(b)),
-      el("td", { class: "last" }, el("time", { datetime: b.last_action_date, text: fmtDate(b.last_action_date) }), b.last_action),
+      el("td", { class: "last" }, el("time", { datetime: b.last_action_date, text: fmtDate(b.last_action_date) }), b.last_action, (b.next_events || []).length ? el("span", { class: "next", text: `Next: ${fmtDate(b.next_events[0].date)} ${b.next_events[0].kind}` }) : null),
       el("td", { class: "num", text: b.n_roll_calls ? fmtInt(b.n_roll_calls) : "" }),
       el("td", { class: "num", text: b.closest_margin === null || b.closest_margin === undefined ? "" : fmtInt(b.closest_margin) }),
     )));
@@ -472,22 +510,28 @@
       el("div", { class: "drawer-head" },
         el("div", null, el("div", { class: "id", text: `${b.bill_label || "No bill number"} · LSR ${b.lsr_id} · ${b.session} session` })),
         el("button", { class: "btn small", type: "button", id: "drawer-close", text: "Close", onClick: () => closeDrawer(true) })),
-      el("h2", { id: "drawer-title", text: b.title }),
+      el("h2", { id: "drawer-title", text: b.title || "(title not in the current data dump)" }),
+      b.title_note ? el("div", { class: "why", text: `Title note from the General Court: ${b.title_note}` }) : null,
       el("div", { class: "badges" }, el("span", { class: "badge", text: b.bill_type }), el("span", { class: "badge", text: `${b.origin_chamber} bill` }), pill(b), lawBadge, eff,
-        b.status === "unknown" ? el("span", { class: "badge warn", text: "Outcome not classified; read the docket" }) : null),
-      el("div", { class: "kv" },
-        el("dl", { class: "kv", style: "display: contents" },
-          kv("Prime sponsor", b.prime_sponsor || "not in data"),
-          kv("Committee", b.committee || "not found in docket"),
+        b.subject ? el("span", { class: "badge", text: `Subject: ${b.subject}${b.subject_code && b.subject !== b.subject_code ? " (" + b.subject_code + ")" : ""}` }) : null,
+        b.bipartisan ? el("span", { class: "badge", text: "Bipartisan sponsors" }) : null,
+        b.status === "unknown" ? el("span", { class: "badge warn", text: "No final action recorded; read the docket" }) : null),
+      el("dl", { class: "kv" },
+          kv("Prime sponsor", b.prime_sponsor ? `${b.prime_sponsor}${b.prime_party ? " (" + b.prime_party + ")" : ""}` : "not in data"),
+          kv("Committees", [...(b.committees && b.committees.house || []).map(c => "House: " + c), ...(b.committees && b.committees.senate || []).map(c => "Senate: " + c)].join(" · ") || (b.committee || "not found")),
+          kv("Decisive action", (b.status_detail && b.status_detail.decisive_action) || b.last_action || ""),
           kv("First action", fmtDate(b.first_action_date)),
           kv("Last action", `${fmtDate(b.last_action_date)} · ${b.last_action}`),
-          kv("Beats", (b.beats || []).join(", ") || "none matched"))),
-      section("Sponsors", (b.sponsors || []).length ? el("div", { class: "sponsors" }, b.sponsors.map(s => el("span", { class: `sp${s.primary ? " prime" : ""}`, text: `${s.primary ? "Prime · " : ""}${s.name}${s.seat ? " · " + s.seat : ""}` }))) : el("div", { class: "empty", text: "No sponsor rows in the data dump for this LSR." })),
+          kv("Status codes", b.status_codes && (b.status_codes.general || b.status_codes.house || b.status_codes.senate) ? `general ${b.status_codes.general || "–"} · House ${b.status_codes.house || "–"} · Senate ${b.status_codes.senate || "–"} (General Court codes, undocumented)` : "not in data"),
+          kv("Beats", (b.beats || []).join(", ") || "none matched")),
+      (b.next_events || []).length ? section("Scheduled from today forward", el("ol", { class: "docket" }, b.next_events.map(e => el("li", null, el("time", { datetime: e.date, text: fmtDate(e.date) }), el("span", { class: "ch", text: e.kind }), el("span", { class: "tx", text: e.text }))))) : null,
+      vetoSection(b),
+      section("Sponsors", (b.sponsors || []).length ? el("div", { class: "sponsors" }, b.sponsors.map(s => el("span", { class: `sp${s.primary ? " prime" : ""}`, text: `${s.primary ? "Prime · " : ""}${who(s)}` }))) : el("div", { class: "empty", text: "No sponsor rows in the data dump for this LSR." })),
       section(`Docket (${fmtInt((b.actions || []).length)} actions)`, (b.actions || []).length ? el("ol", { class: "docket" }, b.actions.map(a => el("li", null, el("time", { datetime: a.date, text: fmtDate(a.date) }), el("span", { class: "ch", text: a.chamber }), el("span", { class: "tx", text: a.text })))) : el("div", { class: "empty", text: "No docket actions recorded." })),
       section(`Roll calls (${fmtInt((b.roll_calls || []).length)})`, (b.roll_calls || []).length ? el("div", null, b.roll_calls.map(rollCall)) : el("div", { class: "empty", text: "No recorded roll calls. Voice and division votes are not in the roll-call file." })),
       section("Everything on the web about this bill", linkHub(b)),
       hooks.length ? section("Why this bill is in the story leads", el("ul", { class: "hooks" }, hooks.map(h => el("li", { text: h })))) : null,
-      el("div", { class: "note", text: "Outcome labels are rule-based readings of the docket text. Confirm against the docket and the bill page before publishing." }),
+      el("div", { class: "note", text: "Outcome labels are rule-based readings of the docket text; the \"decisive action\" line above is the docket entry the label came from. Confirm against the docket and the bill page before publishing." }),
       el("div", { style: "margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap" },
         el("button", { class: "btn small", type: "button", text: "Copy link to this bill", onClick: copyLink }),
         el("button", { class: "btn small", type: "button", text: "Copy citation", onClick: (e) => copyText(e, `${b.bill_label}, ${b.title} (${b.session} N.H. General Court), ${b.status_label.toLowerCase()}; last docket action ${fmtDate(b.last_action_date)}: ${b.last_action}. Source: gc.nh.gov bill status.`) })),
@@ -505,6 +549,17 @@
     if (state.lastFocus) { try { state.lastFocus.focus(); } catch { /* gone */ } }
   }
   function kv(k, v) { return [el("dt", { text: k }), el("dd", { text: v })]; }
+  function vetoSection(b) {
+    const v = b.status_detail && b.status_detail.veto;
+    if (!v) return null;
+    const rows = [];
+    rows.push(el("li", null, el("time", { datetime: v.veto_date, text: fmtDate(v.veto_date) }), el("span", { class: "ch", text: "Governor" }), el("span", { class: "tx", text: "Vetoed" })));
+    for (const side of ["house", "senate"]) {
+      const r = v[side]; if (!r) continue;
+      rows.push(el("li", null, el("time", { datetime: r.date, text: fmtDate(r.date) }), el("span", { class: "ch", text: side === "house" ? "House" : "Senate" }), el("span", { class: "tx", text: `Veto ${r.result}${r.vote ? " · roll call " + r.vote : ""}` })));
+    }
+    return section("Veto record", el("ol", { class: "docket" }, rows), el("div", { class: "why", text: "An override needs two-thirds in both chambers. A veto overridden in one chamber and sustained in the other stands." }));
+  }
   function section(title, ...children) { return el("section", null, el("h3", { text: title }), ...children); }
   function rollCall(v) {
     const total = (v.yeas || 0) + (v.nays || 0);
@@ -513,17 +568,46 @@
     return el("div", { class: `rc${close ? " close" : ""}` },
       el("div", { class: "rc-head" }, el("span", null, el("b", { text: `${v.chamber} roll call #${v.vote_num}` }), ` · ${fmtDate(v.date)}`), close ? el("span", { class: "badge warn", text: `Close vote: margin ${margin}` }) : null),
       el("div", { class: "motion", text: v.motion }),
+      v.party_split && Object.keys(v.party_split).length ? el("div", { class: "motion", text: `By party: ${splitText(v.party_split)}${v.party_line ? " · party-line vote" : ""}` }) : null,
       el("div", { class: "tally", role: "img", "aria-label": `${v.yeas} yeas, ${v.nays} nays` }, el("div", { class: "y", style: `flex: ${v.yeas || 0} ${v.yeas || 0} 0` }), el("div", { class: "n", style: `flex: ${v.nays || 0} ${v.nays || 0} 0` })),
-      el("div", { class: "nums" }, el("span", null, el("b", { text: fmtInt(v.yeas) }), " yeas"), el("span", null, el("b", { text: fmtInt(v.nays) }), " nays"), v.present ? el("span", null, el("b", { text: fmtInt(v.present) }), " present") : null, v.absent ? el("span", null, el("b", { text: fmtInt(v.absent) }), " absent/excused") : null));
+      el("div", { class: "nums" }, el("span", null, el("b", { text: fmtInt(v.yeas) }), " yeas"), el("span", null, el("b", { text: fmtInt(v.nays) }), " nays"), v.not_voting ? el("span", null, el("b", { text: fmtInt(v.not_voting) }), " not voting") : null, v.excused ? el("span", null, el("b", { text: fmtInt(v.excused) }), " excused") : null));
+  }
+  // Every link is a documented URL pattern filled with the bill's identifiers (see docs/METHODOLOGY.md).
+  function buildLinks(b) {
+    const s = b.session, bid = b.bill_id, label = b.bill_label || b.lsr_id;
+    const q = encodeURIComponent(`"${label}" New Hampshire`), q2 = encodeURIComponent(label);
+    const L = [];
+    if (b.doc_id) {
+      L.push({ kind: "official", label: "Bill status page (gc.nh.gov)", url: `https://gc.nh.gov/bill_Status/billinfo.aspx?id=${b.doc_id}&inflect=2` });
+      L.push({ kind: "official", label: "Bill text, current version (PDF)", url: `https://gc.nh.gov/bill_Status/pdf.aspx?id=${b.doc_id}&q=billVersion` });
+      L.push({ kind: "official", label: "Bill text (HTML, legacy viewer)", url: `https://gc.nh.gov/bill_status/legacy/bs2016/billText.aspx?sy=${s}&id=${b.doc_id}&txtFormat=html` });
+    }
+    L.push({ kind: "official", label: "Docket (legacy viewer)", url: `https://gc.nh.gov/bill_status/legacy/bs2016/bill_docket.aspx?lsr=${encodeURIComponent(b.lsr)}&sy=${s}&sortoption=&txtsessionyear=${s}` });
+    L.push({ kind: "official", label: "Bill status search (gc.nh.gov)", url: "https://gc.nh.gov/bill_Status/advanced.aspx" });
+    L.push({ kind: "official", label: "Governor's newsroom (veto messages, signings)", url: "https://www.governor.nh.gov/news-and-media" });
+    if (bid) {
+      L.push({ kind: "trackers", label: "LegiScan", url: `https://legiscan.com/NH/bill/${bid}/${s}` });
+      L.push({ kind: "trackers", label: "Plural (Open States)", url: `https://open.pluralpolicy.com/nh/bills/${s}/${bid}/` });
+    }
+    L.push({ kind: "news", label: "Google News search", url: `https://news.google.com/search?q=${q}` });
+    L.push({ kind: "news", label: "Google web search", url: `https://www.google.com/search?q=${q}` });
+    L.push({ kind: "news", label: "DuckDuckGo search", url: `https://duckduckgo.com/?q=${q}` });
+    L.push({ kind: "news", label: "New Hampshire Bulletin search", url: `https://newhampshirebulletin.com/?s=${q2}` });
+    L.push({ kind: "news", label: "InDepthNH search", url: `https://indepthnh.org/?s=${q2}` });
+    L.push({ kind: "news", label: "NHPR search", url: `https://www.nhpr.org/search?q=${q2}` });
+    L.push({ kind: "news", label: "Granite State Report search", url: `https://granitestatereport.com/?s=${q2}` });
+    return L;
   }
   function linkHub(b) {
     const kinds = [["official", "Official record (gc.nh.gov and the Governor)"], ["trackers", "Bill trackers"], ["news", "News and web searches"]];
     const wrap = el("div", { class: "links" });
+    const links = buildLinks(b);
     kinds.forEach(([k, title]) => {
-      const ls = (b.links || []).filter(l => l.kind === k);
+      const ls = links.filter(l => l.kind === k);
       if (!ls.length) return;
       wrap.append(el("h4", { text: title }), ...ls.map(l => el("a", { href: l.url, target: "_blank", rel: "noopener", text: l.label })));
     });
+    if (!b.doc_id) wrap.append(el("div", { class: "why", style: "grid-column: 1 / -1", text: "No bill-page document id in the dump for this LSR (common for bills carried over from the prior year). The docket link works from the LSR number." }));
     return wrap;
   }
   function hooksFor(b) {
