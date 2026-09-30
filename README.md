@@ -6,7 +6,8 @@ A public dashboard of every New Hampshire bill, where it stands, and links to
 everything on the record about it. Built from the General Court's own
 bill-status data and refreshed automatically.
 
-- **Live page:** `https://dexterdow33.github.io/BlogPostPreviewer/nh-bills/` (after GitHub Pages is enabled on the default branch)
+- **Live page:** https://granitestatereport.com/nh-bill-tracker/ (embeds `nh-bills/` from this repo; rebuild the embed with `scripts/build_wp_embed.py` when the page code changes)
+- **Standalone page:** `https://dexterdow33.github.io/BlogPostPreviewer/nh-bills/` once GitHub Pages is enabled (Settings → Pages → Source: GitHub Actions); the nightly workflow deploys it automatically after that
 - **Data (JSON):** `data/nh_bills_<session>.json`, `data/index.json`, `data/legislator_votes.json`
 - **Column-mapping audit:** `data/raw/_discovery_report.md` is rewritten on every run
 - **Method and caveats:** `docs/METHODOLOGY.md`
