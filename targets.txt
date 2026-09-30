@@ -1,0 +1,3 @@
+# One URL per line. Each push to this branch photographs these pages.
+https://granitestatereport.com/nh-bill-tracker/
+https://granitestatereport.com/noncompliance-list/

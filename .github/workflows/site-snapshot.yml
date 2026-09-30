@@ -1,0 +1,34 @@
+name: Site snapshot
+# Photographs the pages listed in targets.txt and commits the images to this
+# branch under snapshots/. Runs on every push to the site-snapshot branch.
+on:
+  push:
+    branches: [site-snapshot]
+    paths: [targets.txt, snap.js, .github/workflows/site-snapshot.yml, trigger.txt]
+permissions:
+  contents: write
+jobs:
+  snap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm i --no-audit --no-fund playwright@1.49.1 && npx playwright install --with-deps chromium
+      - name: Snapshot
+        run: |
+          STAMP=$(date -u +%Y%m%dT%H%MZ)
+          export OUT="snapshots/$STAMP"
+          mkdir -p "$OUT"
+          node snap.js
+          echo "$STAMP" > snapshots/LATEST
+          ls -la "$OUT"
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add snapshots
+          git commit -m "snapshots $(cat snapshots/LATEST) [skip ci]"
+          git push origin HEAD:site-snapshot
