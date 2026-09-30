@@ -4,135 +4,100 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>NH Bill Tracker</title>
-  <meta name="description" content="Where every New Hampshire bill stands: status, sponsors, docket, roll calls, and links to the record. Built from the General Court's own bill-status data by Granite State Report.">
+  <meta name="description" content="New Hampshire bills, where each one stands, and the record behind it. Built from the General Court's own bill-status data by Granite State Report.">
   <meta name="data-base" content="../data/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;700&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="wrap">
-  <header class="masthead">
-    <div>
-      <p class="eyebrow">Granite State Report</p>
-      <h1>NH Bill Tracker</h1>
-    </div>
-    <div class="meta" id="meta">Loading the General Court's bill-status data…</div>
+<main class="sheet">
+  <header class="masthead" id="masthead">
+    <p class="kicker">Granite State Report &middot; Legislature</p>
+    <h1>NH Bill Tracker</h1>
+    <p class="dek">New Hampshire&rsquo;s bills, where each one stands, and the record behind it.</p>
   </header>
 
-  <section class="filters" id="filters" aria-label="Filters">
-    <label>Session
-      <select id="f-session"></select>
-    </label>
-    <label class="grow">Search bills
-      <input type="search" id="f-q" placeholder="Bill number, title words, sponsor, committee, LSR" autocomplete="off">
-    </label>
-    <label>Chamber of origin
-      <select id="f-chamber">
-        <option value="">Both</option>
-        <option value="House">House</option>
-        <option value="Senate">Senate</option>
-      </select>
-    </label>
-    <label>Outcome
-      <select id="f-group">
-        <option value="">All</option>
-        <option value="law">Became law</option>
-        <option value="process">In process / other</option>
-        <option value="parked">Parked (study, retained, tabled)</option>
-        <option value="killed">Killed</option>
-        <option value="vetoed">Vetoed</option>
-      </select>
-    </label>
-    <label>Beat
-      <select id="f-beat"><option value="">All beats</option></select>
-    </label>
-    <label>Subject (General Court code)
-      <select id="f-subject"><option value="">All subjects</option></select>
-    </label>
-    <label>Sort
-      <select id="f-sort">
-        <option value="number">Bill number</option>
-        <option value="recent">Most recent action</option>
-        <option value="rollcalls">Most roll calls</option>
-        <option value="margin">Closest vote</option>
-        <option value="title">Title</option>
-      </select>
-    </label>
-    <label class="check"><input type="checkbox" id="f-rc"> Roll-call bills only</label>
-    <button class="btn" id="f-reset" type="button">Reset</button>
-    <span class="result-count" id="count"></span>
-  </section>
-
-  <div id="loading" class="status-line">Loading…</div>
-  <div id="session-note" class="note" hidden></div>
-
-  <section class="kpis" id="kpis" aria-label="Summary" hidden></section>
-
-  <section class="band" id="band" hidden>
-    <div class="panel" id="leads-panel">
-      <div class="panel-head">
-        <h2>Story leads</h2>
-        <span class="why" id="leads-why"></span>
-      </div>
-      <div class="tabs" id="lead-tabs" role="tablist"></div>
-      <ul class="lead-list" id="lead-list" role="tabpanel"></ul>
+  <section class="glance" aria-labelledby="glance-h">
+    <div class="glance-head">
+      <h2 class="kicker" id="glance-h">The session at a glance</h2>
+      <label class="session-pick"><span class="vh">Session</span><select id="f-session"></select></label>
     </div>
-    <div class="panel" id="charts-panel">
-      <div class="chart-head">
-        <h3>Where the bills stand</h3>
-        <button class="btn small" id="stack-toggle" type="button" aria-pressed="false">Table</button>
-      </div>
-      <div id="stack-chart"></div>
-      <div id="stack-table" hidden></div>
-      <div class="chart-head">
-        <h3>Docket actions per week</h3>
-        <button class="btn small" id="act-toggle" type="button" aria-pressed="false">Table</button>
-      </div>
+    <p class="loading" id="loading">Loading the General Court's bill-status data&hellip;</p>
+    <p class="summary" id="summary" hidden></p>
+    <div class="note" id="session-note" hidden></div>
+    <div class="figures" id="figures" hidden></div>
+    <div class="outcome-bar" id="outcome-bar" hidden></div>
+    <div class="activity" id="activity" hidden>
+      <div class="mini-head"><span class="mini-label">Docket entries per week</span><button class="text-btn" type="button" id="act-toggle" aria-pressed="false">View as table</button></div>
       <div id="activity-chart"></div>
       <div id="activity-table" hidden></div>
     </div>
+    <p class="stamp" id="stamp"></p>
   </section>
 
-  <section id="table-section" hidden>
-    <div class="table-head">
-      <h2 id="table-title">Bills</h2>
-      <span class="why" id="table-note">Click a bill number for the docket, sponsors, roll calls, and links.</span>
+  <section class="leads" id="leads" aria-labelledby="leads-h" hidden>
+    <h2 id="leads-h">Leads from the record</h2>
+    <div class="tabs" id="lead-tabs" role="tablist" aria-label="Leads"></div>
+    <p class="section-dek" id="leads-why"></p>
+    <ol class="lead-list" id="lead-list"></ol>
+    <button class="text-btn more-link" type="button" id="lead-more" hidden></button>
+  </section>
+
+  <section class="finder" id="finder" aria-labelledby="finder-h" hidden>
+    <h2 id="finder-h">Find a bill</h2>
+    <label class="search" for="f-q">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.5 15.5 21 21"></path></svg>
+      <span class="vh">Search bills</span>
+      <input type="search" id="f-q" placeholder="Bill number, words in the title, sponsor, or committee" autocomplete="off" spellcheck="false">
+    </label>
+    <div class="chips" id="chips" role="group" aria-label="Outcome"></div>
+    <div class="list-bar">
+      <span class="count" id="count" aria-live="polite"></span>
+      <span class="list-tools">
+        <label class="sort"><span>Sort</span>
+          <select id="f-sort">
+            <option value="number">Bill number</option>
+            <option value="recent">Latest action</option>
+            <option value="rollcalls">Most roll calls</option>
+            <option value="margin">Closest vote</option>
+            <option value="title">Title, A to Z</option>
+          </select>
+        </label>
+        <button class="text-btn" type="button" id="filters-toggle" aria-expanded="false" aria-controls="filters">More filters</button>
+      </span>
     </div>
-    <div class="table-wrap">
-      <table class="bills" id="bills">
-        <thead>
-          <tr>
-            <th scope="col">Bill</th>
-            <th scope="col">Title</th>
-            <th scope="col">Prime sponsor</th>
-            <th scope="col">Committee</th>
-            <th scope="col">Outcome</th>
-            <th scope="col">Last action</th>
-            <th scope="col" class="num">Roll calls</th>
-            <th scope="col" class="num">Closest margin</th>
-          </tr>
-        </thead>
-        <tbody id="bills-body"></tbody>
-      </table>
+    <div class="filters" id="filters" hidden>
+      <label>Chamber of origin
+        <select id="f-chamber">
+          <option value="">House and Senate</option>
+          <option value="House">House</option>
+          <option value="Senate">Senate</option>
+        </select>
+      </label>
+      <label>Topic
+        <select id="f-beat"><option value="">All topics</option></select>
+      </label>
+      <label>General Court subject code
+        <select id="f-subject"><option value="">All subjects</option></select>
+      </label>
+      <label class="check"><input type="checkbox" id="f-rc"> Only bills with a recorded roll call</label>
+      <button class="text-btn" type="button" id="f-reset">Clear all filters</button>
     </div>
+    <ol class="bill-list" id="bill-list"></ol>
     <div class="more" id="more"></div>
   </section>
 
-  <footer>
-    <p><strong>Source.</strong> The New Hampshire General Court publishes its bill-status database as text files at <a href="https://gc.nh.gov/downloads/" rel="noopener">gc.nh.gov/downloads</a>. This page reads a copy refreshed daily by an automated job, early in the morning Eastern, when the General Court asks automated clients to use the site. <span id="src-note"></span></p>
-    <p><strong>Read this before you quote it.</strong> Outcome labels are assigned by rules that read the docket text. They are a sorting aid. The docket, the bill page, and the roll-call record on gc.nh.gov are the record. Every bill here links to them.</p>
-    <p><strong>Links.</strong> LegiScan, Plural, and news-search links are built from the bill number, not checked bill by bill. A search may return nothing for a bill nobody has written about.</p>
-    <p><strong>Subjects and counties.</strong> The General Court's subject codes and county codes come without a published key. The labels here were inferred from the bills filed under each code and are shown next to the raw code. Legislator party comes from the roster file.</p>
-    <p>Granite State Report · <a href="https://granitestatereport.com" rel="noopener">granitestatereport.com</a> · Code and data: <a href="https://github.com/dexterdow33/BlogPostPreviewer" rel="noopener">GitHub</a></p>
+  <footer class="colophon" id="colophon">
+    <p><strong>Source.</strong> The New Hampshire General Court publishes its bill-status database as text files at <a href="https://gc.nh.gov/downloads/" rel="noopener">gc.nh.gov/downloads</a>. This page reads a copy refreshed nightly, in the early-morning hours the General Court asks automated clients to use. <span id="src-note"></span></p>
+    <p><strong>Read this before you quote it.</strong> Outcome labels are assigned by rules that read the docket text. They are a sorting aid. The docket, the bill page, and the roll-call record on gc.nh.gov are the record, and every bill here links to them.</p>
+    <p><strong>Still in process.</strong> The docket file shows no final action for these bills. For many of them, the General Court's bill table records a later floor action the docket file does not include. Check the official record before calling a bill pending.</p>
+    <p><strong>Labels.</strong> Subject and county labels are inferred from the General Court's unpublished codes and shown beside them. LegiScan, Plural, and news-search links are built from the bill number and not checked bill by bill.</p>
+    <p>Granite State Report &middot; <a href="https://granitestatereport.com" rel="noopener" target="_top">granitestatereport.com</a> &middot; Code and data on <a href="https://github.com/dexterdow33/BlogPostPreviewer" rel="noopener" target="_blank">GitHub</a></p>
   </footer>
-</div>
-
-<div class="scrim" id="scrim" hidden></div>
-<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" hidden></aside>
+</main>
 <div class="tip" id="tip" hidden role="status" aria-live="polite"></div>
-
 <script src="app.js"></script>
 </body>
 </html>

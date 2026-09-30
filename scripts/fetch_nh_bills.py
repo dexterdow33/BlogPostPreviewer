@@ -803,7 +803,7 @@ def story_leads(sb: list[dict], today: dt.date, leg_stats: dict, legislators: di
             if total and margin <= (3 if v["body"] == "S" else 12):
                 close.append({"bill": b["bill_label"], "title": b["title"], "chamber": v["chamber"], "date": v["date"], "motion": v["motion"], "yeas": v["yeas"], "nays": v["nays"], "margin": margin, "status": b["status_label"], "party_split": v.get("party_split", {})})
     close.sort(key=lambda x: (x["margin"], x["date"]))
-    L["close_votes"] = {"title": "Bills decided by a handful of votes", "why": "A close roll call means a few legislators decided the outcome. Name them.", "votes": close[:80]}
+    L["close_votes"] = {"title": "Bills decided by a handful of votes", "why": "A close roll call means a few legislators decided the outcome. Name them.", "votes": close[:80], "total": len(close)}
 
     up = [b for b in sb if b["next_events"]]
     up.sort(key=lambda b: b["next_events"][0]["date"])
@@ -840,11 +840,12 @@ def story_leads(sb: list[dict], today: dt.date, leg_stats: dict, legislators: di
         for v in b["roll_calls"]:
             if v.get("party_line"):
                 party_line.append({"bill": b["bill_label"], "title": b["title"], "chamber": v["chamber"], "date": v["date"], "motion": v["motion"], "yeas": v["yeas"], "nays": v["nays"], "party_split": v.get("party_split", {}), "status": b["status_label"]})
-    L["party_line_votes"] = {"title": "Party-line roll calls", "why": "Votes where the two caucuses split cleanly; the crossovers on each are the story.", "votes": party_line[:120]}
+    party_line.sort(key=lambda x: x["date"], reverse=True)
+    L["party_line_votes"] = {"title": "Party-line roll calls", "why": "Votes where the two caucuses split cleanly; the crossovers on each are the story.", "votes": party_line[:120], "total": len(party_line)}
 
     cut = (today - dt.timedelta(days=45)).isoformat()
     late = sorted([b for b in sb if b["last_action_date"] >= cut], key=lambda b: b["last_action_date"], reverse=True)
-    L["recent_activity"] = {"title": "What moved in the last 45 days", "why": "Anything still moving after the session ended is news by definition.", "bills": [brief(b, last_action=b["last_action"]) for b in late[:100]]}
+    L["recent_activity"] = {"title": "What moved in the last 45 days", "why": "Anything still moving after the session ended is news by definition.", "bills": [brief(b, last_action=b["last_action"]) for b in late[:100]], "total": len(late)}
 
     prime = collections.Counter(b["prime_sponsor"] for b in sb if b["prime_sponsor"])
     L["top_prime_sponsors"] = {"title": "Who filed the most bills", "why": "Volume filers and their success rates.",

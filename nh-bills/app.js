@@ -1,28 +1,37 @@
 /* NH Bill Tracker - Granite State Report
-   Vanilla JS, no build step. Reads data/index.json and data/nh_bills_<session>.json
-   produced by scripts/fetch_nh_bills.py. All text is inserted with textContent. */
+   Vanilla JS, no build step. Reads data/index.json, data/legislators.json and
+   data/nh_bills_<session>.json from scripts/fetch_nh_bills.py.
+   All text goes in with textContent.
+
+   Embedded on granitestatereport.com in an <iframe srcdoc>, the page reports
+   its height to the host (so the iframe grows and the host page scrolls),
+   asks the host to scroll when a bill opens, and trades #hash deep links. */
 (() => {
   "use strict";
 
   // ------------------------------------------------------------------ config
+  // Order matters: this is the validated color order of the outcome bar.
   const GROUPS = [
-    { key: "law",     label: "Became law",          codes: ["law", "veto_overridden"] },
-    { key: "process", label: "In process / other",  codes: ["enrolled", "conference", "passed_chamber", "committee_report", "recommitted", "hearing", "in_committee", "unknown"] },
-    { key: "parked",  label: "Parked",              codes: ["interim_study", "retained", "rereferred", "tabled"] },
-    { key: "killed",  label: "Killed",              codes: ["killed", "died_on_table", "conference_failed", "nonconcurred", "returned_to_house"] },
-    { key: "vetoed",  label: "Vetoed",              codes: ["vetoed", "veto_sustained"] },
+    { key: "law",     label: "Became law",       codes: ["law", "veto_overridden"] },
+    { key: "process", label: "Still in process", codes: ["enrolled", "conference", "passed_chamber", "committee_report", "recommitted", "hearing", "in_committee", "unknown"] },
+    { key: "parked",  label: "Parked",           codes: ["interim_study", "retained", "rereferred", "tabled"] },
+    { key: "killed",  label: "Killed",           codes: ["killed", "died_on_table", "conference_failed", "nonconcurred", "returned_to_house"] },
+    { key: "vetoed",  label: "Vetoed",           codes: ["vetoed", "veto_sustained"] },
   ];
   const GROUP_OF = {};
   GROUPS.forEach(g => g.codes.forEach(c => (GROUP_OF[c] = g.key)));
-  const PARTY = { R: "R", D: "D", I: "I" };
-  const who = (s) => {
-    const r = (state.roster && state.roster[s.id]) || {};
-    const party = s.party || r.party || "";
-    const district = r.district ? (r.body === "S" ? "Dist. " + r.district : (r.county ? r.county + " " : "") + r.district) : "";
-    return party ? `${s.name} (${PARTY[party] || party}${district ? ", " + district : ""})` : s.name;
-  };
   const GROUP_LABEL = Object.fromEntries(GROUPS.map(g => [g.key, g.label]));
-  const PAGE = 150;
+  const SHORT = {
+    law: "Became law", veto_overridden: "Law over veto", veto_sustained: "Veto stood", vetoed: "Vetoed",
+    enrolled: "Enrolled", conference: "In conference", conference_failed: "Died in conference", recommitted: "Recommitted",
+    nonconcurred: "Died on nonconcurrence", returned_to_house: "Returned to House", died_on_table: "Died on table",
+    interim_study: "Interim study", retained: "Retained", rereferred: "Re-referred", tabled: "Tabled", killed: "Killed",
+    passed_chamber: "Passed a chamber", committee_report: "Committee reported", hearing: "Hearing set",
+    in_committee: "In committee", unknown: "No final action",
+  };
+  const PAGE = 25;
+  const EMBED = window.parent !== window;
+  if (EMBED) document.documentElement.classList.add("embed");
 
   const metaBase = document.querySelector('meta[name="data-base"]');
   const BASES = [metaBase ? metaBase.content : "../data/", "data/", "./"];
@@ -36,31 +45,29 @@
         if (v === null || v === undefined || v === false) continue;
         if (k === "class") node.className = v;
         else if (k === "text") node.textContent = v;
-        else if (k === "html") throw new Error("innerHTML is not used");
         else if (k.startsWith("on") && typeof v === "function") node.addEventListener(k.slice(2).toLowerCase(), v);
-        else if (k === "dataset") Object.assign(node.dataset, v);
         else node.setAttribute(k, v === true ? "" : String(v));
       }
     }
-    for (const c of children.flat()) {
-      if (c === null || c === undefined || c === false) continue;
+    for (const c of children.flat(Infinity)) {
+      if (c === null || c === undefined || c === false || c === "") continue;
       node.append(c instanceof Node ? c : document.createTextNode(String(c)));
     }
     return node;
   }
+  const svg = (tag, attrs) => { const n = document.createElementNS("http://www.w3.org/2000/svg", tag); for (const [k, v] of Object.entries(attrs || {})) n.setAttribute(k, v); return n; };
   const fmtInt = (n) => (n === null || n === undefined ? "" : Number(n).toLocaleString("en-US"));
-  function fmtDate(iso) {
-    if (!iso) return "";
-    const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso);
-    if (!m) return iso;
+  const cap = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : "");
+  function fmtDate(iso, short) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || "");
+    if (!m) return iso || "";
     const d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
-    return d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric", timeZone: "UTC" });
+    return d.toLocaleDateString("en-US", short ? { month: "short", day: "numeric", timeZone: "UTC" } : { year: "numeric", month: "short", day: "numeric", timeZone: "UTC" });
   }
   function fmtStamp(iso) {
-    if (!iso) return "";
     const d = new Date(iso);
-    if (isNaN(d)) return iso;
-    return d.toLocaleString("en-US", { year: "numeric", month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short" });
+    if (isNaN(d)) return iso || "";
+    return d.toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", timeZone: "America/New_York" }) + " ET";
   }
   const store = {
     get(k) { try { return localStorage.getItem(k); } catch { return null; } },
@@ -70,354 +77,298 @@
     let lastErr;
     for (const b of BASES) {
       try {
-        const r = await fetch(b + name, { cache: "no-store" });
+        const r = await fetch(b + name, { cache: "no-cache" });
         if (r.ok) return await r.json();
         lastErr = new Error(`${r.status} for ${b}${name}`);
       } catch (e) { lastErr = e; }
     }
     throw lastErr || new Error("Could not load " + name);
   }
+  const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
+  const billKey = (b) => (b.bill_id || ("LSR" + b.lsr_id)).replace(/[^A-Za-z0-9]/g, "");
+
+  // ------------------------------------------------------------------ host bridge
+  let lastH = 0, lastActW = 0;
+  // Redraw the weekly chart when its width changes enough to matter (phone rotation).
+  window.addEventListener("resize", debounce(() => {
+    const g = document.querySelector(".glance");
+    if (state.bills && state.bills.length && g && Math.abs(Math.min(760, g.clientWidth) - lastActW) > 24) { renderActivity(); postHeight(); }
+  }, 150));
+  function postHeight() {
+    if (!EMBED) return;
+    const h = Math.ceil(document.body.getBoundingClientRect().height);
+    if (Math.abs(h - lastH) > 1) { lastH = h; try { parent.postMessage({ nhbt: "height", h }, "*"); } catch { /* ignore */ } }
+  }
+  if (EMBED && "ResizeObserver" in window) new ResizeObserver(postHeight).observe(document.body);
+  function reveal(node) {
+    if (!node) return;
+    const y = node.getBoundingClientRect().top + window.scrollY;
+    if (EMBED) { postHeight(); try { parent.postMessage({ nhbt: "scroll", y }, "*"); } catch { /* ignore */ } }
+    else window.scrollTo({ top: Math.max(0, y - 16), behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  }
+  function setHash(h) {
+    try { history.replaceState(null, "", location.pathname + location.search + h); } catch { /* srcdoc frames refuse */ }
+    if (EMBED) { try { parent.postMessage({ nhbt: "hash", hash: h }, "*"); } catch { /* ignore */ } }
+  }
 
   // ------------------------------------------------------------------ state
   const state = {
-    index: null,
-    payload: null,
-    session: null,
-    bills: [],
-    view: [],
-    byLabel: new Map(),
-    roster: null,
-    shown: PAGE,
-    leadTab: null,
+    index: null, payload: null, session: null, bills: [], view: [], byKey: new Map(), roster: null,
+    shown: PAGE, openKey: null, leadTab: null, leadAll: false,
     filters: { q: "", chamber: "", group: "", beat: "", subject: "", sort: "number", rc: false },
-    lastFocus: null,
   };
 
   // ------------------------------------------------------------------ boot
   async function boot() {
+    wireControls();
     try {
       state.index = await loadJSON("index.json");
     } catch (e) {
-      $("loading").textContent = "The data files could not be loaded. If this page was just deployed, the first refresh job may not have run yet. Details: " + e.message;
-      $("loading").className = "status-line err";
+      $("loading").textContent = "The bill data could not be loaded. Try again in a minute. Details: " + e.message;
+      $("loading").classList.add("err");
+      postHeight();
       return;
     }
-    try { const lj = await loadJSON("legislators.json"); state.roster = lj.roster || null; } catch { state.roster = null; }
+    try { state.roster = (await loadJSON("legislators.json")).roster || null; } catch { state.roster = null; }
     const sessions = (state.index.sessions || []).slice().sort((a, b) => String(a.session).localeCompare(String(b.session)));
-    if (!sessions.length) {
-      $("loading").textContent = "The refresh job has not produced any session data yet.";
-      return;
-    }
+    if (!sessions.length) { $("loading").textContent = "The nightly refresh has not produced any session data yet."; return; }
     const sel = $("f-session");
-    sessions.forEach(s => sel.append(el("option", { value: s.session, text: `${s.session} session (${fmtInt(s.bills)} bills)` })));
+    sessions.forEach(s => sel.append(el("option", { value: s.session, text: `${s.session} session` })));
+    const full = sessions.filter(s => s.with_title === undefined || s.with_title > 0);
     const remembered = store.get("nhbt.session");
-    const big = sessions.filter(s => s.bills >= 100);
-    const def = (remembered && sessions.some(s => String(s.session) === remembered)) ? remembered : String((big.length ? big : sessions).slice(-1)[0].session);
+    const def = (remembered && sessions.some(s => String(s.session) === remembered)) ? remembered : String((full.length ? full : sessions).slice(-1)[0].session);
     sel.value = def;
-    restoreFilters();
-    wireControls();
     await loadSession(def);
-    const hashBill = billFromHash();
-    if (hashBill) openBill(hashBill);
-    window.addEventListener("hashchange", () => { const b = billFromHash(); if (b) openBill(b); else closeDrawer(false); });
-    // Embedded in another page (an iframe): the parent sends its own #hash so deep links still open a bill,
-    // and this frame reports the open bill back so the parent can update its address bar.
+    const target = keyFromHash(location.hash);
+    if (target) openByKey(target, true);
+    window.addEventListener("hashchange", () => { const k = keyFromHash(location.hash); if (k) openByKey(k, true); });
     window.addEventListener("message", (ev) => {
       const d = ev.data || {};
-      if (d.nhbt !== "open" || typeof d.hash !== "string") return;
-      const m = /^#([A-Za-z]{2,4}\d{1,5})$/.exec(d.hash);
-      if (m) { const b = state.byLabel.get(m[1].toUpperCase()); if (b) openBill(b); }
+      if (d.nhbt === "open" && typeof d.hash === "string") { const k = keyFromHash(d.hash); if (k) openByKey(k, true); }
     });
-    if (window.parent !== window) { try { window.parent.postMessage({ nhbt: "ready" }, "*"); } catch { /* ignore */ } }
+    if (EMBED) { try { parent.postMessage({ nhbt: "ready" }, "*"); } catch { /* ignore */ } }
   }
-
-  function billFromHash() {
-    const m = /^#([A-Za-z]{2,4}\d{1,5})$/.exec(location.hash || "");
-    if (!m) return null;
-    return state.byLabel.get(m[1].toUpperCase()) || null;
-  }
+  const keyFromHash = (h) => { const m = /^#([A-Za-z]{2,5}\d{1,5})$/.exec(h || ""); return m ? m[1].toUpperCase() : null; };
 
   async function loadSession(session) {
     $("loading").hidden = false;
-    $("loading").className = "status-line";
+    $("loading").classList.remove("err");
     $("loading").textContent = `Loading the ${session} session…`;
     const s = (state.index.sessions || []).find(x => String(x.session) === String(session));
     try {
       state.payload = await loadJSON(s ? s.file : `nh_bills_${session}.json`);
     } catch (e) {
-      $("loading").textContent = "Could not load this session: " + e.message;
-      $("loading").className = "status-line err";
+      $("loading").textContent = "This session could not be loaded. Details: " + e.message;
+      $("loading").classList.add("err");
       return;
     }
     state.session = String(session);
     store.set("nhbt.session", state.session);
     state.bills = state.payload.bills || [];
-    state.byLabel = new Map();
-    for (const b of state.bills) {
-      b.group = b.group || GROUP_OF[b.status] || "process";
-      if (b.bill_id) state.byLabel.set(b.bill_id, b);
-    }
-    // subject filter options
-    const subjSel = $("f-subject");
-    const keepSubj = state.filters.subject;
-    subjSel.replaceChildren(el("option", { value: "", text: "All subjects" }));
+    state.byKey = new Map();
+    for (const b of state.bills) { b.group = b.group || GROUP_OF[b.status] || "process"; state.byKey.set(billKey(b), b); }
+    fillSelect($("f-beat"), "All topics", Object.entries((state.payload.story_leads && state.payload.story_leads.beats && state.payload.story_leads.beats.counts) || {}).map(([k, n]) => [k, `${k} (${fmtInt(n)})`]), "beat");
     const subjCounts = {};
     state.bills.forEach(b => { if (b.subject_code) subjCounts[b.subject_code] = (subjCounts[b.subject_code] || 0) + 1; });
-    Object.entries(state.payload.subject_codes || {}).sort((a, b) => (subjCounts[b[0]] || 0) - (subjCounts[a[0]] || 0))
-      .forEach(([code, label]) => subjSel.append(el("option", { value: code, text: `${label}${label !== code ? " · " + code : ""} (${fmtInt(subjCounts[code] || 0)})` })));
-    subjSel.value = Object.prototype.hasOwnProperty.call(state.payload.subject_codes || {}, keepSubj) ? keepSubj : "";
-    state.filters.subject = subjSel.value;
+    fillSelect($("f-subject"), "All subjects", Object.entries(state.payload.subject_codes || {}).sort((a, b) => (subjCounts[b[0]] || 0) - (subjCounts[a[0]] || 0)).map(([c, l]) => [c, `${l}${l !== c ? " (" + c + ")" : ""} · ${fmtInt(subjCounts[c] || 0)}`]), "subject");
     const note = $("session-note");
     note.hidden = !state.payload.session_note;
     note.textContent = state.payload.session_note || "";
-    // beat filter options
-    const beatSel = $("f-beat");
-    const keep = state.filters.beat;
-    beatSel.replaceChildren(el("option", { value: "", text: "All beats" }));
-    const beats = Object.entries((state.payload.story_leads && state.payload.story_leads.beats && state.payload.story_leads.beats.counts) || {});
-    beats.forEach(([name, n]) => beatSel.append(el("option", { value: name, text: `${name} (${fmtInt(n)})` })));
-    beatSel.value = beats.some(([n]) => n === keep) ? keep : "";
-    state.filters.beat = beatSel.value;
-
-    $("meta").replaceChildren(
-      el("div", null, "Data refreshed ", el("strong", { text: fmtStamp(state.payload.generated_at) })),
-      el("div", null, `${fmtInt(state.payload.counts.bills)} bills · ${fmtInt(state.payload.counts.actions)} docket actions · ${fmtInt(state.payload.counts.roll_calls)} roll calls`),
-    );
-    $("src-note").textContent = `This copy was generated ${fmtStamp(state.payload.generated_at)}.`;
+    $("glance-h").textContent = `The ${state.session} session at a glance`;
+    $("stamp").textContent = `Data from the New Hampshire General Court, refreshed ${fmtStamp(state.payload.generated_at)}.`;
+    const src = $("src-note"); if (src) src.textContent = `This copy was built ${fmtStamp(state.payload.generated_at)}.`;
     $("loading").hidden = true;
-    ["kpis", "band", "table-section"].forEach(id => ($(id).hidden = false));
-    state.shown = PAGE;
+    ["summary", "figures", "outcome-bar", "activity"].forEach(id => ($(id).hidden = false));
+    $("leads").hidden = false; $("finder").hidden = false;
+    state.shown = PAGE; state.openKey = null; state.leadAll = false;
+    renderGlance();
+    renderActivity();
     apply();
+  }
+  function fillSelect(sel, allLabel, pairs, key) {
+    const keep = state.filters[key];
+    sel.replaceChildren(el("option", { value: "", text: allLabel }), ...pairs.map(([v, t]) => el("option", { value: v, text: t })));
+    sel.value = pairs.some(([v]) => v === keep) ? keep : "";
+    state.filters[key] = sel.value;
   }
 
   // ------------------------------------------------------------------ controls
   function wireControls() {
     $("f-session").addEventListener("change", (e) => loadSession(e.target.value));
-    $("f-q").addEventListener("input", debounce((e) => { state.filters.q = e.target.value.trim(); state.shown = PAGE; apply(); }, 120));
-    $("f-chamber").addEventListener("change", (e) => { state.filters.chamber = e.target.value; state.shown = PAGE; apply(); });
-    $("f-group").addEventListener("change", (e) => { state.filters.group = e.target.value; state.shown = PAGE; apply(); });
-    $("f-beat").addEventListener("change", (e) => { state.filters.beat = e.target.value; state.shown = PAGE; apply(); });
-    $("f-subject").addEventListener("change", (e) => { state.filters.subject = e.target.value; state.shown = PAGE; apply(); });
+    $("f-q").addEventListener("input", debounce((e) => { state.filters.q = e.target.value.trim(); resetPaging(); apply(); }, 140));
     $("f-sort").addEventListener("change", (e) => { state.filters.sort = e.target.value; apply(); });
-    $("f-rc").addEventListener("change", (e) => { state.filters.rc = e.target.checked; state.shown = PAGE; apply(); });
+    $("f-chamber").addEventListener("change", (e) => { state.filters.chamber = e.target.value; resetPaging(); apply(); });
+    $("f-beat").addEventListener("change", (e) => { state.filters.beat = e.target.value; resetPaging(); apply(); });
+    $("f-subject").addEventListener("change", (e) => { state.filters.subject = e.target.value; resetPaging(); apply(); });
+    $("f-rc").addEventListener("change", (e) => { state.filters.rc = e.target.checked; resetPaging(); apply(); });
     $("f-reset").addEventListener("click", () => {
-      state.filters = { q: "", chamber: "", group: "", beat: "", subject: "", sort: "number", rc: false };
-      $("f-q").value = ""; $("f-chamber").value = ""; $("f-group").value = ""; $("f-beat").value = ""; $("f-subject").value = ""; $("f-sort").value = "number"; $("f-rc").checked = false;
-      state.shown = PAGE; apply();
+      state.filters = { q: "", chamber: "", group: "", beat: "", subject: "", sort: state.filters.sort, rc: false };
+      $("f-q").value = ""; $("f-chamber").value = ""; $("f-beat").value = ""; $("f-subject").value = ""; $("f-rc").checked = false;
+      resetPaging(); apply();
     });
-    $("stack-toggle").addEventListener("click", () => toggleTable("stack"));
-    $("act-toggle").addEventListener("click", () => toggleTable("activity"));
-    $("scrim").addEventListener("click", () => closeDrawer(true));
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("drawer").hidden) closeDrawer(true); });
+    $("filters-toggle").addEventListener("click", (e) => {
+      const open = $("filters").hidden;
+      $("filters").hidden = !open;
+      e.currentTarget.setAttribute("aria-expanded", String(open));
+      e.currentTarget.textContent = open ? "Fewer filters" : "More filters";
+    });
+    $("act-toggle").addEventListener("click", (e) => {
+      const showTable = $("activity-table").hidden;
+      $("activity-table").hidden = !showTable; $("activity-chart").hidden = showTable;
+      e.currentTarget.setAttribute("aria-pressed", String(showTable));
+      e.currentTarget.textContent = showTable ? "View as chart" : "View as table";
+    });
+    $("lead-more").addEventListener("click", () => { state.leadAll = !state.leadAll; renderLeads(); });
   }
-  function restoreFilters() {
-    try {
-      const saved = JSON.parse(store.get("nhbt.filters") || "null");
-      if (saved && typeof saved === "object") Object.assign(state.filters, saved);
-    } catch { /* ignore */ }
-    $("f-q").value = state.filters.q || "";
-    $("f-chamber").value = state.filters.chamber || "";
-    $("f-group").value = state.filters.group || "";
-    $("f-sort").value = state.filters.sort || "number";
-    $("f-rc").checked = !!state.filters.rc;
-  }
-  function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
-  function toggleTable(which) {
-    const btn = $(which === "stack" ? "stack-toggle" : "act-toggle");
-    const chart = $(which === "stack" ? "stack-chart" : "activity-chart");
-    const table = $(which === "stack" ? "stack-table" : "activity-table");
-    const showTable = table.hidden;
-    table.hidden = !showTable; chart.hidden = showTable;
-    btn.setAttribute("aria-pressed", String(showTable));
-    btn.textContent = showTable ? "Chart" : "Table";
+  function resetPaging() { state.shown = PAGE; state.openKey = null; }
+  function setGroup(g, scroll) {
+    state.filters.group = state.filters.group === g ? "" : g;
+    resetPaging(); apply();
+    if (scroll) reveal($("finder"));
   }
 
   // ------------------------------------------------------------------ filtering
+  function matches(b, f, skipGroup) {
+    if (f.chamber && b.origin_chamber !== f.chamber) return false;
+    if (!skipGroup && f.group && b.group !== f.group) return false;
+    if (f.beat && !(b.beats || []).includes(f.beat)) return false;
+    if (f.subject && b.subject_code !== f.subject) return false;
+    if (f.rc && !b.n_roll_calls) return false;
+    if (f.q) {
+      const q = f.q.toLowerCase();
+      const qBill = f.q.replace(/\s+/g, "").toUpperCase();
+      if (b.bill_id && b.bill_id === qBill) return true;
+      if (b.bill_id && /^[A-Z]+\d+$/.test(qBill) && b.bill_id.startsWith(qBill)) return true;
+      const hay = `${b.title} ${b.prime_sponsor} ${b.committee || ""} ${b.lsr_id} ${b.status_label} ${b.subject || ""} ${b.chapter ? "chapter " + b.chapter : ""} ${(b.sponsors || []).map(s => s.name).join(" ")}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  }
   function apply() {
-    store.set("nhbt.filters", JSON.stringify(state.filters));
     const f = state.filters;
-    const q = f.q.toLowerCase();
-    const qBill = q.replace(/\s+/g, "").toUpperCase();
-    state.view = state.bills.filter(b => {
-      if (f.chamber && b.origin_chamber !== f.chamber) return false;
-      if (f.group && b.group !== f.group) return false;
-      if (f.beat && !(b.beats || []).includes(f.beat)) return false;
-      if (f.subject && b.subject_code !== f.subject) return false;
-      if (f.rc && !b.n_roll_calls) return false;
-      if (q) {
-        const hay = `${b.title} ${b.prime_sponsor} ${b.committee || ""} ${b.lsr_id} ${b.status_label} ${b.subject || ""} ${b.chapter ? "chapter " + b.chapter : ""} ${(b.sponsors || []).map(s => s.name).join(" ")}`.toLowerCase();
-        if (!(b.bill_id && b.bill_id.startsWith(qBill)) && !hay.includes(q)) return false;
-      }
-      return true;
-    });
+    state.view = state.bills.filter(b => matches(b, f, false));
     sortView();
-    renderKPIs();
-    renderStack();
-    renderActivity();
+    renderFigurePressed();
+    renderChips();
     renderLeads();
-    renderTable();
-    const total = state.bills.length;
-    $("count").textContent = state.view.length === total ? `${fmtInt(total)} bills` : `${fmtInt(state.view.length)} of ${fmtInt(total)} bills`;
+    renderList();
+    postHeight();
   }
-  function billNum(b) { const m = /(\d+)/.exec(b.bill_id || ""); return m ? +m[1] : 1e9; }
+  const billNum = (b) => { const m = /(\d+)/.exec(b.bill_id || ""); return m ? +m[1] : 1e9; };
   function sortView() {
-    const s = state.filters.sort;
-    const v = state.view;
-    if (s === "recent") v.sort((a, b) => (b.last_action_date || "").localeCompare(a.last_action_date || "") || billNum(a) - billNum(b));
-    else if (s === "rollcalls") v.sort((a, b) => (b.n_roll_calls - a.n_roll_calls) || billNum(a) - billNum(b));
-    else if (s === "margin") v.sort((a, b) => ((a.closest_margin ?? 1e9) - (b.closest_margin ?? 1e9)) || billNum(a) - billNum(b));
+    const s = state.filters.sort, v = state.view;
+    const byNum = (a, b) => ((a.bill_id || "ZZZ").replace(/\d+/, "").localeCompare((b.bill_id || "ZZZ").replace(/\d+/, ""))) || billNum(a) - billNum(b);
+    if (s === "recent") v.sort((a, b) => (b.last_action_date || "").localeCompare(a.last_action_date || "") || byNum(a, b));
+    else if (s === "rollcalls") v.sort((a, b) => (b.n_roll_calls - a.n_roll_calls) || byNum(a, b));
+    else if (s === "margin") v.sort((a, b) => ((a.closest_margin ?? 1e9) - (b.closest_margin ?? 1e9)) || byNum(a, b));
     else if (s === "title") v.sort((a, b) => a.title.localeCompare(b.title));
-    else v.sort((a, b) => ((a.bill_id || "ZZZ").replace(/\d+/, "").localeCompare((b.bill_id || "ZZZ").replace(/\d+/, ""))) || billNum(a) - billNum(b));
+    else v.sort(byNum);
   }
 
-  // ------------------------------------------------------------------ KPIs
-  function renderKPIs() {
-    const v = state.view;
-    const counts = Object.fromEntries(GROUPS.map(g => [g.key, 0]));
-    let overrides = 0, sustained = 0, withRC = 0, upcoming = 0;
-    for (const b of v) {
-      counts[b.group]++;
-      if (b.status === "veto_overridden") overrides++;
-      if (b.status === "veto_sustained") sustained++;
-      if (b.n_roll_calls) withRC++;
-      if ((b.next_events || []).length) upcoming++;
-    }
-    const tiles = [
-      tile("Bills in view", v.length, `${fmtInt(withRC)} with roll calls · ${fmtInt(upcoming)} with sessions scheduled`, null, true),
-      tile("Became law", counts.law, overrides ? `${fmtInt(overrides)} by veto override` : "signed or allowed to become law", "law"),
-      tile("Vetoed", counts.vetoed, sustained ? `${fmtInt(sustained)} vetoes sustained` : "veto stands unless overridden", "vetoed"),
-      tile("Killed", counts.killed, "inexpedient to legislate or postponed", "killed"),
-      tile("Parked", counts.parked, "interim study, retained, re-referred, tabled", "parked"),
-      tile("In process / other", counts.process, "not yet at a final action, or unclassified", "process"),
-    ];
-    $("kpis").replaceChildren(...tiles);
+  // ------------------------------------------------------------------ glance
+  function groupCounts(list) {
+    const c = Object.fromEntries(GROUPS.map(g => [g.key, 0]));
+    list.forEach(b => c[b.group]++);
+    return c;
   }
-  function tile(label, value, sub, group, hero) {
-    const t = el("div", { class: `tile${hero ? " hero" : ""}${group ? " has-swatch" : ""}` },
-      el("div", { class: "label", text: label }),
-      el("div", { class: "value", text: fmtInt(value) }),
-      el("div", { class: "sub", text: sub }),
-      group ? el("span", { class: "swatch", style: `background: var(--cat-${group})`, "aria-hidden": "true" }) : null,
-    );
-    if (group) {
-      t.append(el("button", { class: "tile-btn", "aria-label": `Filter to ${label}`, onClick: () => {
-        state.filters.group = state.filters.group === group ? "" : group; $("f-group").value = state.filters.group; state.shown = PAGE; apply();
-      } }));
+  function renderGlance() {
+    const all = state.bills, c = groupCounts(all);
+    const overrides = all.filter(b => b.status === "veto_overridden").length;
+    const upcoming = all.filter(b => (b.next_events || []).length).length;
+    const summary = $("summary");
+    if (state.payload.session_note) {
+      summary.replaceChildren(`The ${state.session} file holds `, el("b", { text: fmtInt(all.length) }), " bills that finished in that session, rebuilt from the docket.");
+    } else {
+      summary.replaceChildren(
+        "Of ", el("b", { text: fmtInt(all.length) }), ` bills and resolutions in the ${state.session} session, `,
+        el("b", { text: fmtInt(c.law) }), " became law and ", el("b", { text: fmtInt(c.killed) }), " were killed. ",
+        ...(c.vetoed ? [el("b", { text: fmtInt(c.vetoed) }), c.vetoed === 1 ? " veto stood" : " vetoes stood", ...(overrides ? [", and lawmakers overrode ", el("b", { text: fmtInt(overrides) }), " more. "] : [". "])] : []),
+        ...(upcoming ? [el("b", { text: fmtInt(upcoming) }), upcoming === 1 ? " bill has committee work on the calendar." : " bills have committee work on the calendar."] : [])
+      );
     }
-    return t;
-  }
-
-  // ------------------------------------------------------------------ stacked bar
-  function renderStack() {
-    const v = state.view;
-    const total = v.length || 1;
-    const counts = Object.fromEntries(GROUPS.map(g => [g.key, 0]));
-    v.forEach(b => counts[b.group]++);
-    const bar = el("div", { class: "stack", role: "img", "aria-label": GROUPS.map(g => `${g.label}: ${counts[g.key]}`).join("; ") });
+    const subs = {
+      law: overrides ? `${fmtInt(overrides)} over a veto` : "signed or enacted",
+      process: "no final action in the docket file",
+      parked: "interim study or tabled",
+      killed: "voted down or died",
+      vetoed: "veto stood",
+    };
+    $("figures").replaceChildren(...GROUPS.map(g => el("button", {
+      class: "fig", type: "button", "data-g": g.key, "aria-pressed": "false",
+      "aria-label": `${g.label}: ${fmtInt(c[g.key])} bills. Show them.`, onClick: () => setGroup(g.key, true),
+    }, el("span", { class: `fig-key k-${g.key}`, "aria-hidden": "true" }), el("span", { class: "fig-n", text: fmtInt(c[g.key]) }), el("span", { class: "fig-l", text: g.label }), el("span", { class: "fig-s", text: subs[g.key] }))));
+    const total = all.length || 1;
+    const bar = el("div", { class: "bar", role: "img", "aria-label": GROUPS.map(g => `${g.label} ${c[g.key]}`).join(", ") });
     GROUPS.forEach(g => {
-      const n = counts[g.key];
-      if (!n) return;
-      const seg = el("div", { class: "seg", tabindex: "0", style: `flex: ${n} ${n} 0; background: var(--cat-${g.key})`, "aria-label": `${g.label}: ${n} bills (${Math.round(100 * n / total)}%)` });
-      const show = (ev) => showTip(ev, [`${fmtInt(n)} bills`, g.label, `${Math.round(100 * n / total)}% of the bills in view`]);
+      if (!c[g.key]) return;
+      const seg = el("div", { class: `seg k-${g.key}`, tabindex: "0", style: `flex:${c[g.key]} ${c[g.key]} 0` });
+      const show = (ev) => showTip(ev, [`${fmtInt(c[g.key])} bills`, `${g.label} · ${Math.round(100 * c[g.key] / total)}%`]);
       seg.addEventListener("pointermove", show); seg.addEventListener("focus", show);
       seg.addEventListener("pointerleave", hideTip); seg.addEventListener("blur", hideTip);
       bar.append(seg);
     });
-    const legend = el("div", { class: "legend" }, GROUPS.map(g => el("span", { class: "k" }, el("i", { style: `background: var(--cat-${g.key})` }), `${g.label} `, el("b", { text: fmtInt(counts[g.key]) }))));
-    $("stack-chart").replaceChildren(bar, legend);
-    // table twin
-    const t = el("table", { class: "tv" }, el("thead", null, el("tr", null, el("th", { text: "Outcome" }), el("th", { class: "num", text: "Bills" }), el("th", { class: "num", text: "Share" }))),
-      el("tbody", null, GROUPS.map(g => el("tr", null, el("td", { text: g.label }), el("td", { class: "num", text: fmtInt(counts[g.key]) }), el("td", { class: "num", text: `${Math.round(100 * counts[g.key] / total)}%` })))));
-    $("stack-table").replaceChildren(el("div", { class: "tv-wrap" }, t));
+    $("outcome-bar").replaceChildren(bar);
+  }
+  function renderFigurePressed() {
+    document.querySelectorAll(".fig").forEach(n => n.setAttribute("aria-pressed", String(n.dataset.g === state.filters.group)));
   }
 
   // ------------------------------------------------------------------ activity chart
   function renderActivity() {
-    const v = state.view;
     const bins = new Map();
     let min = null, max = null;
-    for (const b of v) for (const a of b.actions || []) {
-      const d = a.date; if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) continue;
-      if (!min || d < min) min = d; if (!max || d > max) max = d;
-    }
-    const wrap = $("activity-chart");
-    if (!min) { wrap.replaceChildren(el("div", { class: "empty", text: "No docket actions in view." })); $("activity-table").replaceChildren(); return; }
-    // weekly bins (Monday start), fall back to monthly when the span is long
-    const start = new Date(min + "T00:00:00Z"), end = new Date(max + "T00:00:00Z");
-    const weeks = Math.ceil((end - start) / (7 * 864e5)) + 1;
-    const monthly = weeks > 90;
-    const keyOf = (d) => {
-      const dt = new Date(d + "T00:00:00Z");
-      if (monthly) return `${dt.getUTCFullYear()}-${String(dt.getUTCMonth() + 1).padStart(2, "0")}`;
-      const day = (dt.getUTCDay() + 6) % 7; dt.setUTCDate(dt.getUTCDate() - day);
-      return dt.toISOString().slice(0, 10);
-    };
-    for (const b of v) for (const a of b.actions || []) {
+    for (const b of state.bills) for (const a of b.actions || []) {
       if (!/^\d{4}-\d{2}-\d{2}$/.test(a.date)) continue;
-      const k = keyOf(a.date); bins.set(k, (bins.get(k) || 0) + 1);
+      if (!min || a.date < min) min = a.date;
+      if (!max || a.date > max) max = a.date;
     }
-    // fill gaps
-    const keys = [];
-    if (monthly) {
-      const c = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), 1));
-      while (c <= end) { keys.push(`${c.getUTCFullYear()}-${String(c.getUTCMonth() + 1).padStart(2, "0")}`); c.setUTCMonth(c.getUTCMonth() + 1); }
-    } else {
-      const c = new Date(keyOf(min) + "T00:00:00Z");
-      while (c <= end) { keys.push(c.toISOString().slice(0, 10)); c.setUTCDate(c.getUTCDate() + 7); }
-    }
-    const values = keys.map(k => bins.get(k) || 0);
-    const peak = Math.max(1, ...values);
-    const W = 560, H = 190, padL = 38, padR = 8, padT = 10, padB = 28;
-    const plotW = W - padL - padR, plotH = H - padT - padB;
-    const slot = plotW / keys.length;
-    const barW = Math.min(24, Math.max(2, slot - 2));
-    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("class", "activity"); svg.setAttribute("role", "img");
-    svg.setAttribute("aria-label", `Docket actions per ${monthly ? "month" : "week"}, ${fmtDate(min)} to ${fmtDate(max)}; peak ${fmtInt(peak)}.`);
-    const ns = (tag, attrs) => { const n = document.createElementNS("http://www.w3.org/2000/svg", tag); for (const [k, val] of Object.entries(attrs)) n.setAttribute(k, val); return n; };
-    const grid = ns("g", { class: "grid" });
-    const ticks = niceTicks(peak);
-    ticks.forEach(t => {
-      const y = padT + plotH - (t / peak) * plotH;
-      grid.append(ns("line", { x1: padL, x2: W - padR, y1: y, y2: y }));
-      const label = ns("text", { x: padL - 6, y: y + 4, "text-anchor": "end" }); label.textContent = fmtInt(t); svg.append(label);
-    });
-    svg.append(grid);
+    if (!min) { $("activity").hidden = true; return; }
+    const weekOf = (d) => { const dt = new Date(d + "T00:00:00Z"); dt.setUTCDate(dt.getUTCDate() - ((dt.getUTCDay() + 6) % 7)); return dt.toISOString().slice(0, 10); };
+    for (const b of state.bills) for (const a of b.actions || []) { if (/^\d{4}-\d{2}-\d{2}$/.test(a.date)) { const k = weekOf(a.date); bins.set(k, (bins.get(k) || 0) + 1); } }
+    const keys = []; const end = new Date(max + "T00:00:00Z");
+    for (const c = new Date(weekOf(min) + "T00:00:00Z"); c <= end; c.setUTCDate(c.getUTCDate() + 7)) keys.push(c.toISOString().slice(0, 10));
+    const vals = keys.map(k => bins.get(k) || 0);
+    const peak = Math.max(1, ...vals);
+    // Draw at the chart's real width so the 11px labels stay 11px on a phone.
+    const W = Math.round(Math.min(760, Math.max(280, document.querySelector(".glance").clientWidth || 760))), H = 96, padT = 16, padB = 20;
+    lastActW = W;
+    const plotH = H - padT - padB, slot = W / keys.length, bw = Math.max(1.5, Math.min(12, slot - 2));
+    const s = svg("svg", { viewBox: `0 0 ${W} ${H}`, class: "act-svg", role: "img", "aria-label": `Docket entries per week, ${fmtDate(min)} to ${fmtDate(max)}. Busiest week: ${fmtInt(peak)} entries.` });
+    s.append(svg("line", { class: "axis", x1: 0, x2: W, y1: padT + plotH + .5, y2: padT + plotH + .5 }));
+    let lastMonth = "";
+    const marks = [];
     keys.forEach((k, i) => {
-      const val = values[i];
-      const h = (val / peak) * plotH;
-      const x = padL + i * slot + (slot - barW) / 2;
-      const y = padT + plotH - h;
-      const r = Math.min(4, barW / 2, h);
-      const path = ns("path", { class: "col", d: roundedTop(x, y, barW, h, r), tabindex: "0" });
-      const lbl = monthly ? new Date(k + "-01T00:00:00Z").toLocaleDateString("en-US", { month: "short", year: "numeric", timeZone: "UTC" }) : `Week of ${fmtDate(k)}`;
-      const show = (ev) => showTip(ev, [`${fmtInt(val)} actions`, lbl]);
-      path.addEventListener("pointermove", show); path.addEventListener("focus", show);
-      path.addEventListener("pointerleave", hideTip); path.addEventListener("blur", hideTip);
-      svg.append(path);
-      // x labels: every Nth
-      const every = Math.max(1, Math.round(keys.length / 6));
-      if (i % every === 0) {
-        const t = ns("text", { x: x + barW / 2, y: H - 8, "text-anchor": "middle" });
-        t.textContent = monthly ? new Date(k + "-01T00:00:00Z").toLocaleDateString("en-US", { month: "short", timeZone: "UTC" }) : new Date(k + "T00:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
-        svg.append(t);
+      const v = vals[i], h = Math.max(v ? 1.5 : 0, (v / peak) * plotH), x = i * slot + (slot - bw) / 2, y = padT + plotH - h;
+      if (h > 0) {
+        const r = Math.min(2, bw / 2, h);
+        const p = svg("path", { class: "col", tabindex: "0", d: `M${x},${y + r}a${r},${r} 0 0 1 ${r},${-r}h${bw - 2 * r}a${r},${r} 0 0 1 ${r},${r}v${h - r}h${-bw}Z` });
+        const show = (ev) => showTip(ev, [`${fmtInt(v)} entries`, `Week of ${fmtDate(k)}`]);
+        p.addEventListener("pointermove", show); p.addEventListener("focus", show);
+        p.addEventListener("pointerleave", hideTip); p.addEventListener("blur", hideTip);
+        s.append(p);
       }
+      const mo = k.slice(0, 7);
+      if (mo !== lastMonth) { lastMonth = mo; marks.push({ x: i * slot, d: new Date(k + "T00:00:00Z") }); }
     });
-    wrap.replaceChildren(svg);
-    const tbl = el("table", { class: "tv" }, el("thead", null, el("tr", null, el("th", { text: monthly ? "Month" : "Week of" }), el("th", { class: "num", text: "Actions" }))),
-      el("tbody", null, keys.map((k, i) => el("tr", null, el("td", { text: monthly ? k : fmtDate(k) }), el("td", { class: "num", text: fmtInt(values[i]) })))));
-    $("activity-table").replaceChildren(el("div", { class: "tv-wrap", style: "max-height: 220px; overflow: auto" }, tbl));
-  }
-  function roundedTop(x, y, w, h, r) {
-    if (h <= 0) return "";
-    if (r <= 0) return `M${x},${y}h${w}v${h}h${-w}Z`;
-    return `M${x},${y + r}a${r},${r} 0 0 1 ${r},${-r}h${w - 2 * r}a${r},${r} 0 0 1 ${r},${r}v${h - r}h${-w}Z`;
-  }
-  function niceTicks(max) {
-    const step = Math.pow(10, Math.floor(Math.log10(max || 1)));
-    const cands = [step, step * 2, step * 5, step * 10].find(s => max / s <= 5) || step;
-    const out = []; for (let t = 0; t <= max; t += cands) out.push(t);
-    return out.length > 1 ? out : [0, max];
+    // Month labels: every other month on wide screens, fewer on narrow ones, never
+    // closer than GAP pixels. The first label carries the year, as does each January.
+    const GAP = 46, every = W < 520 ? 3 : 2;
+    let cand = marks.filter((m, i) => i === 0 || m.d.getUTCMonth() % every === 0);
+    if (cand.length > 1 && cand[1].x - cand[0].x < GAP) cand = cand.slice(1);
+    let lastX = -Infinity;
+    cand.forEach((m, i) => {
+      if (m.x - lastX < GAP || m.x > W - 30) return;
+      lastX = m.x;
+      const t = svg("text", { x: m.x, y: H - 4 });
+      t.textContent = m.d.toLocaleDateString("en-US", { month: "short", year: i === 0 || m.d.getUTCMonth() === 0 ? "2-digit" : undefined, timeZone: "UTC" }).replace(" ", " ’");
+      s.append(t);
+    });
+    const pi = vals.indexOf(peak);
+    const pt = svg("text", { x: Math.min(W - 70, pi * slot + slot / 2 + 6), y: 11 }); pt.textContent = `Peak ${fmtInt(peak)}`; s.append(pt);
+    $("activity-chart").replaceChildren(s);
+    $("activity-table").replaceChildren(el("div", { class: "tv-wrap" }, el("table", { class: "tv" },
+      el("thead", null, el("tr", null, el("th", { text: "Week of" }), el("th", { class: "num", text: "Docket entries" }))),
+      el("tbody", null, keys.map((k, i) => el("tr", null, el("td", { text: fmtDate(k) }), el("td", { class: "num", text: fmtInt(vals[i]) })))))));
   }
 
   // ------------------------------------------------------------------ tooltip
@@ -425,222 +376,293 @@
     const tip = $("tip");
     tip.replaceChildren(el("b", { text: lines[0] }), ...lines.slice(1).map(l => el("div", { text: l })));
     tip.hidden = false;
-    let x = 12, y = 12;
-    if (ev && typeof ev.clientX === "number" && ev.clientX) { x = ev.clientX + 12; y = ev.clientY + 12; }
-    else if (ev && ev.target && ev.target.getBoundingClientRect) { const r = ev.target.getBoundingClientRect(); x = r.left; y = r.bottom + 6; }
-    const vw = window.innerWidth, vh = window.innerHeight;
-    tip.style.left = Math.min(x, vw - tip.offsetWidth - 8) + "px";
-    tip.style.top = Math.min(y, vh - tip.offsetHeight - 8) + "px";
+    let x, y;
+    if (ev && ev.clientX) { x = ev.clientX + 14; y = ev.clientY + 14; }
+    else { const r = ev.target.getBoundingClientRect(); x = r.left; y = r.bottom + 8; }
+    tip.style.left = Math.max(8, Math.min(x, window.innerWidth - tip.offsetWidth - 8)) + "px";
+    tip.style.top = Math.max(8, Math.min(y, window.innerHeight - tip.offsetHeight - 8)) + "px";
   }
   function hideTip() { $("tip").hidden = true; }
 
-  // ------------------------------------------------------------------ story leads
-  const LEAD_ORDER = ["upcoming_events", "recent_activity", "vetoes", "close_votes", "party_line_votes", "died_in_other_chamber", "parked", "effective_soon", "most_roll_calls", "top_prime_sponsors", "attendance", "party_breakers"];
+  // ------------------------------------------------------------------ leads
+  const LEADS = [
+    ["upcoming_events", "On the calendar"], ["recent_activity", "Moved lately"], ["vetoes", "Vetoes"],
+    ["close_votes", "Close votes"], ["party_line_votes", "Party-line votes"], ["died_in_other_chamber", "Died in the other chamber"],
+    ["effective_soon", "Taking effect"], ["parked", "Parked"], ["most_roll_calls", "Most contested"],
+    ["top_prime_sponsors", "Top filers"], ["attendance", "Missed votes"], ["party_breakers", "Broke with party"],
+  ];
   const NO_BILL = new Set(["top_prime_sponsors", "attendance", "party_breakers"]);
+  // What each lead list is, in plain words, for the public page. (The data file's own
+  // "why" notes are newsroom pitch lines and stay out of the page.) `n` is the length
+  // of the list, `lead.total` the full count before the pipeline capped the list.
+  const cut = (lead, n, what) => lead.total && lead.total > n ? ` The list shows the ${what} ${fmtInt(n)} of ${fmtInt(lead.total)}.` : "";
+  const PUBLIC_WHY = {
+    upcoming_events: () => "Committee sessions the docket lists from today forward, soonest first. Most are for bills sent to interim study.",
+    recent_activity: (lead, n) => "Bills with a docket entry in the last 45 days, newest first." + cut(lead, n, "latest"),
+    vetoes: () => "Every bill vetoed this session and what each chamber did next. An override needs two-thirds in both chambers.",
+    close_votes: (lead, n) => "Roll calls decided by 12 votes or fewer in the House, or 3 or fewer in the Senate, closest first." + cut(lead, n, "closest"),
+    party_line_votes: (lead, n) => "Roll calls where at least 60 percent of Republicans voted one way and at least 60 percent of Democrats voted the other, newest first." + cut(lead, n, "latest"),
+    died_in_other_chamber: () => "Bills that passed the chamber where they started, then were killed or parked in the other chamber.",
+    effective_soon: () => "Laws with an effective date from 30 days ago through the next 150 days, soonest first. One law can appear once for each date its sections take effect.",
+    parked: () => "Bills sent to interim study, retained, re-referred, or tabled, with no final vote on record.",
+    most_roll_calls: () => "The 30 bills with the most recorded roll calls.",
+    top_prime_sponsors: () => "The 30 legislators who were prime sponsor on the most bills, with how many became law and how many were killed. Select a name to see those bills.",
+    attendance: () => "The 40 members with the most roll calls marked \u201cnot voting, not excused,\u201d the General Court's own label, among members with at least 20 roll calls. A member marked absent on every vote may have resigned or the seat may have been vacant. Check the clerk's record before citing anyone.",
+    party_breakers: () => "The 40 members who most often voted against the majority of their own caucus, among members with at least 30 such votes. A caucus majority counts only when at least 60 percent of its members voted the same way.",
+  };
   function renderLeads() {
-    const leads = state.payload.story_leads || {};
-    const tabs = $("lead-tabs"); const list = $("lead-list");
-    const keys = LEAD_ORDER.filter(k => leads[k]);
-    if (!keys.length) { tabs.replaceChildren(); list.replaceChildren(el("li", { class: "empty", text: "No story leads in this dataset." })); return; }
-    if (!state.leadTab || !leads[state.leadTab]) state.leadTab = keys[0];
+    const leads = (state.payload && state.payload.story_leads) || {};
+    const keys = LEADS.filter(([k]) => leads[k]);
+    if (!keys.length) { $("leads").hidden = true; return; }
+    if (!state.leadTab || !leads[state.leadTab]) state.leadTab = keys[0][0];
     const inView = new Set(state.view.map(b => b.bill_id));
     const rowsOf = (k) => leadRows(k, leads[k]).filter(r => !r.bill || inView.has(r.bill.replace(/\s+/g, "")) || NO_BILL.has(k));
-    tabs.replaceChildren(...keys.map(k => {
-      const rows = rowsOf(k);
-      return el("button", { class: "tab", role: "tab", type: "button", "aria-selected": String(k === state.leadTab), onClick: () => { state.leadTab = k; renderLeads(); } },
-        leads[k].title, el("span", { class: "n", text: fmtInt(rows.length) }));
-    }));
+    const tabRow = $("lead-tabs"), keepX = tabRow.scrollLeft;
+    tabRow.replaceChildren(...keys.map(([k, label]) => el("button", {
+      class: "tab", role: "tab", type: "button", "aria-selected": String(k === state.leadTab),
+      onClick: () => { state.leadTab = k; state.leadAll = false; renderLeads(); postHeight(); },
+    }, label, el("span", { class: "n", text: fmtInt(rowsOf(k).length) }))));
+    tabRow.scrollLeft = keepX;
     const lead = leads[state.leadTab];
-    $("leads-why").textContent = lead.why || "";
+    const full = leadRows(state.leadTab, lead).length;
+    $("leads-why").textContent = PUBLIC_WHY[state.leadTab] ? PUBLIC_WHY[state.leadTab](lead, full) : (lead.why || "");
     const rows = rowsOf(state.leadTab);
-    if (!rows.length) { list.replaceChildren(el("li", { class: "empty", text: "Nothing in this category for the current filters." })); return; }
-    list.replaceChildren(...rows.slice(0, 120).map(r => el("li", null,
-      el("button", { type: "button", onClick: () => r.onClick ? r.onClick() : openBill(state.byLabel.get(r.bill.replace(/\s+/g, ""))) },
-        el("span", { class: "bill", text: r.left }),
-        el("span", { class: "t", text: r.title }),
-        el("span", { class: "d" }, ...r.detail)))));
+    const limit = state.leadAll ? 200 : 6;
+    const list = $("lead-list");
+    if (!rows.length) list.replaceChildren(el("li", null, el("p", { class: "empty", text: "Nothing here for the current search and filters." })));
+    else list.replaceChildren(...rows.slice(0, limit).map(r => el("li", null, el("button", { class: "lead", type: "button", onClick: r.onClick || (() => openByKey(r.bill.replace(/\s+/g, ""), true)) },
+      el("span", { class: "lead-key", text: r.left }), el("span", { class: "lead-title", text: cap(r.title) }), el("span", { class: "lead-meta" }, ...r.detail), el("span", { class: "chev", "aria-hidden": "true", text: "›" })))));
+    const more = $("lead-more");
+    more.hidden = rows.length <= 6;
+    more.textContent = state.leadAll ? "Show fewer" : `Show all ${fmtInt(Math.min(rows.length, 200))}`;
   }
   function leadRows(kind, lead) {
     const b = (x) => el("b", { text: x });
+    const who2 = (x) => `${x.name} (${x.party}${x.district ? ", " + (x.chamber === "Senate" ? "Dist. " : (x.county ? x.county + " " : "")) + x.district : ""})`;
     switch (kind) {
-      case "vetoes": return (lead.bills || []).map(x => {
-        const v = x.veto || {}; const hv = v.house ? `House ${v.house.vote} ${v.house.result}` : ""; const sv = v.senate ? `Senate ${v.senate.vote} ${v.senate.result}` : "";
-        return { bill: x.bill, left: x.bill, title: x.title, detail: [b(x.outcome), v.veto_date ? ` · vetoed ${fmtDate(v.veto_date)}` : "", hv ? ` · ${hv}` : "", sv ? ` · ${sv}` : ""] };
-      });
-      case "upcoming_events": return (lead.bills || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(`${fmtDate(x.next.date)} · ${x.next.kind}`), ` · ${x.next.text}`, ` · now: ${x.status}`] }));
-      case "party_line_votes": return (lead.votes || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(`${x.chamber} ${x.yeas}–${x.nays}`), ` · ${splitText(x.party_split)} · ${fmtDate(x.date)} · ${x.motion}`] }));
-      case "attendance": return (lead.legislators || []).map(x => ({ bill: null, left: `${x.not_voting} missed`, title: `${x.name} (${x.party}${x.district ? ", " + (x.chamber === "Senate" ? "Dist. " : (x.county ? x.county + " " : "")) + x.district : ""}) · ${x.chamber}`, detail: [b(`${x.not_voting_pct}% of ${x.roll_calls} roll calls not voting, not excused`), x.excused ? ` · ${x.excused} excused` : ""], onClick: () => searchFor(x.name) }));
-      case "party_breakers": return (lead.legislators || []).map(x => ({ bill: null, left: `${x.against_party_pct}%`, title: `${x.name} (${x.party}${x.district ? ", " + (x.chamber === "Senate" ? "Dist. " : (x.county ? x.county + " " : "")) + x.district : ""}) · ${x.chamber}`, detail: [b(`${x.against_party} of ${x.party_votes} votes against the caucus majority`)], onClick: () => searchFor(x.name) }));
-      case "close_votes": return (lead.votes || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(`${x.chamber} ${x.yeas}–${x.nays}`), ` (margin ${x.margin}) · ${splitText(x.party_split)} · ${fmtDate(x.date)} · ${x.motion} · now: ${x.status}`] }));
-      case "parked": return (lead.bills || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(x.how), ` · ${fmtDate(x.date)}`, x.committee ? ` · ${x.committee}` : ""] }));
-      case "effective_soon": return (lead.bills || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(`Effective ${fmtDate(x.effective)}`), x.chapter ? ` · Chapter ${x.chapter}` : ""] }));
-      case "most_roll_calls": return (lead.bills || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(`${x.roll_calls} roll calls`), ` · ${x.status}`] }));
-      case "died_in_other_chamber": return (lead.bills || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(`Passed ${x.origin}, ${x.how.toLowerCase()} in ${x.died_in}`), ` · ${fmtDate(x.date)}`] }));
+      case "upcoming_events": return (lead.bills || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(`${fmtDate(x.next.date)} · ${x.next.kind}`), ` · now in ${x.status.toLowerCase()}`] }));
       case "recent_activity": return (lead.bills || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(fmtDate(x.date)), ` · ${x.last_action}`] }));
+      case "vetoes": return (lead.bills || []).map(x => {
+        const v = x.veto || {}; const bits = [];
+        if (v.house) bits.push(`House ${v.house.result === "overridden" ? "overrode" : "sustained"} ${v.house.vote}`);
+        if (v.senate) bits.push(`Senate ${v.senate.result === "overridden" ? "overrode" : "sustained"} ${v.senate.vote}`);
+        return { bill: x.bill, left: x.bill, title: x.title, detail: [b(x.outcome.startsWith("Vetoed; override succeeded") ? "Became law over the veto" : x.outcome.includes("sustained") ? "Veto stood" : "Vetoed"), v.veto_date ? ` · vetoed ${fmtDate(v.veto_date)}` : "", bits.length ? ` · ${bits.join(", ")}` : ""] };
+      });
+      case "close_votes": return (lead.votes || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(`${x.chamber} ${x.yeas}–${x.nays}`), ` on ${x.motion.toLowerCase()} · ${fmtDate(x.date)}`, splitText(x.party_split) ? ` · ${splitText(x.party_split)}` : ""] }));
+      case "party_line_votes": return (lead.votes || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(`${x.chamber} ${x.yeas}–${x.nays}`), ` · ${splitText(x.party_split)} · ${fmtDate(x.date)}`] }));
+      case "died_in_other_chamber": return (lead.bills || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(`Passed the ${x.origin}`), `, ${x.how.toLowerCase()} in the ${x.died_in} · ${fmtDate(x.date)}`] }));
+      case "effective_soon": return (lead.bills || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(`Takes effect ${fmtDate(x.effective)}`), x.chapter ? ` · Chapter ${x.chapter}` : ""] }));
+      case "parked": return (lead.bills || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(x.how), ` · ${fmtDate(x.date)}`, x.committee ? ` · ${x.committee}` : ""] }));
+      case "most_roll_calls": return (lead.bills || []).map(x => ({ bill: x.bill, left: x.bill, title: x.title, detail: [b(`${x.roll_calls} roll calls`), ` · ${x.status}`] }));
       case "top_prime_sponsors": return (lead.sponsors || []).map(x => ({ bill: null, left: `${x.bills} bills`, title: `${x.name}${x.party ? " (" + x.party + ")" : ""}`, detail: [b(`${x.laws} became law`), ` · ${x.killed} killed`], onClick: () => searchFor(x.name) }));
+      case "attendance": return (lead.legislators || []).map(x => ({ bill: null, left: `${x.not_voting} of ${x.roll_calls}`, title: `${who2(x)}, ${x.chamber}`, detail: [b(`${x.not_voting_pct}% of roll calls marked “not voting, not excused”`), x.excused ? ` · ${x.excused} excused` : ""], onClick: () => searchFor(x.name) }));
+      case "party_breakers": return (lead.legislators || []).map(x => ({ bill: null, left: `${x.against_party_pct}%`, title: `${who2(x)}, ${x.chamber}`, detail: [b(`${x.against_party} of ${x.party_votes} votes`), " against the caucus majority"], onClick: () => searchFor(x.name) }));
       default: return [];
     }
   }
-  function searchFor(text) { $("f-q").value = text; state.filters.q = text; state.shown = PAGE; apply(); window.scrollTo({ top: $("table-section").offsetTop - 120, behavior: "smooth" }); }
-  function splitText(ps) {
-    if (!ps) return "";
-    return ["R", "D", "I"].filter(p => ps[p]).map(p => `${p} ${ps[p].yea}–${ps[p].nay}`).join(", ");
+  function splitText(ps) { return ps ? ["R", "D", "I"].filter(p => ps[p]).map(p => `${p} ${ps[p].yea}–${ps[p].nay}`).join(", ") : ""; }
+  function searchFor(text) { $("f-q").value = text; state.filters.q = text; state.filters.group = ""; resetPaging(); apply(); reveal($("finder")); }
+
+  // ------------------------------------------------------------------ chips
+  function renderChips() {
+    const base = state.bills.filter(b => matches(b, state.filters, true));
+    const c = groupCounts(base);
+    const chip = (key, label, n) => el("button", { class: "chip", type: "button", "aria-pressed": String(state.filters.group === key), onClick: () => { state.filters.group = key; resetPaging(); apply(); } },
+      key ? el("i", { class: `k-${key}`, "aria-hidden": "true" }) : null, label, el("span", { class: "n", text: fmtInt(n) }));
+    $("chips").replaceChildren(chip("", "All", base.length), ...GROUPS.map(g => chip(g.key, g.label, c[g.key])));
   }
 
-  // ------------------------------------------------------------------ table
-  function renderTable() {
-    const body = $("bills-body");
-    const rows = state.view.slice(0, state.shown);
-    body.replaceChildren(...rows.map(b => el("tr", null,
-      el("td", { class: "bill" }, el("button", { type: "button", text: b.bill_label || b.lsr_id, onClick: (e) => { state.lastFocus = e.currentTarget; openBill(b); } })),
-      el("td", { class: "title" }, b.title || el("span", { class: "muted", text: "(title not in the current data dump)" }), b.subject ? el("span", { class: "subj", text: b.subject }) : null),
-      el("td", { text: b.prime_sponsor || "" }),
-      el("td", { text: b.committee || "" }),
-      el("td", null, pill(b)),
-      el("td", { class: "last" }, el("time", { datetime: b.last_action_date, text: fmtDate(b.last_action_date) }), b.last_action, (b.next_events || []).length ? el("span", { class: "next", text: `Next: ${fmtDate(b.next_events[0].date)} ${b.next_events[0].kind}` }) : null),
-      el("td", { class: "num", text: b.n_roll_calls ? fmtInt(b.n_roll_calls) : "" }),
-      el("td", { class: "num", text: b.closest_margin === null || b.closest_margin === undefined ? "" : fmtInt(b.closest_margin) }),
-    )));
-    $("table-title").textContent = `${state.session} bills`;
-    const more = $("more");
-    more.replaceChildren();
-    if (state.view.length > state.shown) more.append(el("button", { class: "btn", type: "button", text: `Show ${fmtInt(Math.min(PAGE, state.view.length - state.shown))} more (${fmtInt(state.view.length - state.shown)} remaining)`, onClick: () => { state.shown += PAGE; renderTable(); } }));
-  }
-  function pill(b) { return el("span", { class: `pill g-${b.group}`, title: b.status_label }, el("i", { "aria-hidden": "true" }), b.status_label); }
-
-  // ------------------------------------------------------------------ drawer
-  function openBill(b) {
-    if (!b) return;
-    const d = $("drawer");
-    const hooks = hooksFor(b);
-    const lawBadge = b.chapter ? el("span", { class: "badge", text: `Chapter ${b.chapter}` }) : null;
-    const eff = (b.effective_dates || []).length ? el("span", { class: "badge", text: `Effective ${b.effective_dates.map(fmtDate).join(", ")}` }) : null;
-    d.replaceChildren(
-      el("div", { class: "drawer-head" },
-        el("div", null, el("div", { class: "id", text: `${b.bill_label || "No bill number"} · LSR ${b.lsr_id} · ${b.session} session` })),
-        el("button", { class: "btn small", type: "button", id: "drawer-close", text: "Close", onClick: () => closeDrawer(true) })),
-      el("h2", { id: "drawer-title", text: b.title || "(title not in the current data dump)" }),
-      b.title_note ? el("div", { class: "why", text: `Title note from the General Court: ${b.title_note}` }) : null,
-      el("div", { class: "badges" }, el("span", { class: "badge", text: b.bill_type }), el("span", { class: "badge", text: `${b.origin_chamber} bill` }), pill(b), lawBadge, eff,
-        b.subject ? el("span", { class: "badge", text: `Subject: ${b.subject}${b.subject_code && b.subject !== b.subject_code ? " (" + b.subject_code + ")" : ""}` }) : null,
-        b.bipartisan ? el("span", { class: "badge", text: "Bipartisan sponsors" }) : null,
-        b.status === "unknown" ? el("span", { class: "badge warn", text: "No final action recorded; read the docket" }) : null),
-      el("dl", { class: "kv" },
-          kv("Prime sponsor", b.prime_sponsor ? `${b.prime_sponsor}${b.prime_party ? " (" + b.prime_party + ")" : ""}` : "not in data"),
-          kv("Committees", [...(b.committees && b.committees.house || []).map(c => "House: " + c), ...(b.committees && b.committees.senate || []).map(c => "Senate: " + c)].join(" · ") || (b.committee || "not found")),
-          kv("Decisive action", (b.status_detail && b.status_detail.decisive_action) || b.last_action || ""),
-          kv("First action", fmtDate(b.first_action_date)),
-          kv("Last action", `${fmtDate(b.last_action_date)} · ${b.last_action}`),
-          kv("Status codes", b.status_codes && (b.status_codes.general || b.status_codes.house || b.status_codes.senate) ? `general ${b.status_codes.general || "–"} · House ${b.status_codes.house || "–"} · Senate ${b.status_codes.senate || "–"} (General Court codes, undocumented)` : "not in data"),
-          kv("Beats", (b.beats || []).join(", ") || "none matched")),
-      (b.next_events || []).length ? section("Scheduled from today forward", el("ol", { class: "docket" }, b.next_events.map(e => el("li", null, el("time", { datetime: e.date, text: fmtDate(e.date) }), el("span", { class: "ch", text: e.kind }), el("span", { class: "tx", text: e.text }))))) : null,
-      vetoSection(b),
-      section("Sponsors", (b.sponsors || []).length ? el("div", { class: "sponsors" }, b.sponsors.map(s => el("span", { class: `sp${s.primary ? " prime" : ""}`, text: `${s.primary ? "Prime · " : ""}${who(s)}` }))) : el("div", { class: "empty", text: "No sponsor rows in the data dump for this LSR." })),
-      section(`Docket (${fmtInt((b.actions || []).length)} actions)`, (b.actions || []).length ? el("ol", { class: "docket" }, b.actions.map(a => el("li", null, el("time", { datetime: a.date, text: fmtDate(a.date) }), el("span", { class: "ch", text: a.chamber }), el("span", { class: "tx", text: a.text })))) : el("div", { class: "empty", text: "No docket actions recorded." })),
-      section(`Roll calls (${fmtInt((b.roll_calls || []).length)})`, (b.roll_calls || []).length ? el("div", null, b.roll_calls.map(rollCall)) : el("div", { class: "empty", text: "No recorded roll calls. Voice and division votes are not in the roll-call file." })),
-      section("Everything on the web about this bill", linkHub(b)),
-      hooks.length ? section("Why this bill is in the story leads", el("ul", { class: "hooks" }, hooks.map(h => el("li", { text: h })))) : null,
-      el("div", { class: "note", text: "Outcome labels are rule-based readings of the docket text; the \"decisive action\" line above is the docket entry the label came from. Confirm against the docket and the bill page before publishing." }),
-      el("div", { style: "margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap" },
-        el("button", { class: "btn small", type: "button", text: "Copy link to this bill", onClick: copyLink }),
-        el("button", { class: "btn small", type: "button", text: "Copy citation", onClick: (e) => copyText(e, `${b.bill_label}, ${b.title} (${b.session} N.H. General Court), ${b.status_label.toLowerCase()}; last docket action ${fmtDate(b.last_action_date)}: ${b.last_action}. Source: gc.nh.gov bill status.`) })),
-    );
-    $("scrim").hidden = false; d.hidden = false;
-    if (b.bill_id && location.hash !== "#" + b.bill_id) { try { history.replaceState(null, "", "#" + b.bill_id); } catch { /* srcdoc frames refuse */ } }
-    if (b.bill_id && window.parent !== window) { try { window.parent.postMessage({ nhbt: "hash", hash: "#" + b.bill_id }, "*"); } catch { /* ignore */ } }
-    document.body.style.overflow = "hidden";
-    $("drawer-close").focus();
-  }
-  function closeDrawer(clearHash) {
-    const d = $("drawer");
-    if (d.hidden) return;
-    d.hidden = true; $("scrim").hidden = true; document.body.style.overflow = "";
-    if (clearHash && location.hash) { try { history.replaceState(null, "", location.pathname + location.search); } catch { /* srcdoc frames refuse */ } }
-    if (clearHash && window.parent !== window) { try { window.parent.postMessage({ nhbt: "hash", hash: "" }, "*"); } catch { /* ignore */ } }
-    if (state.lastFocus) { try { state.lastFocus.focus(); } catch { /* gone */ } }
-  }
-  function kv(k, v) { return [el("dt", { text: k }), el("dd", { text: v })]; }
-  function vetoSection(b) {
-    const v = b.status_detail && b.status_detail.veto;
-    if (!v) return null;
-    const rows = [];
-    rows.push(el("li", null, el("time", { datetime: v.veto_date, text: fmtDate(v.veto_date) }), el("span", { class: "ch", text: "Governor" }), el("span", { class: "tx", text: "Vetoed" })));
-    for (const side of ["house", "senate"]) {
-      const r = v[side]; if (!r) continue;
-      rows.push(el("li", null, el("time", { datetime: r.date, text: fmtDate(r.date) }), el("span", { class: "ch", text: side === "house" ? "House" : "Senate" }), el("span", { class: "tx", text: `Veto ${r.result}${r.vote ? " · roll call " + r.vote : ""}` })));
+  // ------------------------------------------------------------------ list
+  const sponsorOf = (s) => {
+    const r = (state.roster && state.roster[s.id]) || {};
+    const party = s.party || r.party || "";
+    const title = r.body === "S" ? "Sen." : r.body === "H" ? "Rep." : "";
+    const place = r.district ? (r.body === "S" ? `District ${r.district}` : `${r.county ? r.county + " " : ""}${r.district}`) : "";
+    return { name: `${title ? title + " " : ""}${s.name}`, tag: [party, place].filter(Boolean).join(", ") };
+  };
+  function renderList() {
+    const f = state.filters, total = state.bills.length, n = state.view.length;
+    const bits = [f.group ? GROUP_LABEL[f.group].toLowerCase() : "", f.q ? `matching “${f.q}”` : ""].filter(Boolean);
+    $("count").replaceChildren(el("b", { text: fmtInt(n) }), n === total ? ` bills` : ` of ${fmtInt(total)} bills`, bits.length ? ` · ${bits.join(", ")}` : "");
+    const list = $("bill-list");
+    if (!n) {
+      list.replaceChildren(el("li", null, el("p", { class: "empty", text: "No bills match. Try fewer words, or clear the filters." })));
+      $("more").replaceChildren();
+      return;
     }
-    return section("Veto record", el("ol", { class: "docket" }, rows), el("div", { class: "why", text: "An override needs two-thirds in both chambers. A veto overridden in one chamber and sustained in the other stands." }));
+    list.replaceChildren(...state.view.slice(0, state.shown).map(billRow));
+    const left = n - state.shown;
+    $("more").replaceChildren(left > 0 ? el("button", { class: "btn", type: "button", onClick: () => { state.shown += PAGE; renderList(); postHeight(); } }, `Show ${fmtInt(Math.min(PAGE, left))} more`, el("span", { style: "font-weight:400;opacity:.75", text: ` of ${fmtInt(left)} left` })) : "");
   }
-  function section(title, ...children) { return el("section", null, el("h3", { text: title }), ...children); }
+  function billRow(b) {
+    const k = billKey(b), open = state.openKey === k;
+    const prime = (b.sponsors || []).find(s => s.primary) || (b.sponsors || [])[0];
+    const sp = prime ? sponsorOf(prime) : null;
+    const meta = [sp ? `${sp.name}${sp.tag ? " (" + sp.tag + ")" : ""}` : "", b.committee || ""].filter(Boolean).join(" · ");
+    const head = el("button", { class: "bill-head", type: "button", "aria-expanded": String(open), "aria-controls": "d-" + k, onClick: () => toggleBill(b) },
+      el("span", { class: "bill-id" }, b.bill_label || b.lsr_id, el("small", { text: b.origin_chamber === "Senate" ? "Senate" : b.origin_chamber === "House" ? "House" : "" })),
+      el("span", { class: "bill-main" }, el("span", { class: "bill-title", text: cap(b.title) || "(title not in the current data)" }), meta ? el("span", { class: "bill-meta", text: meta }) : null),
+      el("span", { class: "bill-status" }, pill(b), b.last_action_date ? el("span", { class: "when", text: fmtDate(b.last_action_date) }) : null));
+    const li = el("li", { class: `bill${open ? " open" : ""}`, id: "bill-" + k }, head);
+    if (open) li.append(detail(b));
+    return li;
+  }
+  function pill(b) { return el("span", { class: `pill g-${b.group}`, title: b.status_label }, el("i", { "aria-hidden": "true" }), SHORT[b.status] || b.status_label); }
+  function toggleBill(b) {
+    const k = billKey(b);
+    state.openKey = state.openKey === k ? null : k;
+    renderList();
+    setHash(state.openKey ? "#" + k : "");
+    postHeight();
+    if (state.openKey) {
+      const li = $("bill-" + k);
+      const r = li && li.getBoundingClientRect();
+      if (EMBED || (r && (r.top < 0 || r.top > window.innerHeight * .6))) reveal(li);
+    }
+  }
+  function openByKey(k, scroll) {
+    const b = state.byKey.get(k);
+    if (!b) return;
+    let idx = state.view.indexOf(b);
+    if (idx < 0) {
+      state.filters = { q: b.bill_label || b.bill_id, chamber: "", group: "", beat: "", subject: "", sort: state.filters.sort, rc: false };
+      $("f-q").value = state.filters.q; $("f-chamber").value = ""; $("f-beat").value = ""; $("f-subject").value = ""; $("f-rc").checked = false;
+      state.view = state.bills.filter(x => matches(x, state.filters, false)); sortView();
+      idx = state.view.indexOf(b);
+    }
+    if (idx >= state.shown) state.shown = idx + 1;
+    state.openKey = k;
+    renderFigurePressed(); renderChips(); renderLeads(); renderList();
+    setHash("#" + k);
+    postHeight();
+    if (scroll) requestAnimationFrame(() => reveal($("bill-" + k)));
+  }
+
+  // ------------------------------------------------------------------ detail
+  function detail(b) {
+    const d = el("div", { class: "detail", id: "d-" + billKey(b) });
+    d.append(el("div", { class: "d-status" }, pill(b), el("span", { class: "d-status-text", text: b.status_label }),
+      b.last_action_date ? el("span", { class: "d-status-when", text: `as of ${fmtDate(b.last_action_date)}` }) : null));
+    const veto = b.status_detail && b.status_detail.veto;
+    if (veto) {
+      const steps = [el("li", { class: "no", text: `Vetoed ${fmtDate(veto.veto_date)}` })];
+      for (const side of ["house", "senate"]) {
+        const r = veto[side]; if (!r) continue;
+        steps.push(el("li", { class: r.result === "overridden" ? "ok" : "no", text: `${side === "house" ? "House" : "Senate"} ${r.result === "overridden" ? "overrode" : "sustained"}${r.vote ? " " + r.vote.replace("-", "–") : ""}, ${fmtDate(r.date)}` }));
+      }
+      d.append(el("div", { class: "d-callout" }, el("b", { text: "Veto record. " }), "An override needs two-thirds in both chambers.", el("ul", { class: "steps" }, steps)));
+    }
+    if (b.chapter || (b.effective_dates || []).length) {
+      d.append(el("div", { class: "d-callout" }, b.chapter ? el("b", { text: `Chapter ${b.chapter}. ` }) : null,
+        (b.effective_dates || []).length ? `Takes effect ${b.effective_dates.map(x => fmtDate(x)).join("; ")}.` + (b.effective_dates.length > 1 ? " Different sections start on different dates; read the chaptered text." : "") : ""));
+    }
+    if ((b.next_events || []).length) {
+      const e = b.next_events[0];
+      d.append(el("div", { class: "d-callout" }, el("b", { text: `Scheduled ${fmtDate(e.date)}. ` }), e.text));
+    }
+    // The docket file sometimes stops at a committee report while the bill table
+    // records later floor action. Say so instead of implying the bill is pending.
+    if (b.group === "process") {
+      const dts = b.dates || {};
+      const floor = [["House", dts.house_last_floor], ["Senate", dts.senate_last_floor]].filter(([, x]) => x && x > (b.last_action_date || "")).sort((a, z) => (a[1] < z[1] ? 1 : -1))[0];
+      d.append(el("div", { class: "d-callout" }, el("b", { text: "No final action in the docket file. " }),
+        floor ? `The General Court's bill table records ${floor[0]} floor action on ${fmtDate(floor[1])}, after the last docket entry here, but not what happened. ` : "",
+        b.doc_id ? "Check the official bill page before describing this bill as pending." : "Check the docket on gc.nh.gov before describing this bill as pending."));
+    }
+    const links = buildLinks(b);
+    const primary = links.filter(l => l.primary);
+    d.append(el("div", { class: "d-actions" }, primary.map((l, i) => el("a", { class: `btn small${i === 0 ? " solid" : ""}`, href: l.url, target: "_blank", rel: "noopener", text: l.label })),
+      el("button", { class: "btn small", type: "button", text: "Copy link", onClick: copyLink })));
+
+    const sp = b.sponsors || [];
+    const primes = sp.filter(s => s.primary), cos = sp.filter(s => !s.primary);
+    const nameOf = (s) => { const x = sponsorOf(s); return `${x.name}${x.tag ? " (" + x.tag + ")" : ""}`; };
+    const coNode = cos.length ? cosponsorNode(cos, nameOf) : "None listed";
+    const committees = [...((b.committees && b.committees.house) || []).map(c => "House " + c), ...((b.committees && b.committees.senate) || []).map(c => "Senate " + c)].join(", ") || b.committee || "Not in the data";
+    const facts = [
+      ["Prime sponsor", primes.length ? primes.map(nameOf).join("; ") : "Not in the data"],
+      ["Cosponsors", coNode],
+      ["Committees", committees],
+      ["Subject", b.subject ? `${b.subject}${b.subject_code && b.subject !== b.subject_code ? " (" + b.subject_code + ")" : ""}` : ""],
+      ["Filed as", `${b.bill_type} · LSR ${b.lsr_id}`],
+      ["First action", fmtDate(b.first_action_date)],
+    ].filter(([, v]) => v);
+    d.append(el("dl", { class: "d-grid" }, facts.map(([k, v]) => [el("dt", { text: k }), el("dd", null, v)])));
+
+    const acts = b.actions || [];
+    if (acts.length) {
+      const tl = el("ol", { class: "timeline" });
+      const decisive = b.status_detail && b.status_detail.decisive_action;
+      const fill = (all) => {
+        const rows = all ? acts : acts.slice(-6);
+        tl.replaceChildren(...rows.map(a => el("li", { class: a.text === decisive || /vetoed|signed by|chapter \d+|enacted in accordance/i.test(a.text) ? "key" : "" },
+          el("time", { datetime: a.date, text: fmtDate(a.date) }), el("span", { class: "ch", text: a.chamber }), el("span", { class: "tx", text: a.text }))));
+      };
+      fill(false);
+      const toggle = acts.length > 6 ? el("button", { class: "text-btn", type: "button", style: "margin-top:8px", text: `Show all ${acts.length} docket entries` }) : null;
+      if (toggle) toggle.addEventListener("click", () => { const all = toggle.dataset.all !== "1"; toggle.dataset.all = all ? "1" : ""; fill(all); toggle.textContent = all ? "Show the latest six" : `Show all ${acts.length} docket entries`; postHeight(); });
+      d.append(el("h3", { class: "d-h", text: acts.length > 6 ? `Docket · latest of ${acts.length}` : "Docket" }), tl, toggle);
+    }
+    if ((b.roll_calls || []).length) d.append(el("h3", { class: "d-h", text: `Recorded votes · ${b.roll_calls.length}` }), ...b.roll_calls.map(rollCall));
+    else d.append(el("h3", { class: "d-h", text: "Recorded votes" }), el("p", { class: "empty", style: "padding:0", text: "No roll call on record. Voice and division votes are not recorded by name." }));
+
+    const other = links.filter(l => !l.primary);
+    d.append(el("h3", { class: "d-h", text: "Elsewhere" }), el("div", { class: "elsewhere" }, other.map(l => el("a", { href: l.url, target: "_blank", rel: "noopener", text: l.label }))));
+    const decisive = (b.status_detail && b.status_detail.decisive_action) || b.last_action;
+    d.append(el("div", { class: "d-foot" },
+      el("span", null, "Outcome read from the docket entry ", el("q", { text: decisive }), ". Check the docket before quoting."),
+      el("button", { class: "text-btn", type: "button", text: "Copy citation", onClick: (e) => copyText(e, `${b.bill_label}, ${cap(b.title)} (${b.session} N.H. General Court), ${b.status_label.toLowerCase()}; last docket action ${fmtDate(b.last_action_date)}: ${b.last_action}. Source: gc.nh.gov bill status.`) })));
+    return d;
+  }
+  function cosponsorNode(cos, nameOf) {
+    const span = el("span", { class: "sponsor-list" });
+    const fill = (all) => {
+      const names = cos.map(nameOf);
+      span.replaceChildren(all || names.length <= 6 ? names.join("; ") : names.slice(0, 6).join("; ") + "; ");
+      if (!all && names.length > 6) span.append(el("button", { class: "text-btn", type: "button", text: `and ${names.length - 6} more`, onClick: () => { fill(true); postHeight(); } }));
+    };
+    fill(false);
+    return span;
+  }
   function rollCall(v) {
-    const total = (v.yeas || 0) + (v.nays || 0);
     const margin = Math.abs((v.yeas || 0) - (v.nays || 0));
-    const close = total && margin <= (v.body === "S" ? 3 : 12);
-    return el("div", { class: `rc${close ? " close" : ""}` },
-      el("div", { class: "rc-head" }, el("span", null, el("b", { text: `${v.chamber} roll call #${v.vote_num}` }), ` · ${fmtDate(v.date)}`), close ? el("span", { class: "badge warn", text: `Close vote: margin ${margin}` }) : null),
-      el("div", { class: "motion", text: v.motion }),
-      v.party_split && Object.keys(v.party_split).length ? el("div", { class: "motion", text: `By party: ${splitText(v.party_split)}${v.party_line ? " · party-line vote" : ""}` }) : null,
-      el("div", { class: "tally", role: "img", "aria-label": `${v.yeas} yeas, ${v.nays} nays` }, el("div", { class: "y", style: `flex: ${v.yeas || 0} ${v.yeas || 0} 0` }), el("div", { class: "n", style: `flex: ${v.nays || 0} ${v.nays || 0} 0` })),
-      el("div", { class: "nums" }, el("span", null, el("b", { text: fmtInt(v.yeas) }), " yeas"), el("span", null, el("b", { text: fmtInt(v.nays) }), " nays"), v.not_voting ? el("span", null, el("b", { text: fmtInt(v.not_voting) }), " not voting") : null, v.excused ? el("span", null, el("b", { text: fmtInt(v.excused) }), " excused") : null));
+    const close = (v.yeas + v.nays) && margin <= (v.body === "S" ? 3 : 12);
+    const split = splitText(v.party_split);
+    return el("div", { class: "rc" },
+      el("div", { class: "rc-top" }, el("span", null, el("b", { text: `${v.chamber} · ${fmtDate(v.date)}` }), ` · ${v.motion}`), close ? el("span", { class: "rc-close", text: `Decided by ${margin}` }) : null),
+      el("div", { class: "tally", role: "img", "aria-label": `${v.yeas} yea, ${v.nays} nay` }, el("div", { class: "y", style: `flex:${v.yeas || 0} ${v.yeas || 0} 0` }), el("div", { class: "n", style: `flex:${v.nays || 0} ${v.nays || 0} 0` })),
+      el("div", { class: "rc-nums" }, el("span", { class: "ky" }, el("b", { text: fmtInt(v.yeas) }), " yea"), el("span", { class: "kn" }, el("b", { text: fmtInt(v.nays) }), " nay"),
+        v.not_voting ? el("span", { text: `${fmtInt(v.not_voting)} not voting` }) : null, v.excused ? el("span", { text: `${fmtInt(v.excused)} excused` }) : null,
+        split ? el("span", { text: `By party: ${split}${v.party_line ? " (party line)" : ""}` }) : null));
   }
-  // Every link is a documented URL pattern filled with the bill's identifiers (see docs/METHODOLOGY.md).
+  // Documented URL patterns filled with the bill's own identifiers (docs/METHODOLOGY.md).
   function buildLinks(b) {
     const s = b.session, bid = b.bill_id, label = b.bill_label || b.lsr_id;
     const q = encodeURIComponent(`"${label}" New Hampshire`), q2 = encodeURIComponent(label);
     const L = [];
     if (b.doc_id) {
-      L.push({ kind: "official", label: "Bill status page (gc.nh.gov)", url: `https://gc.nh.gov/bill_Status/billinfo.aspx?id=${b.doc_id}&inflect=2` });
-      L.push({ kind: "official", label: "Bill text, current version (PDF)", url: `https://gc.nh.gov/bill_Status/pdf.aspx?id=${b.doc_id}&q=billVersion` });
-      L.push({ kind: "official", label: "Bill text (HTML, legacy viewer)", url: `https://gc.nh.gov/bill_status/legacy/bs2016/billText.aspx?sy=${s}&id=${b.doc_id}&txtFormat=html` });
+      L.push({ primary: true, label: "Read the bill (PDF)", url: `https://gc.nh.gov/bill_Status/pdf.aspx?id=${b.doc_id}&q=billVersion` });
+      L.push({ primary: true, label: "Official bill page", url: `https://gc.nh.gov/bill_Status/billinfo.aspx?id=${b.doc_id}&inflect=2` });
     }
-    L.push({ kind: "official", label: "Docket (legacy viewer)", url: `https://gc.nh.gov/bill_status/legacy/bs2016/bill_docket.aspx?lsr=${encodeURIComponent(b.lsr)}&sy=${s}&sortoption=&txtsessionyear=${s}` });
-    L.push({ kind: "official", label: "Bill status search (gc.nh.gov)", url: "https://gc.nh.gov/bill_Status/advanced.aspx" });
-    L.push({ kind: "official", label: "Governor's newsroom (veto messages, signings)", url: "https://www.governor.nh.gov/news-and-media" });
-    if (bid) {
-      L.push({ kind: "trackers", label: "LegiScan", url: `https://legiscan.com/NH/bill/${bid}/${s}` });
-      L.push({ kind: "trackers", label: "Plural (Open States)", url: `https://open.pluralpolicy.com/nh/bills/${s}/${bid}/` });
-    }
-    L.push({ kind: "news", label: "Google News search", url: `https://news.google.com/search?q=${q}` });
-    L.push({ kind: "news", label: "Google web search", url: `https://www.google.com/search?q=${q}` });
-    L.push({ kind: "news", label: "DuckDuckGo search", url: `https://duckduckgo.com/?q=${q}` });
-    L.push({ kind: "news", label: "New Hampshire Bulletin search", url: `https://newhampshirebulletin.com/?s=${q2}` });
-    L.push({ kind: "news", label: "InDepthNH search", url: `https://indepthnh.org/?s=${q2}` });
-    L.push({ kind: "news", label: "NHPR search", url: `https://www.nhpr.org/search?q=${q2}` });
-    L.push({ kind: "news", label: "Granite State Report search", url: `https://granitestatereport.com/?s=${q2}` });
+    L.push({ primary: true, label: "Docket", url: `https://gc.nh.gov/bill_status/legacy/bs2016/bill_docket.aspx?lsr=${encodeURIComponent(b.lsr)}&sy=${s}&sortoption=&txtsessionyear=${s}` });
+    if (b.doc_id) L.push({ label: "Bill text (HTML)", url: `https://gc.nh.gov/bill_status/legacy/bs2016/billText.aspx?sy=${s}&id=${b.doc_id}&txtFormat=html` });
+    if (bid) { L.push({ label: "LegiScan", url: `https://legiscan.com/NH/bill/${bid}/${s}` }); L.push({ label: "Plural", url: `https://open.pluralpolicy.com/nh/bills/${s}/${bid}/` }); }
+    L.push({ label: "Governor's newsroom", url: "https://www.governor.nh.gov/news-and-media" });
+    L.push({ label: "Google News", url: `https://news.google.com/search?q=${q}` });
+    L.push({ label: "New Hampshire Bulletin", url: `https://newhampshirebulletin.com/?s=${q2}` });
+    L.push({ label: "InDepthNH", url: `https://indepthnh.org/?s=${q2}` });
+    L.push({ label: "NHPR", url: `https://www.nhpr.org/search?q=${q2}` });
+    L.push({ label: "Granite State Report", url: `https://granitestatereport.com/?s=${q2}` });
     return L;
   }
-  function linkHub(b) {
-    const kinds = [["official", "Official record (gc.nh.gov and the Governor)"], ["trackers", "Bill trackers"], ["news", "News and web searches"]];
-    const wrap = el("div", { class: "links" });
-    const links = buildLinks(b);
-    kinds.forEach(([k, title]) => {
-      const ls = links.filter(l => l.kind === k);
-      if (!ls.length) return;
-      wrap.append(el("h4", { text: title }), ...ls.map(l => el("a", { href: l.url, target: "_blank", rel: "noopener", text: l.label })));
-    });
-    if (!b.doc_id) wrap.append(el("div", { class: "why", style: "grid-column: 1 / -1", text: "No bill-page document id in the dump for this LSR (common for bills carried over from the prior year). The docket link works from the LSR number." }));
-    return wrap;
-  }
-  function hooksFor(b) {
-    const leads = state.payload.story_leads || {}; const out = [];
-    const id = b.bill_label;
-    for (const k of LEAD_ORDER) {
-      const L = leads[k]; if (!L) continue;
-      const arr = L.bills || L.votes || [];
-      const hits = arr.filter(x => x.bill === id);
-      if (hits.length) out.push(`${L.title}: ${L.why}`);
-    }
-    return out;
-  }
   function copyLink(e) {
-    // When embedded, a <meta name="canonical-base"> names the public page the link should point at.
     const canon = document.querySelector('meta[name="canonical-base"]');
     const base = canon && canon.content ? canon.content : location.origin + location.pathname + location.search;
-    copyText(e, base + location.hash);
+    copyText(e, base + (state.openKey ? "#" + state.openKey : ""));
   }
   function copyText(e, text) {
-    const btn = e.currentTarget; const old = btn.textContent;
-    const done = (ok) => { btn.textContent = ok ? "Copied" : "Select and copy: " + text; setTimeout(() => (btn.textContent = old), ok ? 1500 : 6000); };
+    const btn = e.currentTarget, old = btn.textContent;
+    const done = (ok) => { btn.textContent = ok ? "Copied" : "Copy failed; select the text"; setTimeout(() => (btn.textContent = old), 1800); };
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(() => done(true), () => done(false));
     else done(false);
   }
