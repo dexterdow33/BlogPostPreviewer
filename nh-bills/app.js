@@ -186,8 +186,13 @@
     note.hidden = !state.payload.session_note;
     note.textContent = state.payload.session_note || "";
     $("glance-h").textContent = `The ${state.session} session at a glance`;
-    $("stamp").textContent = `Data from the New Hampshire General Court, refreshed ${fmtStamp(state.payload.generated_at)}.`;
-    const src = $("src-note"); if (src) src.textContent = `This copy was built ${fmtStamp(state.payload.generated_at)}.`;
+    // Show when the General Court's files were pulled, not when this copy was
+    // rebuilt: a daytime rebuild reads files saved at the last nightly pull.
+    const pulled = state.payload.fetched_at || (state.index && state.index.fetched_at);
+    $("stamp").textContent = pulled
+      ? `Data pulled from the New Hampshire General Court ${fmtStamp(pulled)}.`
+      : `Data from the New Hampshire General Court's last nightly pull. This copy was built ${fmtStamp(state.payload.generated_at)}.`;
+    const src = $("src-note"); if (src) src.textContent = `This copy was built ${fmtStamp(state.payload.generated_at)}${pulled ? ` from files pulled ${fmtStamp(pulled)}` : ""}.`;
     $("loading").hidden = true;
     ["summary", "figures", "outcome-bar", "activity"].forEach(id => ($(id).hidden = false));
     $("leads").hidden = false; $("finder").hidden = false;
