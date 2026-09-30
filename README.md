@@ -25,6 +25,8 @@ is early morning Eastern. The General Court asks automated clients to use the
 site outside 6 a.m. to 9 p.m. Eastern, and the schedule respects that. The
 workflow commits the refreshed `data/` files and, on the default branch,
 publishes the site to GitHub Pages. It can also be run from the Actions tab.
+Runs started by a push or pull request during the day rebuild from the last
+saved raw files instead of fetching.
 
 ### Run it yourself
 

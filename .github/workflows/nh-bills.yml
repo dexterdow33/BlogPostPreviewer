@@ -15,6 +15,10 @@ on:
         description: "Session years to build (comma-separated)"
         default: "2025,2026,2027"
         required: false
+      force_fetch:
+        description: "Fetch from gc.nh.gov even during the day (use sparingly)"
+        default: "false"
+        required: false
   push:
     branches: ["master"]
     paths:
@@ -57,7 +61,18 @@ jobs:
           python-version: "3.12"
 
       - name: Build dataset
-        run: python scripts/fetch_nh_bills.py --sessions "${{ github.event.inputs.sessions || '2025,2026,2027' }}" --out data
+        # The General Court asks automated clients to stay off the site between
+        # 6 a.m. and 9 p.m. Eastern. Scheduled runs fetch (they are timed for the
+        # off-hours window). A run started by a push or a pull request during the
+        # day rebuilds from the last saved raw files instead of fetching.
+        run: |
+          HOUR=$(TZ=America/New_York date +%H)
+          MODE=""
+          if [ "${{ github.event_name }}" != "schedule" ] && [ "${{ github.event.inputs.force_fetch || 'false' }}" != "true" ] && [ "$HOUR" -ge 6 ] && [ "$HOUR" -lt 21 ]; then
+            MODE="--offline"
+            echo "Daytime Eastern ($HOUR h): rebuilding from data/raw without fetching."
+          fi
+          python scripts/fetch_nh_bills.py --sessions "${{ github.event.inputs.sessions || '2025,2026,2027' }}" --out data $MODE
 
       - name: Summarize
         if: always()

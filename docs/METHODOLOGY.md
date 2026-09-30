@@ -62,9 +62,12 @@ and has no titles or sponsors; the page says so on a banner.
 ## Courtesy to the source
 
 The General Court asks automated clients to stay off the site between
-6 a.m. and 9 p.m. Eastern. The refresh runs at 07:35 UTC (03:35 EDT / 02:35
-EST), fetches each file once, and identifies itself with a User-Agent
-naming this repository.
+6 a.m. and 9 p.m. Eastern. The scheduled refresh runs at 07:35 UTC (03:35
+EDT / 02:35 EST), fetches each file once, and identifies itself with a
+User-Agent naming this repository. A run started by a push or pull request
+during the day does not fetch; it rebuilds from the last saved raw files
+(`--offline`). A manual run can force a daytime fetch with the
+`force_fetch` input; use that sparingly.
 
 ## Outcome classification
 
