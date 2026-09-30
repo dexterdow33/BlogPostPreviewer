@@ -1,19 +1,14 @@
 # NH dynamicdatadump discovery report
 
-Generated 2026-09-30T03:54:44+00:00
+Generated 2026-09-30T14:46:54+00:00 (offline rebuild from data/raw)
 
-## Directory index
-
-- /house/aboutthehouse/houseRules.pdf
-- /misc/ADAnotice3.pdf
-- /misc/General%20Court%20Harassment%20Policy%20and%20Addendum-1%202020.pdf
-- /misc/State House Complex Public Conduct Policy 2023.pdf
+_Offline rebuild: files read from data/raw._
 
 ## LSRs.txt
 
 one row per legislative service request / bill in the current session
 
-- bytes: 437,215; rows: 1,387; sha256: 6b43d51aa069f9d4
+- bytes: 435,828; rows: 1,387; sha256: fac11ebc896b8548
 - field-count histogram: 39: 1387
 
 
@@ -105,7 +100,7 @@ one row per legislative service request / bill in the current session
 
 sponsor rows with bill-page document id and title
 
-- bytes: 1,018,041; rows: 7,039; sha256: 0e63dedad3246f01
+- bytes: 1,010,937; rows: 7,039; sha256: 3cb6cd7c3a33b4a6
 - field-count histogram: 8: 6963, 1: 76
 
 
@@ -135,7 +130,7 @@ sponsor rows with bill-page document id and title
 
 docket actions (one row per action)
 
-- bytes: 3,225,523; rows: 25,352; sha256: 47437a09c1e5a5c0
+- bytes: 3,200,171; rows: 25,352; sha256: d15ecb40c6bec852
 - field-count histogram: 7: 25352
 
 
@@ -163,7 +158,7 @@ docket actions (one row per action)
 
 sponsors in sequence, with prime flag
 
-- bytes: 173,911; rows: 8,571; sha256: 7da63ad21aafdd6d
+- bytes: 165,340; rows: 8,571; sha256: e9d228409d6c9487
 - field-count histogram: 5: 8571
 
 
@@ -187,7 +182,7 @@ sponsors in sequence, with prime flag
 
 legislator roster
 
-- bytes: 43,365; rows: 406; sha256: 9e46896e084f45ae
+- bytes: 42,959; rows: 406; sha256: 4e60e5be8c425e91
 - field-count histogram: 15: 406
 
 
@@ -231,7 +226,7 @@ legislator roster
 
 roll-call tallies
 
-- bytes: 69,132; rows: 419; sha256: 20c2d8199341dc25
+- bytes: 68,713; rows: 419; sha256: 6917b2611045f174
 - field-count histogram: 15: 419
 
 
@@ -275,7 +270,7 @@ roll-call tallies
 
 per-legislator roll-call votes
 
-- bytes: 4,974,372; rows: 131,199; sha256: bd4a5f68107b9e03
+- bytes: 4,843,173; rows: 131,199; sha256: 9aafbda262373e8d
 - field-count histogram: 8: 131199
 
 
@@ -305,7 +300,7 @@ per-legislator roll-call votes
 
 committee codes and names
 
-- bytes: 2,521; rows: 55; sha256: 732dc6ef24153ec9
+- bytes: 2,466; rows: 55; sha256: dba3b08bf1374fa4
 - field-count histogram: 3: 55
 
 
