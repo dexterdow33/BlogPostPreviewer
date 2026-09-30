@@ -1,6 +1,6 @@
 # NH dynamicdatadump discovery report
 
-Generated 2026-09-30T14:46:54+00:00 (offline rebuild from data/raw)
+Generated 2026-09-30T14:56:53+00:00 (offline rebuild from data/raw)
 
 _Offline rebuild: files read from data/raw._
 
