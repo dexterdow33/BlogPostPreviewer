@@ -120,6 +120,15 @@
     const hashBill = billFromHash();
     if (hashBill) openBill(hashBill);
     window.addEventListener("hashchange", () => { const b = billFromHash(); if (b) openBill(b); else closeDrawer(false); });
+    // Embedded in another page (an iframe): the parent sends its own #hash so deep links still open a bill,
+    // and this frame reports the open bill back so the parent can update its address bar.
+    window.addEventListener("message", (ev) => {
+      const d = ev.data || {};
+      if (d.nhbt !== "open" || typeof d.hash !== "string") return;
+      const m = /^#([A-Za-z]{2,4}\d{1,5})$/.exec(d.hash);
+      if (m) { const b = state.byLabel.get(m[1].toUpperCase()); if (b) openBill(b); }
+    });
+    if (window.parent !== window) { try { window.parent.postMessage({ nhbt: "ready" }, "*"); } catch { /* ignore */ } }
   }
 
   function billFromHash() {
@@ -537,7 +546,8 @@
         el("button", { class: "btn small", type: "button", text: "Copy citation", onClick: (e) => copyText(e, `${b.bill_label}, ${b.title} (${b.session} N.H. General Court), ${b.status_label.toLowerCase()}; last docket action ${fmtDate(b.last_action_date)}: ${b.last_action}. Source: gc.nh.gov bill status.`) })),
     );
     $("scrim").hidden = false; d.hidden = false;
-    if (b.bill_id && location.hash !== "#" + b.bill_id) history.replaceState(null, "", "#" + b.bill_id);
+    if (b.bill_id && location.hash !== "#" + b.bill_id) { try { history.replaceState(null, "", "#" + b.bill_id); } catch { /* srcdoc frames refuse */ } }
+    if (b.bill_id && window.parent !== window) { try { window.parent.postMessage({ nhbt: "hash", hash: "#" + b.bill_id }, "*"); } catch { /* ignore */ } }
     document.body.style.overflow = "hidden";
     $("drawer-close").focus();
   }
@@ -545,7 +555,8 @@
     const d = $("drawer");
     if (d.hidden) return;
     d.hidden = true; $("scrim").hidden = true; document.body.style.overflow = "";
-    if (clearHash && location.hash) history.replaceState(null, "", location.pathname + location.search);
+    if (clearHash && location.hash) { try { history.replaceState(null, "", location.pathname + location.search); } catch { /* srcdoc frames refuse */ } }
+    if (clearHash && window.parent !== window) { try { window.parent.postMessage({ nhbt: "hash", hash: "" }, "*"); } catch { /* ignore */ } }
     if (state.lastFocus) { try { state.lastFocus.focus(); } catch { /* gone */ } }
   }
   function kv(k, v) { return [el("dt", { text: k }), el("dd", { text: v })]; }
@@ -621,7 +632,12 @@
     }
     return out;
   }
-  function copyLink(e) { copyText(e, location.origin + location.pathname + location.search + location.hash); }
+  function copyLink(e) {
+    // When embedded, a <meta name="canonical-base"> names the public page the link should point at.
+    const canon = document.querySelector('meta[name="canonical-base"]');
+    const base = canon && canon.content ? canon.content : location.origin + location.pathname + location.search;
+    copyText(e, base + location.hash);
+  }
   function copyText(e, text) {
     const btn = e.currentTarget; const old = btn.textContent;
     const done = (ok) => { btn.textContent = ok ? "Copied" : "Select and copy: " + text; setTimeout(() => (btn.textContent = old), ok ? 1500 : 6000); };
