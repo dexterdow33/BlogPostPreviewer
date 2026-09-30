@@ -5,7 +5,8 @@
 
    Embedded on granitestatereport.com in an <iframe srcdoc>, the page reports
    its height to the host (so the iframe grows and the host page scrolls),
-   asks the host to scroll when a bill opens, and trades #hash deep links. */
+   asks the host to scroll when a bill opens, and trades #hash deep links. The
+   host's "hello" asks for the current height and readiness again. */
 (() => {
   "use strict";
 
@@ -100,6 +101,15 @@
     if (Math.abs(h - lastH) > 1) { lastH = h; try { parent.postMessage({ nhbt: "height", h }, "*"); } catch { /* ignore */ } }
   }
   if (EMBED && "ResizeObserver" in window) new ResizeObserver(postHeight).observe(document.body);
+  // Handshake: on a heavy host page the tracker can finish drawing before the
+  // host's listener exists, so the host says "hello" once it listens and the
+  // tracker answers with its current height and, once booted, "ready".
+  let booted = false;
+  if (EMBED) window.addEventListener("message", (ev) => {
+    if (ev.source !== parent || !ev.data || ev.data.nhbt !== "hello") return;
+    lastH = 0; postHeight();
+    if (booted) { try { parent.postMessage({ nhbt: "ready" }, "*"); } catch { /* ignore */ } }
+  });
   function reveal(node) {
     if (!node) return;
     const y = node.getBoundingClientRect().top + window.scrollY;
@@ -146,6 +156,7 @@
       const d = ev.data || {};
       if (d.nhbt === "open" && typeof d.hash === "string") { const k = keyFromHash(d.hash); if (k) openByKey(k, true); }
     });
+    booted = true;
     if (EMBED) { try { parent.postMessage({ nhbt: "ready" }, "*"); } catch { /* ignore */ } }
   }
   const keyFromHash = (h) => { const m = /^#([A-Za-z]{2,5}\d{1,5})$/.exec(h || ""); return m ? m[1].toUpperCase() : null; };
@@ -415,7 +426,10 @@
     const keys = LEADS.filter(([k]) => leads[k]);
     if (!keys.length) { $("leads").hidden = true; return; }
     if (!state.leadTab || !leads[state.leadTab]) state.leadTab = keys[0][0];
-    const inView = new Set(state.view.map(b => b.bill_id));
+    // Leads follow the outcome, chamber, and topic filters but not the search box,
+    // so opening a bill from a lead (which searches for it) keeps the lead list.
+    const noText = { ...state.filters, q: "" };
+    const inView = new Set(state.bills.filter(b => matches(b, noText, false)).map(b => b.bill_id));
     const rowsOf = (k) => leadRows(k, leads[k]).filter(r => !r.bill || inView.has(r.bill.replace(/\s+/g, "")) || NO_BILL.has(k));
     const tabRow = $("lead-tabs"), keepX = tabRow.scrollLeft;
     tabRow.replaceChildren(...keys.map(([k, label]) => el("button", {
@@ -429,7 +443,7 @@
     const rows = rowsOf(state.leadTab);
     const limit = state.leadAll ? 200 : 6;
     const list = $("lead-list");
-    if (!rows.length) list.replaceChildren(el("li", null, el("p", { class: "empty", text: "Nothing here for the current search and filters." })));
+    if (!rows.length) list.replaceChildren(el("li", null, el("p", { class: "empty", text: "Nothing here for the current filters." })));
     else list.replaceChildren(...rows.slice(0, limit).map(r => el("li", null, el("button", { class: "lead", type: "button", onClick: r.onClick || (() => openByKey(r.bill.replace(/\s+/g, ""), true)) },
       el("span", { class: "lead-key", text: r.left }), el("span", { class: "lead-title", text: cap(r.title) }), el("span", { class: "lead-meta" }, ...r.detail), el("span", { class: "chev", "aria-hidden": "true", text: "›" })))));
     const more = $("lead-more");
@@ -524,7 +538,9 @@
     const b = state.byKey.get(k);
     if (!b) return;
     let idx = state.view.indexOf(b);
-    if (idx < 0) {
+    // A bill outside the rows on screen is shown by searching for its number,
+    // not by drawing every row above it (HB 2026 would mean 800 rows).
+    if (idx < 0 || idx >= state.shown) {
       state.filters = { q: b.bill_label || b.bill_id, chamber: "", group: "", beat: "", subject: "", sort: state.filters.sort, rc: false };
       $("f-q").value = state.filters.q; $("f-chamber").value = ""; $("f-beat").value = ""; $("f-subject").value = ""; $("f-rc").checked = false;
       state.view = state.bills.filter(x => matches(x, state.filters, false)); sortView();
