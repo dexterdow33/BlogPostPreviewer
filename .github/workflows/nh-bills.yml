@@ -109,10 +109,31 @@ jobs:
           git push origin HEAD:"$BRANCH"
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
-  deploy:
-    name: Publish to GitHub Pages
+  pages-check:
+    name: Is GitHub Pages enabled?
     needs: refresh
     if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    outputs:
+      enabled: ${{ steps.check.outputs.enabled }}
+    steps:
+      - id: check
+        # The workflow token cannot turn Pages on (that is a one-time click under
+        # Settings > Pages > Source: GitHub Actions). Until then, skip the deploy
+        # instead of failing the nightly refresh.
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh api "repos/${{ github.repository }}/pages" --silent 2>/dev/null; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"; echo "GitHub Pages is enabled; deploying."
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"; echo "::warning::GitHub Pages is not enabled for this repository. Enable it once under Settings > Pages > Source: GitHub Actions and the next run will deploy."
+          fi
+
+  deploy:
+    name: Publish to GitHub Pages
+    needs: pages-check
+    if: needs.pages-check.outputs.enabled == 'true'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -122,8 +143,6 @@ jobs:
         with:
           ref: ${{ github.ref_name }}
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
