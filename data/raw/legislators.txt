@@ -1,0 +1,406 @@
+11332|Mannion|Tim|E|H|3084|6|1|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Tim.Mannion@gc.nh.gov
+11461|Reardon|Tara||S||7|15|D||||NH||Tara.Reardon@gc.nh.gov
+11460|McGough|Tim||S||6|11|R|107 North Main Street|State House, Room 105-A|Concord|NH|03301|Tim.McGough@gc.nh.gov
+11462|Sullivan|Victoria||S||6|18|R||||NH||victoria.sullivan@gc.nh.gov
+11463|Long|Pat||S||6|20|D|25 Capitol Street|State House Annex, Room 239F|Concord|NH|03301|pat.long@gc.nh.gov
+11459|McConkey|Mark||S||2|3|R|107 North Main Street|State House, Room 107|Concord|NH|03301|mark.mcconkey@gc.nh.gov
+11458|Rochefort|David||S||5|1|R||||NH||david.rochefort@gc.nh.gov
+903|Prudhomme-O'Brien|Katherine|J.|H|2040|8|13|R|State House–House Member Mail|107 North Main Street|Concord|NH|03301|kpo@gc.nh.gov
+678|Bixby|Peter|W|H|4077|9|13|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Peter.Bixby@gc.nh.gov
+502|Boehm|Ralph|G|H|2055|6|38|R|6 Gibson Drive||Litchfield|NH|03052-2301|rgboehm@comcast.net
+679|Booras|Efstathia|S|H|5035|6|8|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Efstathia.Booras@gc.nh.gov
+523|Buco|Thomas|L|H|4095|2|1|D|PO Box 3149||Conway|NH|03818-3149|Tom.Buco@gc.nh.gov
+687|Cahill|Michael|D|H|3097|8|10|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Michael.Cahill@gc.nh.gov
+427|Cloutier|John|R|H|4053|10|6|D|164 Broad St., Apt. #3| |Claremont|NH|03743-2644|jocloutier@comcast.net
+694|Crawford|Karel|A.|H|3066|2|3|R|PO Box 825||Center Harbor|NH|03226-0825|karel.crawford@gc.nh.gov
+423|Daniels|Gary|L.|H|2007|6|43|R|127 Whitten Road| |Milford|NH|03055-3228|Gary.Daniels@gc.nh.gov
+570|DeSimone|Debra|L|H|1001|8|18|R|11 Providence Hill Road||Atkinson|NH|03811-2328|debra.desimone@gc.nh.gov
+698|DiSilvestro|Linda|A.|H|4093|6|17|D|145 Fox Hollow Way||Manchester|NH|03104-6406|Linda.Disilvestro@gc.nh.gov
+700|Ebel|Karen|E|H|4005|7|7|D|PO Box 714||New London|NH|03257-0714|Karen.Ebel@gc.nh.gov
+623|Flanagan|Jack|B.|H|1034|6|45|R|PO Box 201||Brookline|NH|03033-0201|Jack.Flanagan@gc.nh.gov
+736|Khan|Aboul|B|H|3014|8|30|R|7 Halls Way||Seabrook|NH|03874-4590|Aboul.Khan@gc.nh.gov
+582|Ladd|Rick|M|H|2014|5|5|R|399 Dartmouth College Hwy||Haverhill|NH|03765|rick.ladd@gc.nh.gov
+450|Leishman|Peter|R|H|5037|6|33|D|39 Birch Road| |Peterborough|NH|03458-1900|prleishman@aol.com
+635|Lundgren|David|C|H|3065|8|16|R|21 King John Drive||Londonderry|NH|03053-2839|Qtipnh@aol.com
+440|MacKay|James|R|H|4023|7|18|D|139 North State Street| |Concord|NH|03301-6431|james.mackay@mygait.com
+742|Malloy|Dennis|J|H|5006|8|24|D|10 Van Etten Drive||Greenland|NH|03840-2182|dennis.malloy@gc.nh.gov
+584|McGuire|Carol|M|H|2031|7|27|R|700 Suncook Valley Highway||Epsom|NH|03234-4333|mcguire4house@gmail.com
+637|McGuire|Dan||H|3006|7|14|R|700 Suncook Valley Hwy||Epsom|NH|03234-4333|Dan.McGuire@gc.nh.gov
+489|McMahon|Charles|E|H|2079|8|17|R|11 Floral Street||Windham|NH|03087-1024|cmcmahon55@gmail.com
+752|Milz|David|E|H|1018|8|13|R|12R Bonnie Lane||Derry|NH|03038-4008|david.milz@gc.nh.gov
+755|Muns|Chris||H|4011|8|29|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Chris.Muns@gc.nh.gov
+639|Notter|Jeanine|M|H|1003|6|12|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|jeanine.notter@gc.nh.gov
+779|Sweeney|Joe||H|2002|8|25|R|PO Box 266||Salem|NH|03079-0266|Joe.Sweeney@gc.nh.gov
+781|Sykes|George|E|H|4052|5|14|D|3 Avon Avenue||Lebanon|NH|03766-2601|George.Sykes@gc.nh.gov
+426|Sytek|John|J|H|2033|8|25|R|34 Town Village Drive| |Salem|NH|03079-3288|john.sytek@gc.nh.gov
+520|Ulery|Jordan|G.|H|3004|6|13|R|PO Box 15||Hudson|NH|03051-0015|repulery@comcast.net
+415|Wall|Janet|G|H|4022|9|11|D|9 Kelley Road| |Madbury|NH|03823-7634|janet.wall@gc.nh.gov
+411|Wallner|Mary Jane||H|4014|7|19|D|24 Samuel Drive| |Concord|NH|03301-3051|mjwallner@gc.nh.gov
+791|Walsh|Thomas|C|H|1042|7|10|R|15 Berry Hill Road||Hooksett|NH|03106-2201|Thomas.Walsh@gc.nh.gov
+792|Ward|Gerald|W.R.|H|4038|8|27|D|16 Nixon Park||Portsmouth|NH|03801-5728|ward4staterep@gmail.com
+531|Weber|Lucy|McVitty|H|4003|3|5|D|217 Old Keene Road||Walpole|NH|03608-4845|Lucy.weber@gc.nh.gov
+422|Weyler|Kenneth|L|H|3007|8|14|R|23 Scotland Road| |Kingston|NH|03848-3232|kweyler@aol.com
+806|Aldrich|Glen|C|H|2080|1|6|R|343 Old Lakeshore Road Lot 43||Gilford|NH|03249-6598|Glennaldrich@proton.me
+836|Ammon|Keith|Michael|H|2003|6|42|R|P.O. Box 38||New Boston|NH|03070-0038|Keith.Ammon@gc.nh.gov
+974|Burton|Wayne|M.|H|4061|9|10|D|106 Madbury Road| |Durham|NH|03824-2012|Wayne.Burton@gc.nh.gov
+859|McLean|Mark||H|2034|6|15|R|43 Forest Hill Way||Manchester|NH|03109-5145|mark.mclean@gc.nh.gov
+968|Ohm|Bill|H|H|1032|6|10|R|18 Mountain Laurels Drive, Unit 403||Nashua|NH|03062-4206|Bill.Ohm@gc.nh.gov
+902|Potucek|John|Michael|H|1010|8|13|R|18 Sunset Avenue||Derry|NH|03038-4244|John.Potucek@gc.nh.gov
+918|Southworth|Thomas|L|H|4076|9|11|D|56 Durham Road, Unit 26||Dover|NH|03820-4471|Thomas.Southworth@gc.nh.gov
+907|Thomas|Douglas|W.|H|3041|8|16|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|doug.thomasnh@gmail.com
+920|Turcotte|Len|P|H|2065|9|4|R|143 Beauty Hill Road||Barrington|NH|03825-5523|lenturcotte@metrocast.net
+814|Varney|Peter|R. |H|2022|1|7|R|PO Box 1059||Alton|NH|03809-1059|pvarney@atsnh.com
+9406|Rosenwald|Cindy||S||6|13|D||||NH||Cindy.Rosenwald@gc.nh.gov
+662|Warden|Mark||H|2097|6|39|R|215 Laxson Avenue||Manchester|NH|3103-3939|Mark.Warden@gc.nh.gov
+904|Simpson|Alexis|H|H|4001|8|33|D|20 Main Street||Exeter|NH|03833-2438|Alexis.Simpson@gc.nh.gov
+8392|Edwards|Jess||H|2099|8|31|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|jess.edwards@gc.nh.gov
+8299|Fedolfi|Jim|L|H|1002|6|30|R|21 Bradford Circle||Hillsborough|NH|03244-4864|jfedolfi@comcast.net
+926|Birdsell|Regina||S||8|19|R||||NH||Regina.Birdsell@gc.nh.gov
+35|Carson|Sharon|M.|S||8|14|R|107 North Main Street|State House, Room 302|Concord|NH|03301|Sharon.Carson@gc.nh.gov
+1056|Edgar|Michael|A|H|4054|8|29|D|7 Ann's Terrace||Hampton|NH|03842-1231|Michael.Edgar@gc.nh.gov
+815|Avellani|Lino|M|H|2043|2|4|R||P.O. Box 516|Sanbornville|NH|03872-0516|lino.avellani@gc.nh.gov
+8739|Gray|James|P.|S||9|6|R|107 North Main Street|State House, Room 105|Concord|NH|03301|James.Gray@gc.nh.gov
+8747|Innis|Daniel|E.|S||1|7|R||||NH||Daniel.Innis@gc.nh.gov
+8749|Pearson|Mark|A|H|1009|8|34|R|23 Faith Drive||Hampstead|NH|03841-2370|Mark.Pearson@gc.nh.gov
+43|Watters|David|H.|S||9|4|D|25 Capitol Street|State House Annex, Room 228|Concord|NH|03301|David.Watters@gc.nh.gov
+445|Almy|Susan|W|H|5005|5|17|D|266 Poverty Lane 4B||Lebanon|NH|03766-2730|susan.almy@comcast.net
+669|Ames|Dick||H|5020|3|13|D|12 Blackberry Lane||Jaffrey|NH|03452-5100|amesinjaffrey@gmail.com
+932|Proulx|Mark|L|H|3092|6|15|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Mark.Proulx@gc.nh.gov
+676|Berch|Paul|S.|H|3103|3|6|D|956 River Road||Westmoreland|NH|03467-4408|Paul.Berch@gc.nh.gov
+8331|Lascelles|Richard|W.|H|2096|6|14|R|236 Charles Bancroft Highway||Litchfield|NH|03052-2309|richard.lascelles@gc.nh.gov
+8351|Scully|Kevin|J|H|1014|6|8|R|State House - House Member Mail|107 North Main Street|Concord|NH|03301|Kevin.Scully@gc.nh.gov
+8564|Richards|Beth|S.|H|3055|7|17|D|3 Willard Street||Concord|NH|03303-3509|bethrichardsforward3@gmail.com
+8537|Newman|Sue|A|H|5025|6|4|D|25 Charlotte Avenue||Nashua|NH|03064-1552|sue.newman@gc.nh.gov
+7144|Moffett|Michael|I|H|2023|7|4|R|144 Greenview Drive||Loudon|NH|03307-1145|michael.moffett@gc.nh.gov
+8516|MacKenzie|Mark|S|H|4088|6|40|D|319 West Erie Street||Manchester|NH|03102-5058|Mark.MacKenzie@gc.nh.gov
+9839|Prentiss|Suzanne|M.|S||5|5|D|25 Capitol Street|State House Annex, Room 236|Concord|NH|03301|Suzanne.Prentiss@gc.nh.gov
+9866|Terry|Paul|A|H|1012|1|7|R|915 Stockbridge Corner Road||Alton|NH|03809-5053|Paul.Terry@gc.nh.gov
+9867|Trottier|Douglas|R.|H|3116|1|8|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|douglastrottier1@gmail.com
+9869|Smith|Jonathan|H|H|2066|2|5|R|State House–House Member Mail|107 North Main Street|Concord|NH|03304|Jonathan.Smith@gc.nh.gov
+9156|Lane|Connie|Boyles|H|4041|7|16|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Connie.Lane@gc.nh.gov
+9167|Woods|Gary|L|H|3073|7|30|D|97 1/2 Warren Street||Concord|NH|03301-2933|Gary.Woods@gc.nh.gov
+8407|Love|David|C|H|2091|8|13|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|David.Love@gc.nh.gov
+9210|Vallone|Mark|A|H|5015|8|5|D|252 Blake Road||Epping|NH|03042-3003|Mark.Vallone@gc.nh.gov
+9226|Meuse|David|James|H|4066|8|37|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|David.Meuse@gc.nh.gov
+9165|Alexander|Joe|H.|H|2100|6|29|R|3 Oakwood Lane, Unit 1||Goffstown|NH|03045-2597|Joe.Alexander@gc.nh.gov
+9871|McAleer|Chris|R|H|3034|2|2|D|PO Box 74||Jackson|NH|03846-0074|Chris.McAleer@gc.nh.gov
+9873|Fox|Dru||H|4050|3|2|D|50 Eastview Road||Keene|NH|03431-4903|Dru.Fox@gc.nh.gov
+9874|Parshall|Lucius||H|5023|3|8|D|81 Stone Pond Road||Marlborough|NH|03455-2609|Lucius.Parshall@gc.nh.gov
+9878|Rhodes|Jennifer|M|H|3003|3|17|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Jennifer.Rhodes@gc.nh.gov
+9887|Berezhny|Lex||H|2011|5|11|R|55 Bullocks Crossing Road||Grafton|NH|03240-3002|Lex.Berezhny@gc.nh.gov
+9889|Hakken-Phillips|Mary|A|H|5002|5|12|D|79 Lebanon Street||Hanover|NH|03755-2509|Mary.HakkenPhillips@gc.nh.gov
+9951|MacDonald|Wayne|D.|H|3008|8|16|R|11 Dickey Street||Londonderry|NH|03038-2207|elephantsmarching@msn.com
+9890|Muirhead|Russell||H|4040|5|12|D|11 Lyme Road||Hanover|NH|03755-1406|Russell.Muirhead@gc.nh.gov
+9895|Kofalt|Jim|A|H|2101|6|32|R|46 Celts Way||Wilton|NH|03086-5968|Jim.Kofalt@gc.nh.gov  
+9898|Gorski|Ted||H|1041|6|2|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|ted.gorski@gc.nh.gov
+5772|Mooney|Maureen|C.|H|2098|6|12|R|PO Box 1676||Merrimack|NH|03054-1676|maureen.mooney@gc.nh.gov
+9905|Veilleux|Daniel|T.|H|4051|6|34|D|7 Colonel Wilkins Road||Amherst|NH|03031-3060|Daniel.Veilleux@gc.nh.gov
+9907|Sheehan|Vanessa|L|H|1040|6|43|R|70 Amherst Street||Milford|NH|03055-4012|vanessa@vanessa4nh.com
+9910|Pauer|Diane||H|2077|6|36|R|State House–House Member Mail|107 North Main Street|Concord|NH|03301|Diane.Pauer@gc.nh.gov
+9919|Berry|Ross||H|3119|6|44|R|119 Buzzell Hill Road||Weare|NH|03281-4602|Ross.Berry@gc.nh.gov
+9920|Andrus|Louise||H|2094|7|5|R|406 Raccoon Hill Road||Salisbury|NH|03268-5409|Louise.Andrus@gc.nh.gov
+9926|Gallager|Eric|B|H|3075|7|20|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|eric.gallager@gc.nh.gov
+9928|Pitaro|Matthew||H|2049|7|11|R|7 Swiftwater Drive #1||Allenstown|NH|03275-1839|Matthew.Pitaro@gc.nh.gov
+9936|Soti|Julius|F|H|2021|8|35|R|State House–House Member Mail|107 North Main Street|Concord|NH|03301|rep.jsoti@gmail.com
+9940|Litchfield|Melissa|A.|H|3117|8|32|R|46 Eleanor's Way||Brentwood|NH|03833-6005|Melissa.Litchfield@gc.nh.gov
+9942|Paige|Mark||H|4008|8|11|D|State House–House Member Mail|107 North Main Street|Concord|NH|03301|mark.paige@gc.nh.gov
+9946|Bailey|Glenn||H|2020|9|2|R|156 Park Place||Milton|NH|03851-4736|grbailey@metrocast.net
+10998|Plamondon|Marc|W|H|4085|6|3|D|78 Elm Street||Nashua|NH|03060-6468|marc.plamondon@gc.nh.gov
+8479|Harvey|Cathryn|A|H|3077|3|6|D|PO Box 414||Spofford|NH|03462-0414|Cathryn.Harvey@gc.nh.gov
+771|Schamberg|Thomas|C|H|5011|7|6|D|10 Clarke Road||Wilmot|NH|03287-4400|Tom.Schamberg@gc.nh.gov
+9860|Ploszaj|Tom||H|3060|1|1|R|137 Daniel Webster Highway||Center Harbor|NH|03226-3210|tom.ploszaj@gc.nh.gov
+10347|Boyd|Bill||H|2010|6|12|R|139 Joppa Road||Merrimack|NH|03054-3109|Bill.Boyd@gc.nh.gov
+10352|Hall|Muriel|C|H|5033|7|9|D|4 Cob Road||Bow|NH|03304-4411|Muriel.Hall@gc.nh.gov
+10440|Nelson|Jodi|L|H|2032|8|13|R|7 Nutmeadow Lane||Derry|NH|03038-5618|jodi.nelson@gc.nh.gov
+10748|Germana|Nicholas|A|H|4004|3|15|D|206 Baker Street||Keene|NH|03431-4340|Nicholas.Germana@gc.nh.gov
+10799|Murray|Alissandra||H|4020|6|20|D|166 Rosedale Avenue||Manchester|NH|03103-6437|Alissandra.Murray@gc.nh.gov
+10670|Aylward|Deborah||H|1005|7|5|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Deborah.Aylward@gc.nh.gov
+10702|Ball|Lorie||H|3085|8|25|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Lorie.Ball@gc.nh.gov
+10578|Belcher|Mike|S|H|3047|2|4|R|7 Heath Road||Wakefield|NH|03872-4110|Mike.Belcher@gc.nh.gov
+10765|Bolton|Bill|R|H|5041|5|8|D|167 Reservoir Road||Plymouth|NH|03264-3414|Bill.Bolton@gc.nh.gov
+10609|Ouellet|Mike||H|3025|4|3|R|PO Box 92||Colebrook|NH|03576-0092|Mike.Ouellet@gc.nh.gov
+10906|Palmer|William|S|H|3074|10|2|D|80 Littell Road||Cornish|NH|03745-4215|William.Palmer@gc.nh.gov
+10832|Sargent|Gregory|M|H|4072|7|7|D|209 Squires Lane||New London|NH|03257-5847|Gregory.Sargent@gc.nh.gov
+10887|de Vries|Erica|R|H|4049|8|29|D|39 Esker Road||Hampton|NH|03842-2348|Erica.deVries@gc.nh.gov
+4998|Gilmore|Gary|R|H|4084|9|16|D|39 Middle Road||Dover|NH|03820-4168|gilmoregary256@gmail.com
+10030|Nalevanko|Rich|M|H|2070|3|9|R|473 Hill Road||Alstead|NH|03602-3241|Rich.Nalevanko@gc.nh.gov
+10037|Karasinski|Sly||H|2086|3|10|R|27 Park Street||North Swanzey|NH|03431-4431|Sly.Karasinski@gc.nh.gov
+10612|Korzen|Lori|E|H|2088|4|7|R|788 Kent Street||Berlin|NH|03570-3618|Lori.Korzen@gc.nh.gov
+9416|Erf|Keith||H|3089|6|28|R|PO Box 338||Weare|NH|03281-0338|Keith.Erf@gc.nh.gov
+9089|Murphy|Nancy|A|H|4090|6|12|D|20 Brenda Lane||Merrimack|NH|03054-2508|Nancy.Murphy@gc.nh.gov
+9095|Murray|Megan|A|H|5031|6|37|D|State House–House Member Mail|107 North Main Street|Concord|NH|03301|Megan.Murray@gc.nh.gov
+9107|Newman|Ray|E|H|5024|6|4|D|25 Charlotte Avenue||Nashua|NH|03064-1552|Ray.Newman@gc.nh.gov
+9109|Davis|Fred|E|H|4063|6|3|D|3A Quincy St||Nashua|NH|03060-9009|Fred.Davis@gc.nh.gov
+9117|Telerski|Laura|Damphousse|H|4002|6|11|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Laura.Telerski@gc.nh.gov
+9134|Wilhelm|Matthew|B.|H|5004|6|21|D|100 Magnolia Road||Manchester|NH|03104-1606|Matt.Wilhelm@gc.nh.gov
+720|Harriott-Gathright|Linda|C|H|4065|6|10|D|28 Marian Lane||Nashua|NH|03062-2153|linda.harriottgathright@gc.nh.gov
+9856|Perkins Kwoka|Rebecca||S||8|21|D||||NH||Rebecca.PerkinsKwoka@gc.nh.gov
+9861|Bordes|Mike||H|3044|1|5|R|20B Kristen Drive||Laconia|NH|03246-4036|mike.bordes@gc.nh.gov
+9865|Harvey-Bolia|Juliet||H|2004|1|3|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Juliet.HarveyBolia@gc.nh.gov
+9875|Qualey|James|R|H|3118|3|18|R|State House–House Member Mail|107 North Main Street|Concord|NH|03301|Jim.Qualey@gc.nh.gov
+9882|Davis|Arnold|G|H|2063|4|2|R|PO Box 478||Berlin|NH|03570-0478|Arnold.Davis@gc.nh.gov
+9925|Cambrils|Jose|E|H|1008|7|4|R|83 Berry Road||Loudon|NH|03307-1100|Jose4NH@comcast.net
+9929|Boyd|Stephen|E.|H|3030|7|10|R|51 Whitehall Road||Hooksett|NH|03106-2100|stepheneboyd@gmail.com
+9930|Tudor|Paul|D|H|3087|8|1|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|paultudor.1strockingham@gmail.com
+9935|Layon|Erica|J|H|2030|8|13|R|PO Box 1676||Derry|NH|03038|Erica.Layon@gc.nh.gov
+9938|Vandecasteele|Susan|J|H|3017|8|25|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|susanjonvan@gmail.com
+9947|Ankarberg|Aidan||H|3059|9|7|I|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Aidan.Ankarberg@gc.nh.gov
+9950|Spilsbury|Walter||H|2012|10|3|R|PO Box 571||Charlestown|NH|03603|Walter.Spilsbury@gc.nh.gov
+10714|Granger|Michael|E|H|1007|9|2|R|PO Box 356||Milton Mills|NH|03852|Michael.Granger@gc.nh.gov
+10781|Gregg|Alicia|C|H|4034|6|7|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Alicia.Gregg@gc.nh.gov
+10903|Howland|Allan||H|3058|9|20|D|32 Ffrost Drive||Durham|NH|03824-3109|Allan.Howland@gc.nh.gov
+10749|Jones|Philip|M|H|3104|3|3|D|40A Stone House Lane||Keene|NH|03431-5253|Philip.Jones@gc.nh.gov
+10913|McFarlane|Donald|S|H|2093|5|18|R|280 Burnt Hill Road||Orange|NH|03741-5206|Donald.McFarlane@gc.nh.gov
+4027|Schneller|John||H|3036|6|2|R|86 Brick Mill Road||Bedford|NH|03110-5160|John.Schneller@gc.nh.gov
+9429|Aron|Judy|F.|H|2053|10|4|R|266 Forest Road||South Acworth|NH|03607-4624|Judy.Aron@gc.nh.gov
+9097|Dargie|Paul|P|H|3056|6|43|D|136 Prospect Street||Milford|NH|03055-3725|Paul.Dargie@gc.nh.gov
+9099|Petrigno|Peter||H|4032|6|43|D|34 Shady Lane||Milford|NH|03055-4132|Peter.Petrigno@gc.nh.gov
+10885|Balboni|Peggy||H|5032|8|38|D|PO Box 723||Rye Beach|NH|03871|Peggy.Balboni@gc.nh.gov
+10644|Dupont|Pierre|M|H|2026|6|20|R|71 Circuit Street||Manchester|NH|03103-6728|Pierre.Dupont@gc.nh.gov
+10648|Paquette|Kathleen||H|3069|6|25|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Kathleen.Paquette@gc.nh.gov
+10669|Devoid|Ricky|J|H|3061|7|1|R|431 Hight Street||Boscawen|NH|03303-3800|Rick.Devoid@gc.nh.gov
+10729|Grant|George|C|H|2069|10|5|R|3 Messer Road||Sunapee|NH|03782-3707|George.Grant@gc.nh.gov
+11167|O'Rorke|Terri||H|4058|3|7|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|terri.ororke@gc.nh.gov
+11190|Swanson|Dale||H|4074|6|5|D|53 Sanborn Drive||Nashua|NH|03063-3402|Dale.Swanson@gc.nh.gov
+11191|Kluger|Lee Ann||H|5030|6|6|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|LeeAnn.Kluger@gc.nh.gov
+11192|Manohar|Sanjeev|K|H|3054|6|9|D|21 Memory Avenue||Nashua|NH|03062-1659|Sanjeev.Manohar@gc.nh.gov
+11193|Salvi|Santosh||H|5012|6|9|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Santosh.Salvi@gc.nh.gov
+11194|Chourasia|Manoj||H|4081|6|11|D|State House-House Memeber Mail|107 North Main Street|Concord|NH|03301|Manoj.Chourasia@gc.nh.gov
+11203|Bergeron|Dan|H|H|4069|6|16|D|82 Megan Drive||Manchester|NH|03109-5918|Dan.Bergeron@gc.nh.gov
+11204|Chretien|Suzanne|L|H|4059|6|19|D|State House-House Member Mail|107 North State Street|Concord|NH|03301|Suzanne.Chretien@gc.nh.gov
+11206|Georges|Mary|Ngwanda|H|5009|6|23|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Mary.Georges@gc.nh.gov
+11177|Long|Patrick|N|H|3080|6|26|D|373 Hayward St. Apt 3||Manchester|NH|03103-6092|PatrickN.Long@gc.nh.gov  
+9845|Ricciardi|Denise||S||3|9|R||||NH||Denise.Ricciardi@gc.nh.gov
+9896|Post|Lisa|C.M.|H|3091|6|42|R|43 Crooked S Road||Lyndeborough|NH|03082-5600|Lisacmpost@gmail.com
+9909|Kelley|Diane|E.|H|2082|6|32|R|55 Hadley Hwy||Temple|NH|03084-4508|Diane.Kelley@gc.nh.gov
+9917|Creighton|James|L|H|2042|6|30|R|155 Keene Road||Antrim|NH|03440-3103|creighton4nh@gmail.com
+9923|Caplan|Tony|M|H|4029|7|8|D|810 Ray Road||Henniker|NH|03242-6175|Tony.Caplan@gc.nh.gov
+9937|Lynn|Bob|J.|H|2090|8|17|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|rjlynn4@gmail.com
+9941|Bernardy|JD||H|3040|8|36|R|255 Main Avenue||South Hampton|NH|03827-3527|jd.bernardy@comcast.net
+10741|Paige|David||H|5043|2|1|D|State House–House Member Mail|107 North Main Street|Concord|NH|03301|David.Paige@gc.nh.gov
+10834|Payeur|Stephanie|R|H|5040|7|8|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Stephanie.Payeur@gc.nh.gov
+10726|Potenza|Kelley|L|H|3023|9|19|R|75 S. Main Street, Unit 7-229||Concord|NH|03301-4868|Kelley.Potenza@gc.nh.gov
+10779|Raymond|Heather||H|4035|6|5|D|19 Dunbarton Drive||Nashua|NH|03063-2014|Heather.Raymond@gc.nh.gov
+10776|Ryan|Linda|V|H|3110|6|4|D|35 Vespa Lane||Nashua|NH|03064-1166|Linda.Ryan@gc.nh.gov
+10620|Sellers|John||H|2009|5|10|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|John.Sellers@gc.nh.gov
+10801|Staub|Kathy||H|4062|6|25|D|374 Laurel Street||Manchester|NH|03103-4126|Kathy.Staub@gc.nh.gov
+10624|Tenczar|Jeffrey||H|3045|6|1|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Jeffrey.Tenczar@gc.nh.gov
+10641|Wherry|Robert|J|H|3062|6|13|R|37 James Way||Hudson|NH|03051-5118|Robert.Wherry@gc.nh.gov
+10678|Wood|Clayton|D|H|1015|7|13|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Clayton.Wood@gc.nh.gov
+6938|Thackston|Dick|H|H|2024|3|12|R|5 Russell Avenue||Troy|NH|03465-2407|thackston3@aol.com
+10599|Fenton|Donovan||S||3|10|D||||NH||Donovan.Fenton@gc.nh.gov
+10698|Murphy|Keith|R.|S||6|16|R||||NH||Keith.Murphy@gc.nh.gov
+10604|Pearl|Howard||S||7|17|r||||NH||Howard.Pearl@gc.nh.gov
+10607|Abbas|Daryl||S||8|22|R||||NH||Daryl.Abbas@gc.nh.gov
+10600|Altschiller|Debra||S||8|24|D||||NH||Debra.Altschiller@gc.nh.gov
+11134|Johnson|Erik|R|H|3107|9|11|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Erik.Johnson@gc.nh.gov
+944|Seaworth|Brian||H|2041|7|12|R|161 Buck Street||Pembroke|NH|03275-3002|brian.seaworth@gc.nh.gov
+905|Spillane|James|A|H|3024|8|2|R|16 Swamp Road||Deerfield|NH|03037-1323|James@JamesSpillane.org
+928|Avard|Kevin|A.|S||6|12|R||||NH||Kevin.Avard@gc.nh.gov
+9058|Stringham|Jerry|M.|H|3106|5|3|D|PO Box 879||Lincoln|NH|03251-0879|Jerry.Stringham@gc.nh.gov
+9063|Stavis|Laurel||H|3053|5|13|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Laurel.Stavis@gc.nh.gov
+9268|Dolan|Tom||H|3063|8|16|R|19 Isabella Drive||Londonderry|NH|03053-3044|Tom.Dolan@gc.nh.gov
+9293|Harb|Robert|D|H|2064|8|20|R|18 Hilltop Road||Plaistow|NH|03865-2916|Robert.Harb@gc.nh.gov
+9218|Grossman|Gaby|M|H|4033|8|11|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Gaby.Grossman@gc.nh.gov
+9090|Rung|Rosemarie||H|5007|6|12|D|21 Ministerial Drive||Merrimack|NH|03054-3321|Rosemarie.Rung@gc.nh.gov
+9224|Maggiore|Jim|V.|H|3052|8|23|D|17A Hobbs Road||North Hampton|NH|03862-2120|Jim.Maggiore@gc.nh.gov
+9093|Thomas|Wendy|Ellen N|H|5026|6|12|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Wendy.Thomas@gc.nh.gov
+9272|Roy|Terry|W|H|3002|8|31|R|252 South Road||Deerfield|NH|03037-1702|Terry.Roy@gc.nh.gov
+841|Cornell|Patricia||H|5034|6|22|D|787 Montgomery Street||Manchester|NH|03102-3027|patricia.cornell@gc.nh.gov
+856|Herbert|Christopher|J.|H|5008|6|24|D|181 Eastern Ave Unit 201||Manchester|NH|03104-4671|Chris.Herbert@gc.nh.gov
+425|Packard|Sherman|A.|H|6002|8|16|R|70 Old Derry Road| |Londonderry|NH|03053-2218|sherman.packard@gc.nh.gov
+6966|McGhee|Kat||H|4031|6|35|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Kat.McGhee@gc.nh.gov
+768|Rollins|Skip|A.|H|1025|10|3|R|5 Willow Street||Newport|NH|03773-2823|skip.rollins@gc.nh.gov
+496|Schmidt|Peter|B|H|5036|9|14|D|PO Box 1468||Dover|NH|03821-1468|peterbarrettschmidt@gmail.com
+452|Smith|Marjorie|K.|H|4064|9|10|D||100 Piscataqua Road|Durham|NH|03824-3326|msmithpen@aol.com 
+656|Smith|Steven|D|H|2006|10|3|R|PO Box 624||Charlestown|NH|03603-0624|Steven.Smith@gc.nh.gov
+599|Soucy|Timothy|A.|H|4098|7|21|D|11 Princeton Street||Concord|NH|03301-2333|Tim.Soucy@gc.nh.gov
+10034|Mattson|Rita|G|H|2087|3|18|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Rita.Mattson@gc.nh.gov
+11170|Jacobs|Samantha||H|4097|3|15|D|176 Gilsum Street||Keene|NH|03431-2743|Samantha.Jacobs@gc.nh.gov
+11212|Grund|Stephanie||H|3057|6|34|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Stephanie.Grund@gc.nh.gov
+11218|Kerwin|Erin||H|4045|6|40|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Erin.Kerwin@gc.nh.gov
+11219|Foss|Lily|M|H|4047|6|41|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Lily.Foss@gc.nh.gov
+11221|Hegner|Karen|A|H|4048|6|41|D|57 Derryfield Court||Manchester|NH|03104-4548|Karen.Hegner@gc.nh.gov
+9441|Kelly|Eileen|S|H|4012|7|8|D|PO Box 563||Bradford|NH|03221-0563|Eileen.Kelly@gc.nh.gov
+11230|Colby|Eleana |Marie|H|3101|7|9|D|5 Fieldstone Drive||Bow|NH|03304-3829|Eleana.Colby@gc.nh.gov
+11232|Newsom|James||H|4057|7|9|D|896 Clement Hill Road||Contoocook|NH|03229-3372|James.Newsom@gc.nh.gov
+11235|Bricchi|Tracy|Anne|H|4060|7|15|D|146 Village Street||Penacook|NH|03303-1960|Tracy.Bricchi@gc.nh.gov
+11238|Snodgrass|Jim||H|5021|7|28|D|144 Broad Cove Drive||Concord|NH|03303-4003|Jim.Snodgrass@gc.nh.gov
+10746|Boudman|Bobbi||H|3083|2|7|D|123 Warren Sands Road||Wolfeboro|NH|03894-4910|Bobbi.Boudman@gc.nh.gov
+11171|Gruber|James||H|4073|3|16|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|James.Gruber@gc.nh.gov
+947|DeLemus|Susan|C|H|1039|9|1|R|27 Green Street||Farmington|NH|03835-3720|Susan.DeLemus@gc.nh.gov
+807|Dumais|Russell||H|3035|1|6|R|6 Glidden Road||Gilford|NH|03249-7874|Russell.Dumais@gc.nh.gov
+849|Gould|Linda|R|H|3031|6|2|R|2 Elder Williams Road||Bedford|NH|03110-5122|linda.gould@gc.nh.gov
+936|Guthrie|Joseph|A.|H|3015|8|15|R|15 Madison Drive| |Hampstead|NH|03841-2246|lojogut@gmail.com
+943|Hill|Gregory|G.|H|1043|7|2|R|1 Knowles Farm Road||Northfield|NH|03276-4517|greghillnh@gmail.com
+915|Kaczynski|Thomas|L|H|1036|9|5|R|112 Whitehall Road||Rochester|NH|03868-5713|thomas.kaczynski@gc.nh.gov
+960|Katsakiores|Phyllis|M|H|3001|8|13|R|1 Bradford Street| |Derry|NH|03038-4258|pkatsakiores@comcast.net
+901|Osborne|Jason|M.|H|2001|8|2|R|65 Miner Road||Auburn|NH|03032-3974|Jason@Osborne4NH.com
+880|Luneau|David|J.|H|5018|7|9|D|211 Putney Hill Road||Hopkinton|NH|03229-2510|dluneauNH@gmail.com
+863|Rice|Kimberly|A|H|1017|6|38|R|9 Hickory Street||Hudson|NH|03051-4759|Kimberly.Rice@gc.nh.gov
+10694|Perez|Kristine||H|2071|8|16|R|5 Wesley Drive||Londonderry|NH|03053-3544|Kristine.Perez@gc.nh.gov
+10579|Peternel|Katy||H|2015|2|6|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Katy.Peternel@gc.nh.gov
+10676|Polozov|Yury||H|1038|7|10|R|1465 Hooksett Road Unit 393||Hooksett|NH|03106-1878|Yury.Polozov@gc.nh.gov
+10697|Popovici-Muller|Daniel||H|3088|8|17|R|12 Clarke Farm Road||Windham|NH|03087-1851|Daniel.PopoviciMuller@gc.nh.gov
+10700|Porcelli|Susan|M|H|3068|8|19|R|54 Linden Road||Hampton Falls|NH|03844-2035|Susan.Porcelli@gc.nh.gov
+10840|Roesener|James|Leon|H|4018|7|22|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|James.Roesener@gc.nh.gov
+10682|See|Alvin|B|H|2028|7|26|R|State House–House Member Mail|107 North Main Street|Concord|NH|03301|Alvin.See@gc.nh.gov
+9077|Seibert|Christine||H|4078|6|21|D|96 Eve Street||Manchester|NH|03104-1520|Christine.Seibert@gc.nh.gov
+10896|Selig|Loren||H|5028|9|10|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Loren.Selig@gc.nh.gov
+10653|Sirois|Shane|A|H|1031|6|32|R|16 Owl Drive||New Ipswich|NH|03071-3338|Shane.Sirois@gc.nh.gov
+10905|Smith|Geoffrey||H|4080|9|21|D|65A Glenwood Avenue||Dover|NH|03820-2309|Geoff.Smith@gc.nh.gov
+10780|Spier|Carry||H|5016|6|6|D|9 Columbia Avenue||Nashua|NH|03064-1608|Carry.Spier@gc.nh.gov
+10761|Sullivan|Jared||H|3102|5|2|D|State House–House Member Mail|107 North Main Street|Concord|NH|03301|Jared.Sullivan@gc.nh.gov
+9294|Summers|James||H|3026|8|20|R|41 Heath Street||Newton|NH|03858-3401|James.Summers@gc.nh.gov
+10820|Tellez|Trinidad||H|4028|6|40|D|P.O. Box 16666||Hooksett|NH|03106-6666|Trinidad.Tellez@gc.nh.gov
+9999|Turer|Eric|S|H|4024|8|6|D|33 Peabody Drive||Brentwood|NH|03833-6424|Eric.Turer@gc.nh.gov
+10716|Walker|David|E|H|2057|9|19|R|34 Brock Street||Rochester|NH|03867-4415|David.Walker@gc.nh.gov
+10692|Walsh|Lilli|M|H|3029|8|15|R|P.O. Box 4||Hampstead |NH|03841-0004|Lilli.Walsh@gc.nh.gov
+8023|Tierney|James|W|H|2039|4|1|R|6 Grand View Drive||Groveton||03582-4175|James.Tierney@gc.nh.gov
+2458|Preece|David|John|H|4015|6|17|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|David.Preece@gc.nh.gov
+11100|Beauchemin|Paige||H|4096|6|3|D|107 North Main Street||Concord|NH|03301|paige.beauchemin@gc.nh.gov
+11118|Durkin|Sean|C|H|2050|4|1|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|seandurkin4NH@gmail.com
+8613|Read|Ellen|D|H|5042|8|10|D|283 Lita Lane||Newmarket|NH|03857-2425|ellen4nh@gmail.com
+8740|Ward|Ruth||S||3|8|R||||NH||Ruth.Ward@gc.nh.gov
+8745|Gannon|Bill|M.|S||8|23|R||||NH||William.Gannon@gc.nh.gov
+9269|Pearson|Stephen|C.|H|2075|8|13|R|221 Hampstead Road||Derry|NH|03038-4814|Steve.Pearson@gc.nh.gov
+8419|Melvin|Charles|R|H|1019|8|20|R|81 South Main Street||Newton|NH|03858-3707|Charlie.Melvin@gc.nh.gov
+9425|Levesque|Cassandra |N|H|4043|9|4|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Cassandra.Levesque@gc.nh.gov
+10577|Brown|Richard|R|H|2095|2|8|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Richard.Brown@gc.nh.gov
+11041|Fracht|David||H|4046|5|16|D|PO Box 1065||Enfield|NH|03748-1065|David.fracht@gc.nh.gov 
+11135|Mandelbaum|Jennifer||H|3071|8|21|D|PO Box 1211||Portsmouth|NH|03802-1211|JenForNH@gmail.com
+8314|Griffin|Gerald||H|2078|6|42|R|PO Box 1||Mont Vernon|NH|03057-0001|Gerald.Griffin@gc.nh.gov
+5122|Harrington|Michael|D|H|2008|9|18|R|82 Garland Road||Strafford|NH|03884-6835|harringt@metrocast.net
+8381|Leavitt|John|A|H|1027|7|10|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|John.Leavitt@gc.nh.gov
+8388|Verville|Kevin|G.|H|1029|8|2|R|9 McCarron Road||Deerfield|NH|03037-1729|kevin.verville@gc.nh.gov
+8408|Tripp|Richard|P|H|3018|8|13|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Richard.Tripp@gc.nh.gov
+8546|Sofikitis|Catherine|M|H|5027|6|7|D|State House–House Member Mail|107 North Main Street|Concord|NH|03301|CSofikitis@gmail.com
+8359|Prout|Andrew|J.|H|1033|6|13|R|6 Raven Drive||Hudson|NH|03051-3355|Andrew.Prout@gc.nh.gov
+8615|Gilman|Julie|D|H|3051|8|11|D|96 High Street||Exeter|NH|03833-2919|Julie.Gilman@gc.nh.gov
+8324|Freeman|Lisa|M|H|3043|1|8|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Lisa.Freeman@gc.nh.gov
+8858|Schultz|Kris||H|4021|7|29|D|806 Alton Woods Drive||Concord|NH|03301-7857|Kris.Schultz@gc.nh.gov
+9059|Fellows|Sallie|D|H|4056|5|8|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Sallie.Fellows@gc.nh.gov
+8274|Comtois|Barbara||H|2054|1|7|R|PO Box 186||Center Barnstead|NH|03225-0186|Barbara.Comtois@gc.nh.gov
+7628|Faulkner|Barry||H|4055|3|10|D|109 Sawyers Crossing Road||Swanzey|NH|03446-3632|fbfaulkner@outlook.com
+8412|Janigian|John|C|H|3005|8|25|R|25 Liberty Street||Salem|NH|03079-2437|John.Janigian@gc.nh.gov
+11181|Lucas|Janet|Marie|H|3098|5|7|D|PO Box 1267||Campton|NH|03223-1267|Janet.Lucas@gc.nh.gov
+11183|Rockmore|Ellen|B|H|4071|5|12|D|2 Storrs Road||Hanover|NH|03755-2410|Ellen.Rockmore@gc.nh.gov
+11184|Spahr|Terry||H|4083|5|12|D|81 Wolfeboro Road||Hanover|NH|03755-3851|Terry.Spahr@gc.nh.gov
+11284|Stone|John|Joseph|H|5022|9|12|D|5 Ringer Drive||Somersworth|NH|03878-2042|biggamehunter53@aol.com
+11286|Wade|Alice||H|4017|9|15|D|State House-Member Mail|107 North Main Street|Concord|NH|03301|Alice.Wade@gc.nh.gov
+11291|Miller|Seth|B|H|3108|9|21|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Seth.Miller@gc.nh.gov
+11313|Hamblen|Joseph||H|3096|2|3|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Joseph.Hamblen@gc.nh.gov
+11314|Taylor|Brian|R.|H|2061|2|8|R|PO Box 243||Freedom|NH|03836-0243|Brian.Taylor@gc.nh.gov
+10813|Wheeler|Jonah|Orion|H|5038|6|33|D|PO Box 33||Peterborough|NH|03458-0033|Jonah.Wheeler@gc.nh.gov
+10407|Rombeau|Catherine|A|H|4010|6|2|D|PO Box 10012||Bedford|NH|03110-0012|Catherine.Rombeau@gc.nh.gov
+10677|Aures|Cyril|Nicholas|H|1016|7|13|R|State-House-House Member Mail|107 North Main Street|Concord|NH|03301|Cyril.Aures@gc.nh.gov
+10762|Baldwin|Heather|P|H|4094|5|4|D|363 Thornton Gore Road||Thornton|NH|03285-6807|Heather.Baldwin@gc.nh.gov
+10904|Bay|Luz||H|4039|9|21|D|PO Box 233||Dover|NH|03821-0233|Luz.Bay@gc.nh.gov
+10573|Bogert|Steven|T|H|2005|1|5|R|21 Spruce Street||Laconia|NH|03246-3844|Steven.Bogert@gc.nh.gov
+10713|Burnham|Claudine|R|H|1006|9|2|R|156 Governors Road||Milton|NH|03851-4747|Claudine.Burnham@gc.nh.gov
+10733|Coker|Matthew||H|2035|1|2|R|PO Box 1570||Meredith|NH|03253-1570|Matthew.Coker@gc.nh.gov
+10099|Colcombe|Riché||H|1028|6|30|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Riche.Colcombe@gc.nh.gov
+7267|Cole|Brian|D|H|3090|6|26|R|890 Howe Street||Manchester|NH|03103-3722|Brian.Cole@gc.nh.gov
+10666|Corcoran|Travis|James|H|1024|6|28|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|tjic2020@gmail.com
+10769|Cormen|Thomas|H|H|4030|5|15|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Thomas.Cormen@gc.nh.gov
+10910|Damon|Hope|E|H|5019|10|8|D|447 Old Springfield Road||Croydon|NH|03782-2709|Hope.Damon@gc.nh.gov
+10785|Darby|Will||H|3100|6|11|D|13 Jensen Street||Nashua|NH|03062-3208|Will.Darby@gc.nh.gov
+10784|Dolan|William||H|3079|6|9|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|William.Dolan@gc.nh.gov
+10704|Donnelly|Tanya||H|1035|8|25|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Tanya.Donnelly@gc.nh.gov
+10686|Drago|Mike||H|1004|8|4|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Mike.Drago@gc.nh.gov
+9284|Drye|Margaret|M|H|1023|10|7|R|PO Box 3||Plainfield|NH|03781-0003|Margaret.Drye@gc.nh.gov
+10693|Dunn|Ron|C|H|3012|8|16|R|12 Quincy Road||Londonderry|NH|03053-3174|Ron.Dunn@gc.nh.gov
+10778|Elberger|Susan|A|H|3072|6|5|D|11 Birch Hill Drive||Nashua|NH|03063-2538|Susan.Elberger@gc.nh.gov
+10691|Foote|Charles|H|H|1026|8|13|R|13 Drew Road||Derry|NH|03038-4848|Charles.Foote@gc.nh.gov
+10773|Foxx|Loren|E|H|3078|6|2|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Loren.Foxx@gc.nh.gov
+10843|Gibbs|Merryl||H|3033|7|23|D|169 Portsmouth Street #165||Concord|NH|03301-5843|Merryl.Gibbs@gc.nh.gov
+10797|Grill|Jessica||H|4087|6|18|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Jessica.Grill@gc.nh.gov
+10844|Hicks|Matthew|S|H|3050|7|24|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Matthew.Hicks@gc.nh.gov
+10810|Howard|Molly|C|H|4068|6|31|D|PO Box 358||Hancock|NH|03449-0358|Molly.Howard@gc.nh.gov
+10004|Howard|Heath||H|3076|9|4|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Heath.Howard@gc.nh.gov
+10886|Raynolds|Ned||H|4027|8|39|D|110 Aldrich Road||Portsmouth|NH|03801-4905|Ned.Raynolds@gc.nh.gov
+10782|Juris|Louis|C|H|5039|6|7|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Louis.Juris@gc.nh.gov
+10640|Kenny|Catherine|M|H|2018|6|13|R|65 Bush Hill Road||Hudson|NH|03051-4455|Cathy.Kenny@gc.nh.gov
+10610|King|Seth||H|2081|4|4|R|PO Box 304||Whitefield|NH|03598-0304|Seth.King@gc.nh.gov
+10856|Knab|Allison||H|4042|8|12|D|112 Tidewater Farm Road||Stratham|NH|03885-2146|Allison.Knab@gc.nh.gov
+10695|Kuttab|Katelyn|T|H|3064|8|17|R|17 Duston Road||Windham|NH|03087-1276|Katelyn.Kuttab@gc.nh.gov
+10900|LaMontagne|Jessica|Finn|H|4009|9|17|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Jessica.Lamontagne@gc.nh.gov
+10800|Leapley|Nicole|M|H|5014|6|22|D|7 Valley West Way||Manchester|NH|03102-3696|Nicole.Leapley@gc.nh.gov
+10814|LeClerc|Daniel|J|H|4086|6|34|D|State House-House Member Mail|107 North State Street|Concord|NH|03301|Daniel.LeClerc@gc.nh.gov
+10783|Lloyd|Christal|R|H|4079|6|8|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Christal.Lloyd@gc.nh.gov
+10766|Lovett|Peter||H|4044|5|8|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Peter.Lovett@gc.nh.gov
+10622|Mannion|Tom|D|H|2062|6|1|R|45 Turtle Crossing Road||Pelham|NH|03076-3383|Tom.Mannion@gc.nh.gov
+10705|Mannion|Dennis||H|2089|8|25|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Dennis.Mannion@gc.nh.gov
+10857|Manos|Zoe|R|H|4025|8|12|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|zoe.manos@gc.nh.gov
+10667|Mazur|Lisa|R|H|3009|6|44|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Lisa.Mazur@gc.nh.gov
+10706|McDonnell|Valerie|E|H|2017|8|25|R|2 West Duston Road||Salem|NH|03079-1915|Valerie.McDonnell@gc.nh.gov
+10595|Lang|Timothy||S||1|2|R||||NH||Timothy.Lang@gc.nh.gov
+10574|Nagel|David|J|H|3109|1|6|D|PO Box 120||Gilmanton|NH|03237-0120|davidnagelmd@gmail.com
+10750|Newell|Jodi|K|H|4067|3|4|D|32 Leverette Street||Keene|NH|03431-2417|Jodi.Newell@gc.nh.gov
+10626|Noble|Kristin||H|2016|6|2|R|3 Ellison Drive||Bedford|NH|03110-4231|Kristin.Noble@gc.nh.gov
+9140|Beaulier|Calvin||H|2046|5|1|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Calvin.Beaulier@gc.nh.gov
+10659|Barbour|Liz|F|H|2044|6|35|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Liz.Barbour@gc.nh.gov
+11309|Toner|Travis|J|H|3086|1|4|R|31 Hackett Road||Belmont|NH|03220-4215|Travis.Toner@gc.nh.gov
+11310|Minor|Sheri||H|2036|1|5|R|135 Academy Street||Laconia|NH|03246-3615|Sheri.Minor@gc.nh.gov
+11452|Murphy|Denis|Vincent|H|2060|3|11|R|14 Lawrence Street||Winchester|NH|03470-2408|Denis.Murphy@gc.nh.gov
+11377|Gonzalez|Ernesto|L|H|2083|7|3|R|13 Upland Drive||Franklin|NH|03235-1546|Ernesto.Gonzalez@gc.nh.gov
+11378|Morse|Bryan||H|1021|7|3|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Bryan.Morse@gc.nh.gov
+11382|Mehegan|Peter|L.|H|2085|7|12|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Peter.Mehegan@gc.nh.gov
+10980|Thibault|James|R|H|3112|7|25|R|57 Freedom Drive||Franklin|NH|03235-1245|James.Thibault@gc.nh.gov
+10121|Plante|Raymond|S|H|3094|7|27|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Ray.Plante@gc.nh.gov
+11392|Bryer|Scott|R|H|2072|8|1|R|64 Temperance Hill Drive||Northwood|NH|03261-3433|Scott.Bryer@gc.nh.gov
+11393|Guzofski|James|H|H|3027|8|1|R|87 1st NH TPKE||Northwood|NH|03261-3501|James.Guzofski@gc.nh.gov
+11394|Ford|Mary|J|H|2019|8|3|R|67 Chester Street||Chester|NH|03036-4308|Mary.Ford@gc.nh.gov
+11395|Bennett|Cindy|Lynn|H|1022|8|4|R|101 Langford Road||Raymond|NH|03077-1709|Cindy.Bennett@gc.nh.gov
+11396|Nadeau|Brian|G|H|3046|8|4|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Brian.Nadeau@gc.nh.gov
+11399|Miner|Laurence|A|H|3048|8|7|R|63 South Road||Fremont|NH|03044-3406|Laurence.Miner@gc.nh.gov
+11401|DeVito|Sayra|Lynn|H|3019|8|8|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Sayra.DeVito@gc.nh.gov
+11402|Selby|Donald|Evan|H|3095|8|9|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Donald.Selby@gc.nh.gov
+11403|Wilson|Vicki|A|H|2092|8|9|R|PO Box 498||Sandown|NH|03873-0498|Vicki.Wilson@gc.nh.gov
+11407|Brown|Pam||H|3039|8|14|R|PO Box 2||Kingston|NH|03848-0002|Pam.Brown@gc.nh.gov
+11413|Markell|Jay|D|H|3070|8|18|R|PO Box 256||Atkinson|NH|03811-0256|Jay.Markell@gc.nh.gov
+11419|Bridle|Nicholas|D.|H|1020|8|29|R|225 Towle Farm Road||Hampton|NH|03842-1719|Nicholas.Bridle@gc.nh.gov
+11420|Sabourin dit Choinière|Matt|R|H|3028|8|30|R|117 Cimarron Dr. Apt. B13||Seabrook|NH|03874-4445|Matt.Sabourin@gc.nh.gov
+11423|Hall|Robley||H|2056|9|1|R|68 Meaderboro Road||Farmington|NH|03835-4407|Robley.Hall@gc.nh.gov
+11524|Butler|Billie||H|4019|9|12|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|
+6469|Tremblay|Marc|D|H|3011|4|5|R|15 Haskell Street||Berlin|NH|03570-1115|marc.tremblay@gc.nh.gov
+8401|Morency|Pete||H|2025|4|5|R|1944 Riverside Drive||Berlin|NH|03570-3715|Peter.Morency@gc.nh.gov
+11320|Barton|Joseph|J|H|3114|5|1|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Joseph.Barton@gc.nh.gov
+11321|Louis|Darrell|A|H|2068|5|1|R|255 Main Street||Littleton|NH|03561-4021|Darrell.Louis@gc.nh.gov
+11328|Franz|Linda||H|2074|5|6|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Linda.Franz@gc.nh.gov
+11336|Labrie|Brian|H|H|1011|6|2|R|26 Reverend Houston Drive||Bedford|NH|03110-5023|Brian.Labrie@gc.nh.gov
+11345|Miles|Julie||H|2058|6|12|R|PO Box 1717||Merrimack|NH|03054-1717|Julie.Miles@gc.nh.gov
+11346|Presa|Adam|Joseph|H|2038|6|12|R|35A Camp Sargent Road||Merrimack|NH|03054-4706|adam.presa@gc.nh.gov
+11348|Dumont|Dillon|J|H|2047|6|13|R|195 R Central Street||Hudson|NH|03051-4481|Dillon.Dumont@gc.nh.gov
+11349|Slottje|Jeremy||H|2029|6|13|R|20 Old Coach Road||Hudson|NH|03051-5044|
+11350|Peeples|Raymond|C.|H|3021|6|14|R|205 Charles Bancroft Highway||Litchfield|NH|03052-2491|Raymond.Peeples@gc.nh.gov
+11354|Kesselring|Steven||H|2027|6|18|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Steven.Kesselring@gc.nh.gov
+11355|Drew|Matt||H|3020|6|19|R|198 Mast Rd. #2||Manchester|NH|03102-5297|Matt.Drew@gc.nh.gov
+11360|Murphy|Mary||H|2067|6|27|R|PO Box 120||Francestown|NH|03043-0120|Mary.Murphy@gc.nh.gov
+11363|Giasson|Henry|R|H|3016|6|29|R|20A Amoskeag Drive||Goffstown|NH|03045-2708|Henry.Giasson@gc.nh.gov
+11364|Reinfurt|Sherri|L|H|3022|6|29|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Sherri.Reinfurt@gc.nh.gov
+11369|Suiter|John|W.|H|3032|6|36|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|John.Suiter@gc.nh.gov
+11421|McGrath|Linda||H|3093|8|40|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Linda.McGrath@gc.nh.gov
+11424|DeRoy|Susan|G|H|1030|9|3|R|PO Box 195||New Durham|NH|03855-0195|Susan.DeRoy@gc.nh.gov
+11425|DeDe-Poulin|Denise||H|2059|9|6|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Denise.DeDePoulin@gc.nh.gov
+11426|Farrington|Samuel|G|H|3115|9|8|R|35 Chesley Hill Road||Rochester|NH|03839-5500|Samuel.Farrington@gc.nh.gov
+8986|Sullivan|Brian|M|H|5003|10|1|D|642 Olde Farms Road||Grantham|NH|03753-3124|brian.sullivan@gc.nh.gov
+573|Gagne|Larry|G|H|2052|6|16|R|126 Lakeside Drive||Manchester|NH|03104-5801|lgagne25@comcast.net
+9044|Burroughs|Anita|D|H|5017|2|2|D|PO Box 487||Glen|NH|03838-0487|Anita.Burroughs@gc.nh.gov
+9046|Woodcock|Stephen|L|H|5029|2|1|D|PO Box 234||Center Conway|NH|03813-0234|stevewoodcock.rep@gmail.com
+9411|MacDonald|John|T|H|2076|2|6|R|PO Box 968||Wolfeboro Falls|NH|03896-0968|John.MacDonald@gc.nh.gov
+579|Horrigan|Timothy|O.|H|4075|9|10|D|PO Box 519||Durham|NH|03824-0519|Timothy.Horrigan@gc.nh.gov
+414|Hunt|John|B.|H|4099|3|14|R|165 Sunridge Road| |Rindge|NH|03461-5478|jbhunt@prodigy.net
+733|Jack|Martin|L.|H|3081|6|10|D|83 Cadogan Way||Nashua|NH|03062-2285|Martin.Jack@gc.nh.gov
+527|Jeudy|Jean|L.|H|5001|6|23|D|134 Calef Road||Manchester|NH|03103-6324|jean.jeudy@gc.nh.gov
+11439|Hemingway|Wayne|J|H|3037|10|6|R|120 Lafayette Street||Claremont|NH|03743-4737|Wayne.Hemingway@gc.nh.gov
+11252|Weinstein|Toni||H|4082|8|10|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Toni.Weinstein@gc.nh.gov
+11267|Scherr|Buzz||H|4089|8|26|D|390 Greenleaf Avenue||Portsmouth|NH|03801-5370|buzzfornh@gmail.com
+11268|Sorensen|Carrie||H|4070|8|28|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Carrie.Sorensen@gc.nh.gov
+11278|Malone|Amy|L|H|4036|9|9|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Amy.Malone@gc.nh.gov
+11281|England|Myles||H|4037|9|12|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Myles.England@gc.nh.gov
+11283|Pearson|Wayne||H|3082|9|12|D|PO Box 483||Rollinsford|NH|03869-0483|Wayne.Pearson@gc.nh.gov
+11288|Larochelle|John|H|H|4091|9|19|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|John.Larochelle@gc.nh.gov
+11293|Girard|Dale|R|H|3049|10|6|R|181 Pappas Road||Claremont|NH|03743-5837|Dale.Girard@gc.nh.gov
+11442|Aron|Michael||H|2051|10|8|R|266 Forest Road||South Acworth|NH|03607-4624|Michael.Aron@gc.nh.gov
+11326|Bjelobrk|Marie Louise||H|2084|5|5|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Marie.Bjelobrk@gc.nh.gov

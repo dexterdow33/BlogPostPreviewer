@@ -1,0 +1,131 @@
+name: NH bill tracker refresh
+
+# Pulls the General Court's bill-status data dump, rebuilds data/*.json, commits
+# the result, and (on the default branch) publishes the site to GitHub Pages.
+#
+# Schedule: 07:35 UTC is 03:35 EDT / 02:35 EST, inside the window when the
+# General Court asks automated clients to use the site (before 6 a.m. Eastern).
+
+on:
+  schedule:
+    - cron: "35 7 * * *"
+  workflow_dispatch:
+    inputs:
+      sessions:
+        description: "Session years to build (comma-separated)"
+        default: "2025,2026,2027"
+        required: false
+      force_fetch:
+        description: "Fetch from gc.nh.gov even during the day (use sparingly)"
+        default: "false"
+        required: false
+  push:
+    branches: ["master"]
+    paths:
+      - ".github/workflows/nh-bills.yml"
+      - "scripts/**"
+      - "nh-bills/**"
+  pull_request:
+    branches: ["master"]
+    paths:
+      - ".github/workflows/nh-bills.yml"
+      - "scripts/**"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: nh-bills-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  # On pull_request events github.ref_name is "<n>/merge"; the head branch is what we build and push to.
+  BRANCH: ${{ github.head_ref || github.ref_name }}
+
+jobs:
+  refresh:
+    name: Fetch and build data
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build dataset
+        # The General Court asks automated clients to stay off the site between
+        # 6 a.m. and 9 p.m. Eastern. Scheduled runs fetch (they are timed for the
+        # off-hours window). A run started by a push or a pull request during the
+        # day rebuilds from the last saved raw files instead of fetching.
+        run: |
+          HOUR=$(TZ=America/New_York date +%H)
+          MODE=""
+          if [ "${{ github.event_name }}" != "schedule" ] && [ "${{ github.event.inputs.force_fetch || 'false' }}" != "true" ] && [ "$HOUR" -ge 6 ] && [ "$HOUR" -lt 21 ]; then
+            MODE="--offline"
+            echo "Daytime Eastern ($HOUR h): rebuilding from data/raw without fetching."
+          fi
+          python scripts/fetch_nh_bills.py --sessions "${{ github.event.inputs.sessions || '2025,2026,2027' }}" --out data $MODE
+
+      - name: Summarize
+        if: always()
+        run: |
+          echo "## Data files" >> "$GITHUB_STEP_SUMMARY"
+          ls -la data data/raw 2>/dev/null | sed 's/^/    /' >> "$GITHUB_STEP_SUMMARY" || true
+          if [ -f data/index.json ]; then echo '```json' >> "$GITHUB_STEP_SUMMARY"; cat data/index.json >> "$GITHUB_STEP_SUMMARY"; echo '```' >> "$GITHUB_STEP_SUMMARY"; fi
+
+      - name: Upload discovery report and raw files
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nh-bills-data-${{ github.run_number }}
+          path: data
+          retention-days: 14
+          if-no-files-found: warn
+
+      - name: Commit refreshed data
+        id: commit
+        # Pull-request runs validate the build only. A bot commit on a PR branch
+        # would start another pull_request run that GitHub holds for approval.
+        if: always() && github.event_name != 'pull_request'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A data
+          if git diff --cached --quiet; then
+            echo "No data changes."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "data: NH bill tracker refresh $(date -u +%Y-%m-%dT%H:%MZ)"
+          git pull --rebase origin "$BRANCH" || true
+          git push origin HEAD:"$BRANCH"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    name: Publish to GitHub Pages
+    needs: refresh
+    if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4

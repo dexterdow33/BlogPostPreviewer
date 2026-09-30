@@ -1,0 +1,32 @@
+{
+  "generated_at": "2026-09-30T03:54:44+00:00",
+  "as_of": "2026-09-30",
+  "sessions": [
+    {
+      "session": "2025",
+      "file": "nh_bills_2025.json",
+      "bills": 847,
+      "with_title": 0,
+      "by_group": {
+        "killed": 501,
+        "law": 305,
+        "vetoed": 12,
+        "process": 29
+      }
+    },
+    {
+      "session": "2026",
+      "file": "nh_bills_2026.json",
+      "bills": 1387,
+      "with_title": 1387,
+      "by_group": {
+        "killed": 654,
+        "process": 97,
+        "parked": 267,
+        "law": 344,
+        "vetoed": 25
+      }
+    }
+  ],
+  "source": "https://gc.nh.gov/dynamicdatadump/"
+}
