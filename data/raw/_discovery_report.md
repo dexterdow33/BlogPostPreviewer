@@ -1,8 +1,10 @@
 # NH dynamicdatadump discovery report
 
-Generated 2026-09-30T23:18:36+00:00 (offline rebuild from data/raw)
+Generated 2026-09-30T23:24:52+00:00 (offline rebuild from data/raw)
 
 _Offline rebuild: files read from data/raw._
+
+_Files last pulled from the General Court: 2026-09-30T03:54:44+00:00._
 
 ## LSRs.txt
 
