@@ -1,0 +1,125 @@
+<!-- wp:html -->
+<div id="gsa-after" class="gsa-part">
+<section class="gsa-box gsa-box-green"><h2>What happens next</h2>
+<ol class="gsa-steps">
+<li><b>It gets read.</b> Every submission is opened and read by the editor. Nothing is posted automatically.</li>
+<li><b>Provenance gets checked.</b> A record goes into the index only once it is clear what it is, which office produced it, and how it reached you. If that cannot be established, it stays out.</li>
+<li><b>Private information comes out.</b> Names of minors, Social Security and account numbers, dates of birth, home addresses of private people, and medical details are removed before anything is published, whether or not you removed them first.</li>
+<li><b>Then it is public, free, on the same terms as every other item on this page.</b> If it becomes part of a Granite State Report article, the entry above will say so and link to the piece.</li>
+</ol>
+<div class="gsa-statute"><b>Redact before you send.</b> Black out what a stranger should not see: anyone's Social Security number, financial account numbers, date of birth, medical information, and the names of minors. Do it on the page itself, not with a highlighter, and check the back of every sheet. GSR redacts again before publication, but the copy you send travels through email first, so the first cut is yours.</div>
+<p>Anything you send is treated as on the record unless you say otherwise in the message. If you need to talk before you send, write to <a href="mailto:granitestatereport@gmail.com">granitestatereport@gmail.com</a> or call (603) 931-9264.</p>
+</section>
+
+<section class="gsa-box"><h2>Where the records come from</h2>
+<p>Three streams fill this room. Records Granite State Report obtains under RSA 91-A. Records readers send in. And the documents New Hampshire's own offices publish every week, which the newsroom reads and files as it reports.</p>
+<p>The state pages the newsroom watches:</p>
+<ul class="gsa-sources"><li><b>Office of the Governor</b> &middot; <a href="https://www.governor.nh.gov/news/press-releases" rel="noopener">Press releases</a></li><li><b>Office of the Governor</b> &middot; <a href="https://www.governor.nh.gov/news/executive-orders" rel="noopener">Executive orders</a></li><li><b>Office of the Governor</b> &middot; <a href="https://www.governor.nh.gov/news/proclamations" rel="noopener">Proclamations</a></li><li><b>NH Department of Justice</b> &middot; <a href="https://www.doj.nh.gov/resources/press-releases" rel="noopener">Press releases</a></li><li><b>NH Department of Health and Human Services</b> &middot; <a href="https://www.dhhs.nh.gov/news-events/press-releases" rel="noopener">Press releases</a></li><li><b>NH Department of Health and Human Services</b> &middot; <a href="https://www.dhhs.nh.gov/news-events/public-notices" rel="noopener">Public notices</a></li></ul>
+<p>Every entry in the index above says which of these streams it came through.</p>
+</section>
+
+<section class="gsa-box"><h2>Get a record that does not exist yet</h2>
+<p>New Hampshire will sell you a copy of a record it already has. It will never assemble one for you, and it will never build you an index.</p>
+<div class="gsa-statute"><b>RSA 91-A:4, VII.</b> Nothing in the Right-to-Know Law requires a public body or agency &ldquo;to compile, cross-reference, or assemble information into a form in which it is not already kept or reported by that body or agency.&rdquo; Everything above is that missing assembly, done by hand.</div>
+<p>Every person in New Hampshire has the same right of access under RSA 91-A. There is no press tier and no shortcut, and you do not need this newsroom to file. What you may not have is the time to write the request, run the five-day clock, argue an overbroad denial, and read what comes back. That is the part you can commission.</p>
+<ul>
+<li><b>The assignment is public-interest work, or GSR declines it.</b> No background checks, no locating people, no surveillance, no litigation support, no private reports.</li>
+<li><b>Editorial control stays here.</b> A commission buys the labor of pursuing a question. It does not buy a conclusion, and it never buys a favorable one.</li>
+<li><b>Everything obtained is published to everybody.</b> The records land in this room, free, on the same terms as every other item on this page. Nobody gets a private copy.</li>
+</ul>
+<p><a class="gsa-get" href="https://granitestatereport.com/2026/08/03/commission-an-investigation/">Commission an investigation</a></p>
+</section>
+<div class="gsa-foot">Granite State Report &middot; Northfield, New Hampshire &middot; granitestatereport.com</div>
+</div>
+<script>
+(function(){
+  var root=document.getElementById('gsa'); if(!root) return;
+  var q=root.querySelector('#gsa-q'), n=root.querySelector('#gsa-n'), empty=root.querySelector('#gsa-empty');
+  var tierBtns=[].slice.call(root.querySelectorAll('[data-fg=tier] button'));
+  var jurBtns=[].slice.call(root.querySelectorAll('[data-fg=juris] button'));
+  var tier='all', jur='all';
+  function items(){ return [].slice.call(root.querySelectorAll('.gsa-entry')); }
+  function go(){
+    var s=(q.value||'').trim().toLowerCase(), c=0, all=items();
+    all.forEach(function(e){
+      var ok=(tier==='all'||e.getAttribute('data-tier')===tier)&&(jur==='all'||e.getAttribute('data-juris')===jur)&&(!s||e.textContent.toLowerCase().indexOf(s)>-1);
+      e.style.display=ok?'':'none'; if(ok)c++;
+    });
+    [].slice.call(root.querySelectorAll('.gsa-series')).forEach(function(x){
+      var any=[].slice.call(x.querySelectorAll('.gsa-entry')).some(function(e){return e.style.display!=='none';});
+      x.style.display=any?'':'none';
+    });
+    n.textContent=c+' of '+all.length+' items shown'; empty.style.display=c?'none':'block';
+    var ex=root.querySelectorAll('.gsa-ex');
+    for(var i=0;i<ex.length;i++){
+      var sp=ex[i].querySelector('span'), bb=ex[i].querySelector('b');
+      if(!sp) continue;
+      if(!bb) continue;
+      if(/Items described/i.test(sp.textContent)) bb.textContent=all.length;
+    }
+  }
+  function wire(btns, set){ btns.forEach(function(b){ b.addEventListener('click',function(){ set(b.getAttribute('data-f')); btns.forEach(function(o){o.setAttribute('aria-pressed',String(o===b));}); go(); }); }); }
+  wire(tierBtns,function(v){tier=v;}); wire(jurBtns,function(v){jur=v;});
+  q.addEventListener('input',go); go();
+
+  /* Live additions: any document in the media library whose caption carries an [archive ...] tag
+     is listed here without a rebuild. Grammar: [archive juris=NH tier=records agency=NH Department of Justice used=5787,5301]
+     Tokens are optional; defaults: juris=NH, tier=records. Cited-in also picks up the attachment's parent post. */
+  var known={}; items().forEach(function(e){known[e.getAttribute('data-id')]=1;});
+  var TIERN={records:'Public record',reference:'Public record',original:'GSR original',thirdparty:'Cited research',templates:'Template'};
+  var TIERC={records:'gsa-c-pub',reference:'gsa-c-pub',original:'gsa-c-own',thirdparty:'gsa-c-tp',templates:'gsa-c-own'};
+  var JN={NH:'New Hampshire',US:'United States',World:'World'};
+  function decode(h){ var t=document.createElement('textarea'); t.innerHTML=h; return t.value; }
+  function parseTag(txt){
+    var plain=decode(String(txt||'').replace(/<[^>]+>/g,'')).replace(/[“”]/g,'"');
+    var m=/\[archive([^\]]*)\]/i.exec(plain); if(!m) return null;
+    var o={juris:'NH',tier:'records',agency:'',used:[]};
+    m[1].trim().split(/\s+(?=\w+=)/).forEach(function(p){
+      var i=p.indexOf('='); if(i<0) return;
+      var k=p.slice(0,i).trim().toLowerCase(), v=p.slice(i+1).trim().replace(/^"|"$/g,'');
+      if(k==='used'){ o.used=v.split(/[,\s]+/).map(function(x){return parseInt(x,10);}).filter(Boolean); } else if(k==='juris'||k==='tier'||k==='agency'){ o[k]=v; }
+    });
+    if(!TIERN[o.tier]) o.tier='records'; if(!JN[o.juris]) o.juris='NH';
+    o.note=plain.replace(m[0],'').trim();
+    return o;
+  }
+  function fmtDate(iso){ try{ var d=new Date(iso); return d.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}); }catch(e){ return iso.slice(0,10);} }
+  function kb(b){ return b<1048576?Math.round(b/1024)+' KB':(b/1048576).toFixed(1)+' MB'; }
+  var A38=String.fromCharCode(38);
+  function ent(w){ return A38+w+';'; }
+  function esc(s){ return String(s).split(A38).join(ent('amp')).split('<').join(ent('lt')).split('>').join(ent('gt')).split('"').join(ent('quot')); }
+  if(!window.fetch||!window.Promise) return;
+  var V=Math.floor(Date.now()/900000);
+  function media(t){ return fetch('/wp-json/wp/v2/media?media_type='+t+'&per_page=100&_fields=id,date,title,caption,mime_type,source_url,post,media_details&v='+V,{credentials:'omit'}).then(function(r){return r.ok?r.json():[];}).catch(function(){return [];}); }
+  Promise.all([media('application'),media('text')])
+  .then(function(parts){ var list=[].concat(parts[0]||[],parts[1]||[]);
+    var fresh=[]; (list||[]).forEach(function(m){
+      if(known[String(m.id)]) return;
+      var tag=parseTag(m.caption&&m.caption.rendered); if(!tag) return;
+      fresh.push({m:m,tag:tag});
+    });
+    if(!fresh.length) return;
+    var ids=[]; fresh.forEach(function(f){ if(f.m.post) ids.push(f.m.post); f.tag.used.forEach(function(i){ids.push(i);}); });
+    var postsP = ids.length ? fetch('/wp-json/wp/v2/posts?include='+ids.join(',')+'&per_page=50&_fields=id,link,title&v='+Math.floor(Date.now()/900000),{credentials:'omit'}).then(function(r){return r.ok?r.json():[];}).catch(function(){return [];}) : Promise.resolve([]);
+    postsP.then(function(posts){
+      var P={}; (posts||[]).forEach(function(p){P[p.id]=p;});
+      fresh.forEach(function(f){
+        var m=f.m, t=f.tag, sec=root.querySelector('.gsa-series[data-tier="'+t.tier+'"]'); if(!sec) return;
+        var cites=[]; if(m.post&&P[m.post]) cites.push(P[m.post]); t.used.forEach(function(i){ if(P[i]&&cites.indexOf(P[i])<0) cites.push(P[i]); });
+        var mt=(m.mime_type||'');
+        var kind=mt.indexOf('pdf')>-1?'PDF':mt.indexOf('word')>-1?'DOCX':mt.indexOf('csv')>-1?'CSV':mt.indexOf('sheet')>-1?'XLSX':'File';
+        var size=(m.media_details&&m.media_details.filesize)?' &middot; '+kb(m.media_details.filesize):'';
+        var art=document.createElement('article'); art.className='gsa-entry'; art.setAttribute('data-tier',t.tier); art.setAttribute('data-juris',t.juris); art.setAttribute('data-id',m.id);
+        art.innerHTML='<div class="gsa-acc">GSR-'+m.id+'</div><div class="gsa-body"><h3 class="gsa-ttl">'+esc(m.title.rendered.replace(/<[^>]+>/g,''))+'</h3>'
+          +'<p class="gsa-meta"><span class="gsa-chip '+TIERC[t.tier]+'">'+TIERN[t.tier]+'</span><span class="gsa-chip gsa-c-j">'+JN[t.juris]+'</span>'+(t.agency?esc(t.agency)+' &middot; ':'')+fmtDate(m.date)+' &middot; '+kind+size+'</p>'
+          +(t.note?'<p class="gsa-note">'+esc(t.note)+'</p>':'')
+          +(cites.length?'<p class="gsa-cite"><span>Cited in</span> '+cites.map(function(p){return '<a href="'+esc(p.link)+'">'+p.title.rendered+'</a>';}).join(' &middot; ')+'</p>':'')
+          +'</div><a class="gsa-get" href="'+esc(m.source_url)+'" target="_blank" rel="noopener">Download</a>';
+        var first=sec.querySelector('.gsa-entry'); if(first) sec.insertBefore(art,first); else sec.appendChild(art);
+      });
+      go();
+    });
+  }).catch(function(){});
+})();
+</script>
+<!-- /wp:html -->
