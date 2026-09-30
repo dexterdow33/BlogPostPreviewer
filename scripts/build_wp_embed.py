@@ -56,7 +56,10 @@ def build(sha: str) -> str:
     # its height (the host sizes the iframe so the page scrolls as one document),
     # asks the host to scroll to an opened bill (offset for the sticky site
     # header), mirrors the bill hash into the page URL, and receives "open" for
-    # deep links such as /nh-bill-tracker/#HB2026.
+    # deep links such as /nh-bill-tracker/#HB2026. The host says "hello" once it is
+    # listening (and again when the frame loads), because on a heavy page the
+    # tracker can finish before this script runs; the tracker answers with its
+    # height and "ready".
     bridge = """<script>
 (function () {
   var f = document.getElementById("gsr-nhbt");
@@ -75,6 +78,9 @@ def build(sha: str) -> str:
     else if (d.nhbt === "hash" && typeof d.hash === "string") { try { history.replaceState(null, "", location.pathname + location.search + d.hash); } catch (e) {} }
   });
   window.addEventListener("hashchange", send);
+  function hello() { try { f.contentWindow.postMessage({ nhbt: "hello" }, "*"); } catch (e) {} }
+  hello();
+  f.addEventListener("load", hello);
 })();
 </script>
 <!-- /wp:html -->"""
