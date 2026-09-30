@@ -141,8 +141,9 @@ BEATS = {
 # --------------------------------------------------------------------------- #
 # HTTP
 # --------------------------------------------------------------------------- #
-def fetch(url: str, timeout: int = 180, retries: int = 3) -> bytes | None:
-    """GET with a cache-buster, retries, and a polite User-Agent. None on 404."""
+def fetch(url: str, timeout: int = 180, retries: int = 3, max_bytes: int | None = None) -> bytes | None:
+    """GET with a cache-buster, retries, and a polite User-Agent. None on 404.
+    max_bytes reads only a head sample (used to inspect unknown files cheaply)."""
     sep = "&" if "?" in url else "?"
     busted = f"{url}{sep}x={int(time.time())}"
     last_err: Exception | None = None
@@ -150,8 +151,9 @@ def fetch(url: str, timeout: int = 180, retries: int = 3) -> bytes | None:
         req = urllib.request.Request(busted, headers={"User-Agent": USER_AGENT, "Accept": "*/*"})
         try:
             with urllib.request.urlopen(req, timeout=timeout) as resp:
-                data = resp.read()
-                print(f"  GET {url} -> {resp.status} {len(data):,} bytes", flush=True)
+                data = resp.read(max_bytes) if max_bytes else resp.read()
+                total = resp.headers.get("Content-Length") or "?"
+                print(f"  GET {url} -> {resp.status} {len(data):,} bytes{' (sample of ' + str(total) + ')' if max_bytes else ''}", flush=True)
                 return data
         except urllib.error.HTTPError as e:
             print(f"  GET {url} -> HTTP {e.code}", flush=True)
@@ -371,6 +373,36 @@ def extract_committee(actions: list[dict]) -> str | None:
 
 
 # --------------------------------------------------------------------------- #
+# RSS feed of all bills for a session (fallback bill list when LSRs.txt is empty)
+# --------------------------------------------------------------------------- #
+def parse_rss_items(xml_text: str) -> list[dict]:
+    """Return one dict per <item>, keys = lower-cased local tag names."""
+    import xml.etree.ElementTree as ET
+    items: list[dict] = []
+    try:
+        root = ET.fromstring(xml_text.encode("utf-8", errors="replace"))
+    except ET.ParseError as e:
+        print(f"  RSS parse error: {e}", flush=True)
+        return items
+    for item in root.iter("item"):
+        d: dict = {}
+        for child in item:
+            tag = child.tag.split("}")[-1].lower()
+            d[tag] = (child.text or "").strip()
+        items.append(d)
+    return items
+
+
+def looks_like_roster(rows: list[list[str]]) -> bool:
+    """A roster row starts with a numeric id and has a last/first name pair."""
+    good = 0
+    for r in rows[:50]:
+        if len(r) >= 5 and r[0].strip().isdigit() and re.match(r"^[A-Za-z'\- .]+$", r[1].strip() or "x") and re.match(r"^[A-Za-z'\- .]+$", r[2].strip() or "x"):
+            good += 1
+    return good >= max(3, len(rows[:50]) // 2)
+
+
+# --------------------------------------------------------------------------- #
 # Main build
 # --------------------------------------------------------------------------- #
 def main() -> int:
@@ -391,12 +423,13 @@ def main() -> int:
     # Directory index (may be a listing, may be forbidden) --------------------
     print("Fetching directory index", flush=True)
     idx = fetch(BASE)
+    index_links: list[str] = []
     if idx:
         html = decode(idx)
-        links = sorted(set(re.findall(r'href="([^"]+\.(?:txt|csv|zip|pdf|xls|xlsx))"', html, re.I)))
+        index_links = sorted(set(re.findall(r'href="([^"]+\.(?:txt|csv|zip|pdf|xls|xlsx))"', html, re.I)))
         with open(os.path.join(raw_dir, "_directory_index.html"), "w", encoding="utf-8") as f:
             f.write(html)
-        report.append("## Directory index\n\n" + ("\n".join(f"- {l}" for l in links) if links else "_no file links found in index HTML_") + "\n")
+        report.append("## Directory index\n\n" + ("\n".join(f"- {l}" for l in index_links) if index_links else "_no file links found in index HTML_") + "\n")
     else:
         report.append("## Directory index\n\n_index not retrievable_\n")
 
@@ -430,23 +463,66 @@ def main() -> int:
                 f.write("\n".join(lines[:400]) + "\n")
             report.append(f"_raw file {size_mb:.1f} MB exceeds the commit limit; 400-line head sample saved to data/raw/samples/_\n")
 
+    # Sample every other text file the index lists, so the report shows what
+    # else the General Court publishes (roster files in particular).
+    known = {n.lower() for n in list(REQUIRED_FILES) + OPTIONAL_FILES}
+    samples: dict[str, list[list[str]]] = {}
+    for link in index_links:
+        name = link.rsplit("/", 1)[-1]
+        if name.lower() in known or not re.search(r"\.(txt|csv)$", name, re.I):
+            continue
+        url = link if link.startswith("http") else BASE + name
+        print(f"Sampling {name}", flush=True)
+        data = fetch(url, max_bytes=65536, retries=2)
+        if not data:
+            continue
+        text = decode(data)
+        lines = [l for l in text.replace("\r\n", "\n").split("\n") if l.strip()]
+        rows = [l.split("|") for l in lines[:60]]
+        samples[name] = rows
+        hist = field_histogram(lines)
+        report.append(f"## (index) {name}\n\n- sampled bytes: {len(data):,}; field-count histogram: {', '.join(f'{k}: {v}' for k, v in hist)}\n\n")
+        for l in lines[:3]:
+            report.append("```\n" + "\n".join(f"[{i}]={p[:160]}" for i, p in enumerate(l.split("|"))) + "\n```\n")
+        with open(os.path.join(raw_dir, "samples", name.replace(".txt", ".sample.txt").replace(".csv", ".sample.csv")), "w", encoding="utf-8", newline="\n") as f:
+            f.write("\n".join(lines[:200]) + "\n")
+
+    # RSS feed per session: the bill list with titles, used when LSRs.txt is empty
+    rss_items: dict[str, list[dict]] = {}
+    for session in wanted_sessions:
+        print(f"Fetching RSS bill list for {session}", flush=True)
+        data = fetch(RSS_URL.format(session=session), retries=2)
+        if not data:
+            report.append(f"## RSS {session}\n\n_not available_\n")
+            continue
+        text = decode(data)
+        with open(os.path.join(raw_dir, f"rss_{session}.xml"), "w", encoding="utf-8", newline="\n") as f:
+            f.write(text)
+        items = parse_rss_items(text)
+        rss_items[session] = items
+        tags = collections.Counter(t for it in items for t in it)
+        report.append(f"## RSS {session}\n\n- bytes: {len(data):,}; items: {len(items):,}\n- tags seen: {dict(tags)}\n\n")
+        for it in items[:2]:
+            report.append("```\n" + "\n".join(f"{k}={v[:200]}" for k, v in it.items()) + "\n```\n")
+
     missing = [n for n in REQUIRED_FILES if n not in texts]
-    if "LSRs.txt" not in texts or len(texts["LSRs.txt"].strip()) < 1024:
-        report.append("\n**FATAL: LSRs.txt missing or effectively empty; the dump is degraded. No JSON written.**\n")
-        write_report(raw_dir, report)
-        print("FATAL: LSRs.txt missing or empty", file=sys.stderr)
-        return 2
+    lsrs_ok = "LSRs.txt" in texts and len(texts["LSRs.txt"].strip()) >= 1024
+    if not lsrs_ok:
+        report.append("\n**LSRs.txt missing or effectively empty (a known intermittent condition of the dump). Bill list built from the RSS feed, LsrsOnly.txt and Docket.txt instead.**\n")
     if missing:
         report.append(f"\n**Warning: missing required files: {', '.join(missing)}**\n")
 
     # Parse LSRs ---------------------------------------------------------------
-    lsr_records, st = split_records(texts["LSRs.txt"])
-    report.append(f"\n## Parse: LSRs.txt\n\n{json.dumps(st)}\n")
-    session_counts = collections.Counter(r[0].strip() for r in lsr_records)
-    report.append("Session years present: " + ", ".join(f"{k}: {v}" for k, v in sorted(session_counts.items())) + "\n")
+    lsr_records: list[list[str]] = []
+    if lsrs_ok:
+        lsr_records, st = split_records(texts["LSRs.txt"])
+        report.append(f"\n## Parse: LSRs.txt\n\n{json.dumps(st)}\n")
+        session_counts = collections.Counter(r[0].strip() for r in lsr_records)
+        report.append("Session years present: " + ", ".join(f"{k}: {v}" for k, v in sorted(session_counts.items())) + "\n")
 
     bills: dict[str, dict] = {}       # key session|lsr
     by_bill_id: dict[str, str] = {}   # session|BILLID -> key
+    raw_by_key: dict[str, list[str]] = {}
     for r in lsr_records:
         if len(r) < 11:
             continue
@@ -472,26 +548,82 @@ def main() -> int:
             "origin_body": body,
             "origin_chamber": {"H": "House", "S": "Senate"}.get(body, body),
             "type_num": r[4].strip(),
-            "raw_fields": [f.strip() for f in r],  # kept while the column map is being audited
+            "source_row": "LSRs.txt",
             "sponsors": [],
             "actions": [],
             "roll_calls": [],
         }
+        raw_by_key[key] = [f.strip() for f in r]
         if bid:
             by_bill_id[f"{session}|{bid}"] = key
 
     # Show a few named bills' raw fields so unknown columns can be mapped.
     probe_ids = ["HB2026", "HB1422", "SB434", "HB1267", "HB1102", "HB1442", "SB268", "HB1", "HB2", "SB1"]
-    report.append("\n### Raw field dump for reference bills (2026)\n")
-    for pid in probe_ids:
-        k = by_bill_id.get(f"2026|{pid}")
-        if k:
-            b = bills[k]
-            report.append(f"**{b['bill_label']}** (LSR {b['lsr_id']}) {b['title'][:120]}\n\n```\n" +
-                          "\n".join(f"[{i}]={v[:200]}" for i, v in enumerate(b["raw_fields"])) + "\n```\n")
+    if raw_by_key:
+        report.append("\n### Raw LSRs.txt fields for reference bills (2026)\n")
+        for pid in probe_ids:
+            k = by_bill_id.get(f"2026|{pid}")
+            if k and k in raw_by_key:
+                b = bills[k]
+                report.append(f"**{b['bill_label']}** (LSR {b['lsr_id']}) {b['title'][:120]}\n\n```\n" +
+                              "\n".join(f"[{i}]={v[:200]}" for i, v in enumerate(raw_by_key[k])) + "\n```\n")
+
+    def ensure_bill(session: str, lsr: str, bid: str, title: str, body: str, source: str) -> dict:
+        key = lsr_key(session, lsr)
+        b = bills.get(key)
+        if b is None:
+            bid = norm_bill_id(bid)
+            b = {
+                "session": session,
+                "lsr": lsr.lstrip("0") or "0",
+                "lsr_id": f"{session[-2:]}-{(lsr.lstrip('0') or '0').zfill(4)}",
+                "bill_id": bid,
+                "bill_label": bill_label(bid) if bid else "",
+                "bill_type": TYPE_LABELS.get(bill_prefix(bid), bill_prefix(bid) or "LSR (no bill number yet)"),
+                "expanded_id": "",
+                "title": title.strip(),
+                "origin_body": body,
+                "origin_chamber": {"H": "House", "S": "Senate"}.get(body, body or ""),
+                "type_num": "",
+                "source_row": source,
+                "sponsors": [],
+                "actions": [],
+                "roll_calls": [],
+            }
+            bills[key] = b
+            if bid:
+                by_bill_id[f"{session}|{bid}"] = key
+        else:
+            if not b["title"] and title:
+                b["title"] = title.strip()
+            if not b["bill_id"] and bid:
+                b["bill_id"] = norm_bill_id(bid); b["bill_label"] = bill_label(b["bill_id"]); b["bill_type"] = TYPE_LABELS.get(bill_prefix(b["bill_id"]), b["bill_type"])
+                by_bill_id[f"{session}|{b['bill_id']}"] = key
+            if not b["origin_body"] and body:
+                b["origin_body"] = body; b["origin_chamber"] = {"H": "House", "S": "Senate"}.get(body, body)
+        return b
+
+    # RSS-derived bills (billnumber / lsrnumber / lsrtitle per the Open States scraper)
+    rss_added = collections.Counter()
+    for session, items in rss_items.items():
+        for it in items:
+            bid = it.get("billnumber") or ""
+            lsr = it.get("lsrnumber") or ""
+            title = it.get("lsrtitle") or it.get("title") or ""
+            if not lsr and not bid:
+                continue
+            body = bid[:1].upper() if bid[:1].upper() in ("H", "S") else ""
+            before = len(bills)
+            b = ensure_bill(session, lsr or "0", bid, title, body, "rss")
+            b["rss"] = {k: v for k, v in it.items() if k not in ("billnumber", "lsrnumber", "lsrtitle")}
+            if len(bills) > before:
+                rss_added[session] += 1
+    if rss_added:
+        report.append(f"\nBills added from RSS: {dict(rss_added)}\n")
 
     # LsrsOnly: LSR -> document id -------------------------------------------
     doc_ids: dict[str, str] = {}
+    lsronly_titles: dict[str, str] = {}
     if "LsrsOnly.txt" in texts:
         recs, st = split_records(texts["LsrsOnly.txt"])
         report.append(f"\n## Parse: LsrsOnly.txt\n\n{json.dumps(st)}\n")
@@ -499,18 +631,60 @@ def main() -> int:
             if len(r) < 3 or "-" not in r[0]:
                 continue
             yy, num = r[0].strip().split("-", 1)
-            session = ("20" + yy) if len(yy) == 2 else yy
+            num = re.sub(r"\D", "", num) or num
+            session = ("20" + yy.strip()) if len(yy.strip()) == 2 else yy.strip()
             doc_ids[lsr_key(session, num)] = r[2].strip()
+            # a long text field is almost certainly the title
+            longest = max((f.strip() for f in r[1:]), key=len, default="")
+            if len(longest) > 12 and not longest.isdigit():
+                lsronly_titles[lsr_key(session, num)] = longest
     for key, b in bills.items():
         did = doc_ids.get(key)
         if did:
             b["doc_id"] = did
+        if not b["title"] and key in lsronly_titles:
+            b["title"] = lsronly_titles[key]
+
+    # Docket-derived bills: any (session, LSR) with actions but no row yet
+    if "Docket.txt" in texts:
+        recs_d, _ = split_records(texts["Docket.txt"])
+        first_seen: dict[str, list[str]] = {}
+        for r in recs_d:
+            if len(r) < 6:
+                continue
+            session, lsr = r[0].strip(), r[1].strip()
+            if session not in wanted_sessions:
+                continue
+            key = lsr_key(session, lsr)
+            if key not in first_seen:
+                first_seen[key] = r
+        added = 0
+        for key, r in first_seen.items():
+            if key in bills:
+                continue
+            session, lsr, _ts, bid, body = (x.strip() for x in r[:5])
+            ensure_bill(session, lsr, bid, lsronly_titles.get(key, ""), body if body in ("H", "S") else "", "docket")
+            if key in doc_ids:
+                bills[key]["doc_id"] = doc_ids[key]
+            added += 1
+        report.append(f"\nBills added from Docket.txt alone: {added}\n")
 
     # Legislators --------------------------------------------------------------
     legislators: dict[str, dict] = {}
-    if "legislators.txt" in texts:
-        recs, st = split_records(texts["legislators.txt"])
-        report.append(f"\n## Parse: legislators.txt\n\n{json.dumps(st)}\n")
+    roster_text = texts.get("legislators.txt", "")
+    if len(roster_text.strip()) < 100:
+        # legislators.txt is empty; look for a roster among the sampled index files
+        for name, rows in samples.items():
+            if looks_like_roster(rows):
+                print(f"Using {name} as the legislator roster", flush=True)
+                full = fetch(BASE + name)
+                if full:
+                    roster_text = decode(full)
+                    report.append(f"\n**Roster source: {name} (legislators.txt was empty)**\n")
+                    break
+    if len(roster_text.strip()) >= 100:
+        recs, st = split_records(roster_text)
+        report.append(f"\n## Parse: legislator roster\n\n{json.dumps(st)}\n")
         for r in recs:
             if len(r) < 6:
                 continue
@@ -524,7 +698,7 @@ def main() -> int:
                 "first": first,
                 "body": r[4].strip(),
                 "seat": r[5].strip(),
-                "raw_fields": [f.strip() for f in r],
+                "extra": [f.strip() for f in r[6:]],
             }
         # distinct values of the trailing columns help identify party/district/county
         for i in range(4, max(len(r) for r in recs) if recs else 0):
@@ -717,7 +891,12 @@ def main() -> int:
         json.dump({"generated_at": now.isoformat(timespec="seconds"), "sessions": emitted, "source": BASE}, f, indent=2)
 
     write_report(raw_dir, report)
+    print("\n" + "=" * 78 + "\nDISCOVERY REPORT\n" + "=" * 78)
+    print("\n".join(report))
     print(json.dumps(emitted, indent=2))
+    if not emitted:
+        print("FATAL: no bills built for any wanted session", file=sys.stderr)
+        return 2
     return 0
 
 

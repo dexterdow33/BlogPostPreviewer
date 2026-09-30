@@ -44,6 +44,7 @@ jobs:
   refresh:
     name: Fetch and build data
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     outputs:
       changed: ${{ steps.commit.outputs.changed }}
     steps:
@@ -76,6 +77,7 @@ jobs:
 
       - name: Commit refreshed data
         id: commit
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
