@@ -67,7 +67,9 @@ EDT / 02:35 EST), fetches each file once, and identifies itself with a
 User-Agent naming this repository. A run started by a push or pull request
 during the day does not fetch; it rebuilds from the last saved raw files
 (`--offline`). A manual run can force a daytime fetch with the
-`force_fetch` input; use that sparingly.
+`force_fetch` input; use that sparingly. Pull-request runs validate the
+build and do not commit data; commits come from the nightly schedule,
+manual runs, and pushes to the default branch.
 
 ## Outcome classification
 
