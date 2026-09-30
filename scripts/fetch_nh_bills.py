@@ -432,6 +432,10 @@ def main() -> int:
 
     # ---- get the files -------------------------------------------------------
     texts: dict[str, str] = {}
+    # When the General Court's files were last pulled. A daytime rebuild reads the
+    # saved copies, so its build time says nothing about how fresh the data is.
+    fetched_marker = os.path.join(raw_dir, "_fetched_at.txt")
+    reused_copy = False
     if args.offline:
         for name in list(REQUIRED_FILES) + OPTIONAL_FILES:
             p = os.path.join(raw_dir, name)
@@ -457,6 +461,7 @@ def main() -> int:
                 prev = os.path.join(raw_dir, name)
                 if os.path.exists(prev) and os.path.getsize(prev) > 1024:
                     text = open(prev, encoding="utf-8").read()
+                    reused_copy = True
                     report.append(f"## {name}\n\n**Served empty ({len(data)} bytes); reused the previous run's copy.**\n")
                     print(f"  {name} served empty; reusing previous copy", flush=True)
                 else:
@@ -465,11 +470,16 @@ def main() -> int:
             texts[name] = text
             if len(data) / 1_000_000 <= args.raw_limit_mb:
                 open(os.path.join(raw_dir, name), "w", encoding="utf-8", newline="\n").write(text)
+        if all(n in texts for n in REQUIRED_FILES) and not reused_copy:
+            open(fetched_marker, "w", encoding="utf-8").write(now.isoformat(timespec="seconds") + "\n")
         for session in wanted:
             print(f"Fetching RSS bill list for {session}", flush=True)
             data = fetch(RSS_URL.format(session=session), retries=1, timeout=90)
             if data:
                 open(os.path.join(raw_dir, f"rss_{session}.xml"), "w", encoding="utf-8", newline="\n").write(decode(data))
+
+    fetched_at = open(fetched_marker, encoding="utf-8").read().strip() if os.path.exists(fetched_marker) else None
+    report.append(f"_Files last pulled from the General Court: {fetched_at or 'unknown'}._\n")
 
     for name, text in texts.items():
         lines = [l for l in text.replace("\r\n", "\n").split("\n") if l.strip()]
@@ -738,7 +748,7 @@ def main() -> int:
             note = ("Prior-session bills rebuilt from the docket file alone. The General Court's current data dump does not carry titles or "
                     "sponsors for bills that finished in an earlier session, so most rows here show a bill number and docket only.")
         payload = {
-            "generated_at": now.isoformat(timespec="seconds"), "as_of": today.isoformat(), "session": session,
+            "generated_at": now.isoformat(timespec="seconds"), "fetched_at": fetched_at, "as_of": today.isoformat(), "session": session,
             "session_note": note,
             "source": {"name": "New Hampshire General Court bill status data dump", "url": BASE,
                        "note": "Pipe-delimited files published by the General Court; parsed by scripts/fetch_nh_bills.py. Column mapping documented in docs/METHODOLOGY.md and audited in data/raw/_discovery_report.md."},
@@ -774,7 +784,7 @@ def main() -> int:
     old = os.path.join(out_dir, "legislator_votes.json")
     if os.path.exists(old):
         os.remove(old)
-    json.dump({"generated_at": now.isoformat(timespec="seconds"), "as_of": today.isoformat(), "sessions": emitted, "source": BASE}, open(os.path.join(out_dir, "index.json"), "w", encoding="utf-8"), indent=2)
+    json.dump({"generated_at": now.isoformat(timespec="seconds"), "fetched_at": fetched_at, "as_of": today.isoformat(), "sessions": emitted, "source": BASE}, open(os.path.join(out_dir, "index.json"), "w", encoding="utf-8"), indent=2)
 
     write_report(raw_dir, report)
     print("\n" + "=" * 78 + "\nDISCOVERY REPORT\n" + "=" * 78 + "\n" + "\n".join(report))
