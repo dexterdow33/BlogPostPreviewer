@@ -1,0 +1,504 @@
+/* https://granitestatereport.com/?custom-css=47c88c9749 */
+/* ==========================================================================
+   Granite State Report - Additional CSS  (v9, 2026-09-18 14:15 ET; sections 1-18 = v8 unchanged)
+   v4 - 2026-09-17 11:15 ET. Supersedes v1 (live 2026-08-20) and the unpasted v3.
+   Rollback: paste ROLLBACK_custom-css_as-live_2026-09-17_1112ET.css.
+
+   1. box-sizing for the article shell (v1)
+   2. centering that survives the theme (v1)
+   3. fact-check table: fixed layout; the narrow # and Status columns apply
+      ONLY to four-column tables. v1 forced a 38px first column on every
+      table with the class, which crushed the two-column table on the
+      Record Room. Long tokens now wrap instead of overflowing.
+   4. long strings never blow out the column (v1)
+   5. phone rules (v1)
+   6. footer legal row wraps on phones (v3, F2)
+   7. document never scrolls sideways (v3)
+   8. hide the theme's empty subscribe block under articles (F9)
+   ========================================================================== */
+
+/* --- 1. honest box model ------------------------------------------------ */
+.gsr-article,
+.gsr-article * { box-sizing: border-box !important; }
+
+/* --- 2. centering that survives the theme ------------------------------- */
+.gsr-article.gsr-article.gsr-article {
+  width: 100% !important;
+  max-width: 780px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  float: none !important;
+  position: static !important;
+}
+
+/* --- 3. fact-check table stays inside the column ------------------------ */
+.gsr-article .gsr-factcheck {
+  width: 100% !important;
+  table-layout: fixed !important;
+}
+.gsr-article .gsr-factcheck th,
+.gsr-article .gsr-factcheck td {
+  overflow-wrap: anywhere !important;
+  word-break: normal !important;
+  hyphens: none !important;
+}
+/* four-column fact-check tables only: narrow # and Status columns */
+.gsr-article .gsr-factcheck:has(tr > *:nth-child(4)):not(:has(tr > *:nth-child(5))) tr > *:nth-child(1) { width: 38px !important; }
+.gsr-article .gsr-factcheck:has(tr > *:nth-child(4)):not(:has(tr > *:nth-child(5))) tr > *:nth-child(3) { width: 98px !important; overflow-wrap: normal !important; }
+
+/* --- 4. long strings never blow out the column -------------------------- */
+.gsr-article p,
+.gsr-article li,
+.gsr-article .gsr-sources,
+.gsr-article .gsr-contact { overflow-wrap: break-word !important; }
+.gsr-article img,
+.gsr-article svg { max-width: 100% !important; height: auto !important; }
+
+/* --- 5. phones ---------------------------------------------------------- */
+@media (max-width: 640px) {
+  .gsr-article.gsr-article.gsr-article {
+    padding: 26px 18px 34px !important;
+    box-shadow: none !important;
+  }
+  .gsr-article .gsr-title { font-size: 30px !important; line-height: 35px !important; }
+  .gsr-article .gsr-dek { font-size: 19px !important; line-height: 27px !important; }
+  .gsr-article h2 { font-size: 23px !important; line-height: 28px !important; }
+  .gsr-article .gsr-masthead { font-size: 24px !important; line-height: 27px !important; }
+  .gsr-article .gsr-factcheck { font-size: 12px !important; line-height: 17px !important; }
+  .gsr-article .gsr-factcheck th,
+  .gsr-article .gsr-factcheck td { padding: 7px 6px !important; }
+  .gsr-article .gsr-statute-box { padding: 14px 16px !important; }
+  .gsr-article .gsr-contact { padding: 18px 18px !important; }
+  .gsr-article .gsr-engage { padding: 16px 18px !important; }
+  .gsr-article .gsr-pullquote {
+    padding: 16px 18px !important;
+    font-size: 20px !important;
+    line-height: 29px !important;
+  }
+}
+
+/* --- 6. footer legal row: wrap on phones (F2) ---------------------------- */
+.gsr-footer-nav {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  align-items: baseline !important;
+  row-gap: 4px !important;
+  column-gap: 0 !important;
+  max-width: 100% !important;
+}
+.gsr-footer-nav a,
+.gsr-footer-nav .sep { white-space: nowrap !important; }
+
+/* --- 7. belt and braces: the document itself never scrolls sideways ------ */
+html { overflow-x: clip !important; }
+@supports not (overflow: clip) { html { overflow-x: hidden !important; } }
+
+/* --- 8. the theme's subscribe block under articles is empty (F9) --------- */
+.davenport-subscribe-block-container { display: none !important; }
+
+/* --- 9. wide content tables scroll instead of clipping on phones (v5) ---
+   Older article templates use auto-layout tables that ran past the phone
+   viewport; html{overflow-x:clip} then hid the right-hand columns entirely.
+   The two fixed-layout GSR tables are excluded so they keep wrapping. */
+@media (max-width: 640px) {
+  .entry-content table:not(.gsr-factcheck):not(.rr-held) {
+    display: block !important;
+    width: max-content !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+  }
+  .entry-content table:not(.gsr-factcheck):not(.rr-held) caption { white-space: normal !important; }
+}
+
+/* --- 10. long URLs and unbroken strings never widen the page (v5) ------- */
+.entry-content { overflow-wrap: break-word !important; }
+
+/* --- 11. box-sizing must outrank a post that resets it (v5.1) ---------
+   Post 3544's article CSS uses `all: initial !important`, which beat the
+   single-class box-sizing rule above and pushed the page 21px wide. */
+.gsr-article.gsr-article.gsr-article,
+.gsr-article.gsr-article.gsr-article * { box-sizing: border-box !important; }
+
+/* ==========================================================================
+   v6 - 2026-09-17 21:45 ET. Sections 1-11 above are the v5.1 sheet, unchanged.
+   Sections 12-16 restore the morning v4 rules that the v4(11:15)->v5->v5.1
+   lineage never carried. Rollback: ROLLBACK_custom-css_as-live_2026-09-17_2130ET.css
+   ========================================================================== */
+
+/* --- 12. status colors: VERIFIED green, ATTRIBUTED rust ------------------
+   .gsr-pass/.gsr-attr sit on the td, and the ".gsr-factcheck td" color rule
+   in every article's own shell (v1/v2) outranks them: status cells have
+   rendered black since August. */
+.gsr-article .gsr-factcheck td.gsr-pass { color: #2c5530 !important; font-weight: 700 !important; }
+.gsr-article .gsr-factcheck td.gsr-attr { color: #b14a37 !important; font-weight: 700 !important; }
+
+/* --- 13. embedded media never wider than the card ------------------------ */
+.gsr-article video,
+.gsr-article iframe,
+.gsr-article audio { max-width: 100% !important; }
+.gsr-article audio,
+.gsr-article .gsr-audio-player { display: block !important; width: 100% !important; }
+
+/* --- 14. corrections register (5 columns) scrolls sideways in its wrapper - */
+.gsr-article .gsr-tablewrap { width: 100% !important; overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+.gsr-article .gsr-tablewrap .gsr-register { margin: 0 !important; min-width: 640px !important; table-layout: auto !important; }
+
+/* --- 15. footer wordmark and separators on phones ------------------------ */
+.gsr-footer .gsr-footer-logo { max-width: min(330px, 100%) !important; height: auto !important; }
+.gsr-footer { overflow: hidden !important; }
+@media (max-width: 760px) {
+  .gsr-footer .gsr-footer-nav { column-gap: 16px !important; row-gap: 0 !important; }
+  .gsr-footer .gsr-footer-nav .sep { display: none !important; }
+  .gsr-footer .gsr-footer-logo { max-width: 260px !important; }
+}
+
+/* --- 16. phones: four-column fact-check tables stack into cards -----------
+   Same four-column guard as section 3; .rr-held (Record Room) and
+   .gsr-register are excluded by name as well. The header row and the row
+   number are hidden; the Source cell is labeled; template-v3 cells carry
+   data-label and get their own labels. Browsers without :has() keep the
+   wrapped table from section 3. */
+@media (max-width: 640px) {
+  .gsr-article .gsr-factcheck:has(tr > *:nth-child(4)):not(:has(tr > *:nth-child(5))):not(.rr-held):not(.gsr-register),
+  .gsr-article .gsr-factcheck:has(tr > *:nth-child(4)):not(:has(tr > *:nth-child(5))):not(.rr-held):not(.gsr-register) tbody,
+  .gsr-article .gsr-factcheck:has(tr > *:nth-child(4)):not(:has(tr > *:nth-child(5))):not(.rr-held):not(.gsr-register) tr,
+  .gsr-article .gsr-factcheck:has(tr > *:nth-child(4)):not(:has(tr > *:nth-child(5))):not(.rr-held):not(.gsr-register) td,
+  .gsr-article .gsr-factcheck:has(tr > *:nth-child(4)):not(:has(tr > *:nth-child(5))):not(.rr-held):not(.gsr-register) tr > td:nth-child(n) {
+    display: block !important; width: 100% !important; }
+  .gsr-article .gsr-factcheck:has(tr > *:nth-child(4)):not(:has(tr > *:nth-child(5))):not(.rr-held):not(.gsr-register) thead,
+  .gsr-article .gsr-factcheck:has(tr > *:nth-child(4)):not(:has(tr > *:nth-child(5))):not(.rr-held):not(.gsr-register) th,
+  .gsr-article .gsr-factcheck:has(tr > *:nth-child(4)):not(:has(tr > *:nth-child(5))):not(.rr-held):not(.gsr-register) tr:has(th) { display: none !important; }
+  .gsr-article .gsr-factcheck:has(tr > *:nth-child(4)):not(:has(tr > *:nth-child(5))):not(.rr-held):not(.gsr-register) tr {
+    border: 1px solid #d9d2c6 !important; margin: 0 0 10px 0 !important; padding: 8px 12px !important; background: #ffffff !important; }
+  .gsr-article .gsr-factcheck:has(tr > *:nth-child(4)):not(:has(tr > *:nth-child(5))):not(.rr-held):not(.gsr-register) td {
+    border: 0 !important; padding: 3px 0 !important; background: transparent !important; overflow-wrap: anywhere !important; }
+  .gsr-article .gsr-factcheck:has(tr > *:nth-child(4)):not(:has(tr > *:nth-child(5))):not(.rr-held):not(.gsr-register) tr:nth-child(even) td { background: transparent !important; }
+  .gsr-article .gsr-factcheck:has(tr > *:nth-child(4)):not(:has(tr > *:nth-child(5))):not(.rr-held):not(.gsr-register) tr > td:nth-child(1) { display: none !important; }
+  .gsr-article .gsr-factcheck:has(tr > *:nth-child(4)):not(:has(tr > *:nth-child(5))):not(.rr-held):not(.gsr-register) tr > td:nth-child(4)::before {
+    content: "Source: " !important; font-weight: 700 !important; color: #1a2e4a !important;
+    text-transform: uppercase !important; font-size: 11px !important; letter-spacing: 0.06em !important; }
+  .gsr-article .gsr-factcheck:has(tr > *:nth-child(4)):not(:has(tr > *:nth-child(5))):not(.rr-held):not(.gsr-register) tr > td[data-label]::before {
+    content: attr(data-label) ": " !important; font-weight: 700 !important; color: #1a2e4a !important;
+    text-transform: uppercase !important; font-size: 11px !important; letter-spacing: 0.06em !important; }
+  .gsr-article .gsr-factcheck { font-size: 13px !important; line-height: 19px !important; }
+}
+
+
+/* --- 17. correction notes (v7, 2026-09-17 22:45 ET) ----------------------
+   A dated correction note sits at the top of the article and never comes off.
+   Until now no class existed for one, so a note rendered as ordinary body
+   text. .gsr-correction is scoped twice: inside .gsr-article (beats the
+   per-post shell's ".gsr-article strong" color rule on specificity, which
+   matters because a post's own <style> block loads after this sheet) and
+   bare, for older articles that predate the shell. */
+.gsr-article .gsr-correction,
+.gsr-correction {
+  background: #f5e8dd !important;
+  border: 1px solid #e3c9b5 !important;
+  border-left: 6px solid #b14a37 !important;
+  padding: 16px 22px !important;
+  margin: 0 0 26px 0 !important;
+  font-family: 'Helvetica Neue', Arial, sans-serif !important;
+  font-size: 15px !important;
+  line-height: 24px !important;
+  color: #23211e !important;
+  box-sizing: border-box !important;
+  overflow-wrap: anywhere !important; }
+.gsr-article .gsr-correction strong,
+.gsr-correction strong { color: #b14a37 !important; font-weight: 700 !important; }
+.gsr-article .gsr-correction a,
+.gsr-correction a { color: #8f3a2b !important; text-decoration: underline !important; }
+@media (max-width: 640px) {
+  .gsr-article .gsr-correction,
+  .gsr-correction { padding: 14px 16px !important; font-size: 14px !important; line-height: 22px !important; }
+}
+
+
+/* --- 18. corrections footnote on pre-shell articles (v8, 2026-09-18) ------
+   Batch D1 put the corrections line on the archive's untemplated posts. They
+   have no .gsr-article wrapper, so the shell's .gsr-footnote rule never
+   reaches them. A class of its own keeps the two apart: nothing about the
+   templated posts' own footnotes changes. The second selector matches the
+   handful of templated posts that also took this line, where the shell's
+   ".gsr-article p" rule would otherwise set the size. */
+.gsr-corrections-note,
+.gsr-article .gsr-corrections-note {
+  font-family: 'Helvetica Neue', Arial, sans-serif !important;
+  font-size: 13px !important;
+  line-height: 20px !important;
+  color: #6c6557 !important;
+  font-style: italic !important;
+  margin: 30px 0 0 0 !important;
+  padding: 14px 0 0 0 !important;
+  border-top: 1px solid #d9d2c6 !important;
+  max-width: 100% !important;
+  overflow-wrap: anywhere !important; }
+.gsr-corrections-note a,
+.gsr-article .gsr-corrections-note a { color: #b14a37 !important; text-decoration: underline !important; }
+@media (max-width: 640px) {
+  .gsr-corrections-note,
+  .gsr-article .gsr-corrections-note { font-size: 12.5px !important; line-height: 19px !important; margin-top: 24px !important; }
+}
+
+
+/* --- 19. the GSR article shell, site-wide (v9, 2026-09-18) ---------------
+   Was pasted into every templated post at 14,425 bytes a copy. Here it is
+   loaded once and cached. Batch D2 wraps 318 more posts in .gsr-article and
+   they carry markup only. Every selector is scoped to .gsr-article.
+   NOT copied from the pasted shell: the fact-check and register table rules
+   and the fact-check half of its phone media block. Sections 3, 12, 14 and
+   16 above already own those and they carry a four-column :has() guard the
+   shell's version lacks. */
+/* ==== GSR shell v3 (2026-09-17). Scoped to .gsr-article. Do not edit per page. ==== */
+/* ---- article shell ---- */
+.gsr-article{max-width:780px !important;width:100% !important;margin:0 auto !important;padding:50px 56px 60px !important;
+  background:#ffffff !important;color:#23211e !important;box-sizing:border-box !important;
+  font-family:Georgia,'Times New Roman',serif !important;font-size:18px !important;
+  line-height:31px !important;box-shadow:0 10px 34px rgba(26,46,74,.12) !important;
+  float:none !important;position:static !important;overflow-wrap:break-word !important;}
+.gsr-article *{box-sizing:border-box !important;}
+.gsr-article img,.gsr-article svg,.gsr-article video,.gsr-article iframe,.gsr-article audio{max-width:100% !important;}
+.gsr-article img,.gsr-article svg{height:auto !important;}
+.gsr-article table{width:100% !important;max-width:100% !important;table-layout:fixed !important;border-collapse:collapse !important;}
+.gsr-article p{font-size:18px !important;line-height:31px !important;margin:0 0 18px 0 !important;
+  color:#23211e !important;}
+.gsr-article a{color:#b14a37 !important;text-decoration:underline !important;}
+.gsr-article strong{font-weight:bold !important;color:#1a2e4a !important;}
+.gsr-article h2{font-family:Georgia,'Times New Roman',serif !important;font-size:27px !important;
+  line-height:32px !important;color:#1a2e4a !important;font-weight:bold !important;
+  margin:46px 0 14px 0 !important;padding:0 0 8px 0 !important;
+  border-bottom:2px solid #b14a37 !important;letter-spacing:-0.3px !important;}
+.gsr-article h3{font-family:Georgia,'Times New Roman',serif !important;font-size:20px !important;
+  line-height:26px !important;color:#1a2e4a !important;font-weight:bold !important;
+  margin:28px 0 8px 0 !important;}
+.gsr-article ul,.gsr-article ol{margin:14px 0 20px 0 !important;padding:0 0 0 24px !important;}
+.gsr-article li{font-size:18px !important;line-height:29px !important;margin:0 0 11px 0 !important;
+  color:#23211e !important;}
+.gsr-article code{font-family:Menlo,Consolas,'Courier New',monospace !important;font-size:15px !important;
+  background:#f5f1ea !important;padding:1px 5px !important;color:#23211e !important;}
+
+/* ---- masthead (articles only; standing pages use the theme header) ---- */
+.gsr-article .gsr-masthead{text-align:center !important;border-top:4px solid #1a2e4a !important;
+  border-bottom:1px solid #d9d2c6 !important;padding:18px 0 16px 0 !important;
+  margin:0 0 30px 0 !important;color:#1a2e4a !important;font-size:31px !important;
+  line-height:34px !important;font-weight:bold !important;letter-spacing:1px !important;
+  background:#ffffff !important;}
+.gsr-article .gsr-masthead span{display:block !important;
+  font-family:'Helvetica Neue',Arial,sans-serif !important;font-size:11px !important;
+  line-height:16px !important;letter-spacing:0.22em !important;text-transform:uppercase !important;
+  color:#b14a37 !important;font-weight:700 !important;margin:9px 0 0 0 !important;}
+.gsr-article .gsr-masthead-logo{display:block !important;margin:0 auto !important;
+  width:100% !important;max-width:430px !important;height:auto !important;}
+
+/* ---- kicker / title / dek / byline ---- */
+.gsr-article .gsr-kicker{font-family:'Helvetica Neue',Arial,sans-serif !important;
+  font-size:12px !important;line-height:16px !important;letter-spacing:0.2em !important;
+  text-transform:uppercase !important;color:#b14a37 !important;font-weight:700 !important;
+  margin:0 0 10px 0 !important;}
+.gsr-article .gsr-title{font-family:Georgia,'Times New Roman',serif !important;
+  font-size:40px !important;line-height:44px !important;color:#1a2e4a !important;
+  font-weight:bold !important;letter-spacing:-0.6px !important;margin:0 0 12px 0 !important;
+  padding:0 !important;border:0 !important;text-transform:none !important;}
+.gsr-article .gsr-dek{font-family:Georgia,'Times New Roman',serif !important;
+  font-size:22px !important;line-height:30px !important;font-style:italic !important;
+  color:#5c574e !important;margin:0 0 18px 0 !important;}
+.gsr-article .gsr-byline{font-family:'Helvetica Neue',Arial,sans-serif !important;
+  font-size:13px !important;line-height:18px !important;letter-spacing:0.04em !important;
+  color:#6c6557 !important;border-top:1px solid #d9d2c6 !important;
+  border-bottom:1px solid #d9d2c6 !important;padding:10px 0 !important;margin:0 0 28px 0 !important;
+  text-transform:uppercase !important;}
+
+/* ---- audio (MP3 narration; hosted URL in WordPress, data URI only in the standalone) ---- */
+.gsr-article .gsr-audio{margin:0 0 22px 0 !important;padding:12px 14px !important;
+  background:#f5f1ea !important;border-left:4px solid #b14a37 !important;}
+.gsr-article .gsr-audio-label{display:block !important;font-family:'Helvetica Neue',Arial,sans-serif !important;
+  font-size:13px !important;font-weight:700 !important;letter-spacing:1px !important;
+  text-transform:uppercase !important;color:#1a2e4a !important;margin:0 0 8px 0 !important;}
+.gsr-article .gsr-audio-player{display:block !important;width:100% !important;height:40px !important;}
+
+/* ---- lede w/ drop cap ---- */
+.gsr-article .gsr-lede{font-size:18px !important;line-height:31px !important;
+  margin:0 0 20px 0 !important;color:#23211e !important;}
+.gsr-article .gsr-lede::first-letter{float:left !important;font-family:Georgia,serif !important;
+  font-size:64px !important;line-height:50px !important;font-weight:bold !important;
+  color:#b14a37 !important;padding:6px 9px 0 0 !important;}
+
+/* ---- figures (caption + credit inside the caption) ---- */
+.gsr-article .gsr-figure{margin:26px 0 !important;padding:0 !important;}
+.gsr-article .gsr-figure img{display:block !important;width:100% !important;height:auto !important;
+  border:1px solid #d9d2c6 !important;}
+.gsr-article .gsr-figcaption{font-family:'Helvetica Neue',Arial,sans-serif !important;
+  font-size:13px !important;line-height:19px !important;color:#6c6557 !important;margin:8px 0 0 0 !important;}
+
+/* ---- pullquote (peach accent, rust rule) ---- */
+.gsr-article .gsr-pullquote{background:#f5e8dd !important;border-left:6px solid #b14a37 !important;
+  padding:20px 26px !important;margin:26px 0 !important;font-family:Georgia,serif !important;
+  font-size:23px !important;line-height:32px !important;font-style:italic !important;
+  color:#1a2e4a !important;}
+
+/* ---- statute box (RSA / bill / law citations): white fill, green rule ---- */
+.gsr-article .gsr-statute-box{background:#ffffff !important;border:1px solid #d9d2c6 !important;
+  border-left:5px solid #2c5530 !important;padding:16px 22px !important;margin:22px 0 !important;
+  font-size:16px !important;line-height:26px !important;color:#23211e !important;}
+.gsr-article .gsr-statute-box strong{color:#2c5530 !important;}
+
+/* ---- closing signature ---- */
+.gsr-article .gsr-closing-sig{font-family:Georgia,serif !important;font-style:italic !important;
+  font-size:18px !important;line-height:26px !important;color:#b14a37 !important;
+  text-align:right !important;margin:30px 0 6px 0 !important;}
+
+/* ---- contact / tip card (navy accent) ---- */
+.gsr-article .gsr-contact{background:#1a2e4a !important;color:#ede7dc !important;
+  padding:22px 26px !important;margin:26px 0 22px 0 !important;
+  font-family:'Helvetica Neue',Arial,sans-serif !important;
+  font-size:15px !important;line-height:26px !important;}
+.gsr-article .gsr-contact strong{color:#ffffff !important;}
+.gsr-article .gsr-contact a{color:#e9a18f !important;}
+
+/* ---- footnote / editor's note / version log ---- */
+.gsr-article .gsr-footnote{font-family:'Helvetica Neue',Arial,sans-serif !important;
+  font-size:12px !important;line-height:18px !important;color:#8a8276 !important;
+  font-style:italic !important;margin:18px 0 0 0 !important;}
+
+/* ---- colophon ---- */
+.gsr-article .gsr-credit-note{font-family:'Helvetica Neue',Arial,sans-serif !important;
+  font-size:12px !important;line-height:18px !important;color:#7a7468 !important;
+  border-top:2px solid #1a2e4a !important;padding:14px 0 0 0 !important;margin:36px 0 0 0 !important;
+  text-align:center !important;letter-spacing:0.08em !important;text-transform:uppercase !important;}
+
+/* ---- engagement / poll block ---- */
+.gsr-article .gsr-engage{background:#f5e8dd !important;border:1px solid #e3cbb6 !important;
+  padding:20px 24px !important;margin:26px 0 !important;
+  font-family:'Helvetica Neue',Arial,sans-serif !important;font-size:15px !important;line-height:24px !important;
+  color:#23211e !important;}
+.gsr-article .gsr-engage h3{font-family:'Helvetica Neue',Arial,sans-serif !important;
+  font-size:13px !important;letter-spacing:0.08em !important;text-transform:uppercase !important;
+  color:#b14a37 !important;margin:0 0 12px 0 !important;border:0 !important;}
+.gsr-article .gsr-engage strong{color:#1a2e4a !important;}
+.gsr-article .gsr-engage .opt{color:#5c574e !important;font-style:italic !important;}
+
+/* ---- sources ---- */
+.gsr-article .gsr-sources{font-family:'Helvetica Neue',Arial,sans-serif !important;
+  font-size:12px !important;line-height:19px !important;color:#5c574e !important;
+  border-top:1px solid #d9d2c6 !important;padding:14px 0 0 0 !important;margin:26px 0 0 0 !important;}
+.gsr-article .gsr-sources strong{color:#1a2e4a !important;}
+.gsr-article .gsr-sources a{color:#b14a37 !important;}
+.gsr-article .gsr-disclosure{font-family:Georgia,serif !important;font-style:italic !important;
+  font-size:15px !important;line-height:24px !important;color:#5c574e !important;
+  border-left:3px solid #b14a37 !important;padding:4px 0 4px 16px !important;margin:0 0 20px 0 !important;}
+
+/* ---- sample / notice block (policy pages) ---- */
+.gsr-article .gsr-sample{background:#fbfaf7 !important;border:1px solid #d9d2c6 !important;
+  border-left:5px solid #b14a37 !important;padding:16px 22px !important;margin:22px 0 !important;
+  font-family:'Helvetica Neue',Arial,sans-serif !important;font-size:15px !important;
+  line-height:24px !important;color:#23211e !important;}
+.gsr-article .gsr-sample strong{color:#b14a37 !important;}
+
+/* ---- phones (<=640px): tighter shell, smaller display type, stacked fact-check rows ---- */
+@media (max-width:640px){
+
+  .gsr-article{padding:26px 18px 34px !important;box-shadow:none !important;}
+  .gsr-article .gsr-title{font-size:30px !important;line-height:35px !important;}
+  .gsr-article .gsr-dek{font-size:19px !important;line-height:27px !important;}
+  .gsr-article h2{font-size:23px !important;line-height:28px !important;margin:36px 0 12px 0 !important;}
+  .gsr-article .gsr-masthead{font-size:24px !important;line-height:27px !important;padding:14px 0 12px 0 !important;margin:0 0 22px 0 !important;}
+  .gsr-article .gsr-lede::first-letter{font-size:54px !important;line-height:44px !important;}
+  .gsr-article .gsr-pullquote{padding:16px 18px !important;font-size:20px !important;line-height:29px !important;}
+  .gsr-article .gsr-statute-box{padding:14px 16px !important;}
+  .gsr-article .gsr-contact{padding:18px 18px !important;}
+  .gsr-article .gsr-engage{padding:16px 18px !important;}
+}
+
+/* ==== end GSR shell v3 ==== */
+
+/* ==========================================================
+   GSR HEADER + MAIN MENU  v1  (2026-09-29)
+   Rollback: delete everything from this banner to the END banner.
+   ========================================================== */
+header.main-header .logo-link img.regular-logo,
+header.main-header .logo-link img.light-logo {
+  width: min(520px, 78vw) !important;
+  height: auto !important;
+  max-width: 100% !important;
+}
+header.main-header .header-center .logo { padding: 14px 0 10px !important; }
+header.main-header.fixed .logo-link img.regular-logo,
+header.main-header.fixed .logo-link img.light-logo { width: min(300px, 60vw) !important; }
+header.main-header.fixed .header-center .logo { padding: 6px 0 !important; }
+.navbar-center-wrapper {
+  border-top: 3px solid #1a2e4a !important;
+  border-bottom: 1px solid #1a2e4a !important;
+  margin-bottom: 36px !important;
+  background: #fff;
+}
+.navbar-center-wrapper .nav { display: flex; justify-content: center; flex-wrap: wrap; }
+.navbar .nav > li { padding: 0 !important; }
+.navbar .nav > li > a,
+.mainmenu .nav > li > a {
+  font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: #23211e !important;
+  padding: 15px 16px 14px !important;
+  line-height: 18px !important;
+  position: relative;
+}
+.navbar .nav > li > a::before {
+  content: "";
+  position: absolute; left: 16px; right: 16px; bottom: 6px;
+  height: 2px; background: #b14a37;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .18s ease;
+}
+.navbar .nav > li:hover > a,
+.navbar .nav > li > a:focus-visible,
+.navbar .nav > li.current-menu-item > a,
+.navbar .nav > li.current-menu-ancestor > a { color: #1a2e4a !important; }
+.navbar .nav > li:hover > a::before,
+.navbar .nav > li > a:focus-visible::before,
+.navbar .nav > li.current-menu-item > a::before,
+.navbar .nav > li.current-menu-ancestor > a::before { transform: scaleX(1); }
+.navbar .nav > li.menu-item-has-children > a::after { display: none !important; }
+.navbar .nav > li:last-child > a { color: #b14a37 !important; }
+.nav > li .sub-menu,
+.nav > li > .sub-menu {
+  margin-top: 0 !important;
+  border: 0 !important;
+  border-top: 3px solid #1a2e4a !important;
+  background: #fff !important;
+  box-shadow: 0 10px 28px rgba(26, 46, 74, .14) !important;
+  padding: 6px 0 !important;
+  min-width: 250px;
+}
+.nav .sub-menu li.menu-item > a {
+  font-family: Georgia, "Times New Roman", serif !important;
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: #23211e !important;
+  padding: 9px 22px !important;
+  border-bottom: 1px solid #eee9e1 !important;
+  min-width: 250px;
+}
+.nav .sub-menu li.menu-item:last-child > a { border-bottom: 0 !important; }
+.nav .sub-menu li.menu-item > a:hover,
+.nav .sub-menu li.menu-item > a:focus-visible {
+  background: #fbfaf7 !important;
+  color: #1a2e4a !important;
+  box-shadow: inset 3px 0 0 #b14a37;
+}
+@media (max-width: 991px) {
+  .navbar-center-wrapper .nav { display: block; }
+  .navbar .nav > li > a { padding: 12px 16px !important; text-align: left; }
+  .navbar .nav > li > a::before { display: none; }
+  .nav > li .sub-menu, .nav > li > .sub-menu { box-shadow: none !important; border-top: 0 !important; }
+  .nav .sub-menu li.menu-item > a { padding-left: 32px !important; }
+}
+  #mgt-menu-item-8876 > ul.sub-menu { left: auto !important; right: 0 !important; }
+/* ========================= END GSR HEADER + MAIN MENU v1 ========================= */
+/* §29 F76 — keep the last menu dropdown (Support) inside the viewport */
+#mgt-menu-item-8876 > ul.sub-menu { left: auto !important; right: 0 !important; }
