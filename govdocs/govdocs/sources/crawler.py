@@ -111,33 +111,62 @@ class Crawler(Source):
 
     # ------------------------------------------------------------------
     def crawl_seed(self, client, seed, opts):
+        """Crawl one seed. Optional seed keys:
+        max_pages / max_depth   override the command-line limits for this seed
+        follow_patterns         regexes; only HTML pages matching one are crawled
+                                (start URLs are always fetched)
+        document_page_patterns  regexes; HTML pages matching one are recorded as
+                                documents themselves (e.g. RSA chapters, press
+                                releases) instead of only being crawled
+        archive_series          {"slug": ..., "label": ...} used by `archive`
+        classify_by_host        true: `archive` files documents by website
+                                (for broad sweeps across many agencies)
+        """
         domains = [d.lower() for d in seed["allowed_domains"]]
         agency = seed.get("name")
+        max_pages = seed.get("max_pages", opts.max_pages)
+        max_depth = seed.get("max_depth", opts.max_depth)
+        follow = [re.compile(x, re.I) for x in seed.get("follow_patterns", [])]
+        docpages = [re.compile(x, re.I) for x in seed.get("document_page_patterns", [])]
+        extra = {k: seed[k] for k in ("archive_series", "classify_by_host") if seed.get(k)}
         found = set()
         queue = deque()
         queued = set()
 
-        def enqueue(url, depth):
+        def is_docpage(url):
+            return any(r.search(url) for r in docpages)
+
+        def enqueue(url, depth, force=False):
             url = normalize(url)
             if not url or url in queued or not host_allowed(url, domains):
+                return
+            if not force and follow and not any(r.search(url) for r in follow):
                 return
             queued.add(url)
             queue.append((url, depth))
 
+        def record(url, text, found_on, lastmod):
+            doc = self._doc(url, text, agency, found_on, lastmod, extra)
+            if doc and doc.doc_id not in found:
+                found.add(doc.doc_id)
+                return doc
+            return None
+
         for start in seed["start_urls"]:
-            enqueue(start, 0)
+            enqueue(start, 0, force=True)
             if seed.get("use_sitemaps", True):
                 for page_url, lastmod in self.sitemap_urls(client, start):
-                    if ext_of(page_url) in DOC_EXTENSIONS:
-                        doc = self._doc(page_url, None, agency, start, lastmod)
-                        if doc and doc.doc_id not in found and host_allowed(page_url, domains):
-                            found.add(doc.doc_id)
+                    if not host_allowed(page_url, domains):
+                        continue
+                    if ext_of(page_url) in DOC_EXTENSIONS or is_docpage(page_url):
+                        doc = record(page_url, None, start, lastmod)
+                        if doc:
                             yield doc
                     else:
                         enqueue(page_url, 1)
 
         pages = 0
-        while queue and pages < opts.max_pages:
+        while queue and pages < max_pages:
             url, depth = queue.popleft()
             if opts.resume and self.store is not None and self.store.seen(url):
                 continue
@@ -166,13 +195,11 @@ class Crawler(Source):
                 if not target or not host_allowed(target, domains):
                     continue
                 ext = ext_of(target)
-                if ext in DOC_EXTENSIONS:
-                    if target not in found:
-                        found.add(target)
-                        doc = self._doc(target, text, agency, final, None)
-                        if doc:
-                            yield doc
-                elif ext not in SKIP_EXTENSIONS and depth < opts.max_depth:
+                if ext in DOC_EXTENSIONS or is_docpage(target):
+                    doc = record(target, text, final, None)
+                    if doc:
+                        yield doc
+                elif ext not in SKIP_EXTENSIONS and depth < max_depth:
                     enqueue(target, depth + 1)
         log.info("%s: crawled %d pages, %d documents", agency, pages, len(found))
 
@@ -218,12 +245,12 @@ class Crawler(Source):
                 else:
                     yield loc, lastmod
 
-    def _doc(self, url, text, agency, found_on, lastmod):
+    def _doc(self, url, text, agency, found_on, lastmod, extra=None):
         url = normalize(url)
         if not url:
             return None
         filename = unquote(os.path.basename(urlsplit(url).path))
-        title = text if text and not re.fullmatch(r"(?i)(download|pdf|here|click here|view)", text) else filename
+        title = text if text and not re.fullmatch(r"(?i)(download|pdf|here|click here|view|read more|more)", text) else filename
         return Document(
             source=self.name,
             doc_id=url,
@@ -231,8 +258,8 @@ class Crawler(Source):
             url=url,
             download_url=url,
             jurisdiction=self.jurisdiction,
-            doc_type=ext_of(url).lstrip(".") or None,
+            doc_type=ext_of(url).lstrip(".") if ext_of(url) in DOC_EXTENSIONS else "html",
             agency=agency,
             published=lastmod,
-            extra={"found_on": found_on, "host": urlsplit(url).hostname},
+            extra={"found_on": found_on, "host": urlsplit(url).hostname, **(extra or {})},
         )

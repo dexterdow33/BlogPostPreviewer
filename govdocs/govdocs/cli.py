@@ -165,6 +165,42 @@ def cmd_export(args):
             out.close()
 
 
+def cmd_archive(args):
+    from .archive.classify import load_rules
+    from .archive import publish as pub
+    rules = load_rules(args.rules)
+    store = Store(args.db)
+    try:
+        items = pub.plan(store, rules, args.source)
+        if args.action == "plan":
+            if not items:
+                print("nothing to archive yet: run `collect` first")
+                return
+            print(f"{'series':30} {'ready':>6} {'done':>6} {'skip':>6}  label")
+            for (slug, label), c in sorted(pub.summarize(items).items()):
+                skip = sum(n for k, n in c.items() if k.startswith("skipped"))
+                print(f"{slug:30} {c['ready']:>6} {c['archived']:>6} {skip:>6}  {label}")
+            if args.out:
+                pub.write_plan_csv(items, args.out)
+                print(f"plan written to {args.out}")
+            return
+        from .archive.wordpress import WordPress, WordPressError
+        wp = None
+        if not args.dry_run:
+            try:
+                wp = WordPress(site=args.site)
+            except WordPressError as exc:
+                sys.exit(str(exc))
+        client = make_client(args)
+        done, failed = pub.publish(store, client, wp, rules, source=args.source,
+                                   series=_split(args.series), limit=args.limit,
+                                   out_dir=args.out_dir, max_bytes=args.max_mb * 1024 * 1024,
+                                   dry_run=args.dry_run)
+        print(f"{done} {'would be ' if args.dry_run else ''}published, {failed} failed")
+    finally:
+        store.close()
+
+
 def _split(value):
     return [v.strip() for v in value.split(",") if v.strip()] if value else []
 
@@ -201,6 +237,20 @@ def build_parser():
     d.add_argument("--limit", type=int, help="stop after N files")
     d.add_argument("--max-mb", type=int, default=200, help="skip files larger than this")
     d.set_defaults(func=cmd_download)
+
+    a = sub.add_parser("archive", help="file documents into the Granite State Archive")
+    a.add_argument("action", choices=["plan", "publish"],
+                   help="plan: show series and counts (no network); publish: upload to WordPress")
+    a.add_argument("--source", help="only this source")
+    a.add_argument("--series", help="publish only these series slugs, comma-separated")
+    a.add_argument("--limit", type=int, help="publish at most N documents")
+    a.add_argument("--rules", help="classification rules JSON (default: built-in)")
+    a.add_argument("--out", help="plan: also write every row and its series to this CSV")
+    a.add_argument("--out-dir", default="files", help="where fetched files are kept")
+    a.add_argument("--max-mb", type=int, default=200, help="skip files larger than this")
+    a.add_argument("--site", help="WordPress site URL (default: GSR_WP_SITE or granitestatereport.com)")
+    a.add_argument("--dry-run", action="store_true", help="publish: list what would be uploaded")
+    a.set_defaults(func=cmd_archive)
 
     sub.add_parser("stats", help="counts per source").set_defaults(func=cmd_stats)
 

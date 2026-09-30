@@ -29,6 +29,18 @@ CREATE TABLE IF NOT EXISTS documents (
     PRIMARY KEY (source, doc_id)
 );
 CREATE INDEX IF NOT EXISTS idx_docs_published ON documents(published);
+CREATE TABLE IF NOT EXISTS archive (
+    source        TEXT NOT NULL,
+    doc_id        TEXT NOT NULL,
+    series_slug   TEXT NOT NULL,
+    series_label  TEXT NOT NULL,
+    file_path     TEXT,
+    sha256        TEXT,
+    wp_media_id   INTEGER,
+    wp_url        TEXT,
+    archived_at   TEXT,
+    PRIMARY KEY (source, doc_id)
+);
 CREATE TABLE IF NOT EXISTS crawl_seen (
     url        TEXT PRIMARY KEY,
     fetched_at TEXT NOT NULL
@@ -56,12 +68,16 @@ class Store:
         self.db.close()
 
     def upsert(self, doc):
-        """Insert or refresh a Document. Returns True if it was new."""
+        """Insert or refresh a Document. Returns True if it was new.
+        `extra` is merged with what is stored, so a later, less specific
+        sighting (e.g. a broad crawl) does not erase earlier keys."""
         now = _now()
         cur = self.db.execute(
-            "SELECT 1 FROM documents WHERE source=? AND doc_id=?",
+            "SELECT extra FROM documents WHERE source=? AND doc_id=?",
             (doc.source, doc.doc_id))
-        is_new = cur.fetchone() is None
+        prev = cur.fetchone()
+        is_new = prev is None
+        extra = {**json.loads(prev["extra"] or "{}"), **doc.extra} if prev else doc.extra
         self.db.execute(
             """INSERT INTO documents (source, doc_id, title, url, download_url,
                    jurisdiction, doc_type, agency, published, extra,
@@ -75,7 +91,7 @@ class Store:
                    extra=excluded.extra, last_seen=excluded.last_seen""",
             (doc.source, doc.doc_id, doc.title, doc.url, doc.download_url,
              doc.jurisdiction, doc.doc_type, doc.agency, doc.published,
-             json.dumps(doc.extra, sort_keys=True), now, now))
+             json.dumps(extra, sort_keys=True), now, now))
         return is_new
 
     def commit(self):
@@ -104,6 +120,10 @@ class Store:
         sql += " ORDER BY published, source, doc_id"
         return self.db.execute(sql, args).fetchall()
 
+    def get(self, source, doc_id):
+        return self.db.execute("SELECT * FROM documents WHERE source=? AND doc_id=?",
+                               (source, doc_id)).fetchone()
+
     def stats(self):
         return self.db.execute(
             """SELECT source, jurisdiction, COUNT(*) AS n,
@@ -117,6 +137,18 @@ class Store:
             """UPDATE documents SET download_url=?, local_path=?, sha256=?
                WHERE source=? AND doc_id=?""",
             (download_url, local_path, sha256, source, doc_id))
+
+    # -- archive bookkeeping ------------------------------------------------
+    def archived(self, source, doc_id):
+        return self.db.execute(
+            "SELECT * FROM archive WHERE source=? AND doc_id=?",
+            (source, doc_id)).fetchone()
+
+    def mark_archived(self, source, doc_id, slug, label, file_path, sha256,
+                      media_id, url):
+        self.db.execute(
+            """INSERT OR REPLACE INTO archive VALUES (?,?,?,?,?,?,?,?,?)""",
+            (source, doc_id, slug, label, file_path, sha256, media_id, url, _now()))
 
     def export_csv(self, fh, source=None):
         w = csv.writer(fh)
