@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>NH Bill Tracker</title>
+  <meta name="description" content="Where every New Hampshire bill stands: status, sponsors, docket, roll calls, and links to the record. Built from the General Court's own bill-status data by Granite State Report.">
+  <meta name="data-base" content="../data/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;700&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div>
+      <p class="eyebrow">Granite State Report</p>
+      <h1>NH Bill Tracker</h1>
+    </div>
+    <div class="meta" id="meta">Loading the General Court's bill-status data…</div>
+  </header>
+
+  <section class="filters" id="filters" aria-label="Filters">
+    <label>Session
+      <select id="f-session"></select>
+    </label>
+    <label class="grow">Search bills
+      <input type="search" id="f-q" placeholder="Bill number, title words, sponsor, committee, LSR" autocomplete="off">
+    </label>
+    <label>Chamber of origin
+      <select id="f-chamber">
+        <option value="">Both</option>
+        <option value="House">House</option>
+        <option value="Senate">Senate</option>
+      </select>
+    </label>
+    <label>Outcome
+      <select id="f-group">
+        <option value="">All</option>
+        <option value="law">Became law</option>
+        <option value="process">In process / other</option>
+        <option value="parked">Parked (study, retained, tabled)</option>
+        <option value="killed">Killed</option>
+        <option value="vetoed">Vetoed</option>
+      </select>
+    </label>
+    <label>Beat
+      <select id="f-beat"><option value="">All beats</option></select>
+    </label>
+    <label>Sort
+      <select id="f-sort">
+        <option value="number">Bill number</option>
+        <option value="recent">Most recent action</option>
+        <option value="rollcalls">Most roll calls</option>
+        <option value="margin">Closest vote</option>
+        <option value="title">Title</option>
+      </select>
+    </label>
+    <label class="check"><input type="checkbox" id="f-rc"> Roll-call bills only</label>
+    <button class="btn" id="f-reset" type="button">Reset</button>
+    <span class="result-count" id="count"></span>
+  </section>
+
+  <div id="loading" class="status-line">Loading…</div>
+
+  <section class="kpis" id="kpis" aria-label="Summary" hidden></section>
+
+  <section class="band" id="band" hidden>
+    <div class="panel" id="leads-panel">
+      <div class="panel-head">
+        <h2>Story leads</h2>
+        <span class="why" id="leads-why"></span>
+      </div>
+      <div class="tabs" id="lead-tabs" role="tablist"></div>
+      <ul class="lead-list" id="lead-list" role="tabpanel"></ul>
+    </div>
+    <div class="panel" id="charts-panel">
+      <div class="chart-head">
+        <h3>Where the bills stand</h3>
+        <button class="btn small" id="stack-toggle" type="button" aria-pressed="false">Table</button>
+      </div>
+      <div id="stack-chart"></div>
+      <div id="stack-table" hidden></div>
+      <div class="chart-head">
+        <h3>Docket actions per week</h3>
+        <button class="btn small" id="act-toggle" type="button" aria-pressed="false">Table</button>
+      </div>
+      <div id="activity-chart"></div>
+      <div id="activity-table" hidden></div>
+    </div>
+  </section>
+
+  <section id="table-section" hidden>
+    <div class="table-head">
+      <h2 id="table-title">Bills</h2>
+      <span class="why" id="table-note">Click a bill number for the docket, sponsors, roll calls, and links.</span>
+    </div>
+    <div class="table-wrap">
+      <table class="bills" id="bills">
+        <thead>
+          <tr>
+            <th scope="col">Bill</th>
+            <th scope="col">Title</th>
+            <th scope="col">Prime sponsor</th>
+            <th scope="col">Committee</th>
+            <th scope="col">Outcome</th>
+            <th scope="col">Last action</th>
+            <th scope="col" class="num">Roll calls</th>
+            <th scope="col" class="num">Closest margin</th>
+          </tr>
+        </thead>
+        <tbody id="bills-body"></tbody>
+      </table>
+    </div>
+    <div class="more" id="more"></div>
+  </section>
+
+  <footer>
+    <p><strong>Source.</strong> The New Hampshire General Court publishes its bill-status database as text files at <a href="https://gc.nh.gov/downloads/" rel="noopener">gc.nh.gov/downloads</a>. This page reads a copy refreshed daily by an automated job, early in the morning Eastern, when the General Court asks automated clients to use the site. <span id="src-note"></span></p>
+    <p><strong>Read this before you quote it.</strong> Outcome labels are assigned by rules that read the docket text. They are a sorting aid. The docket, the bill page, and the roll-call record on gc.nh.gov are the record. Every bill here links to them.</p>
+    <p><strong>Links.</strong> LegiScan, Plural, and news-search links are built from the bill number, not checked bill by bill. A search may return nothing for a bill nobody has written about.</p>
+    <p>Granite State Report · <a href="https://granitestatereport.com" rel="noopener">granitestatereport.com</a> · Code and data: <a href="https://github.com/dexterdow33/BlogPostPreviewer" rel="noopener">GitHub</a></p>
+  </footer>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" hidden></aside>
+<div class="tip" id="tip" hidden role="status" aria-live="polite"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
