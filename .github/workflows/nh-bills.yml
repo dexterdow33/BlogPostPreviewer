@@ -1,0 +1,103 @@
+name: NH bill tracker refresh
+
+# Pulls the General Court's bill-status data dump, rebuilds data/*.json, commits
+# the result, and (on the default branch) publishes the site to GitHub Pages.
+#
+# Schedule: 07:35 UTC is 03:35 EDT / 02:35 EST, inside the window when the
+# General Court asks automated clients to use the site (before 6 a.m. Eastern).
+
+on:
+  schedule:
+    - cron: "35 7 * * *"
+  workflow_dispatch:
+    inputs:
+      sessions:
+        description: "Session years to build (comma-separated)"
+        default: "2025,2026,2027"
+        required: false
+  push:
+    branches: ["master"]
+    paths:
+      - ".github/workflows/nh-bills.yml"
+      - "scripts/**"
+      - "nh-bills/**"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: nh-bills-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    name: Fetch and build data
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build dataset
+        run: python scripts/fetch_nh_bills.py --sessions "${{ github.event.inputs.sessions || '2025,2026,2027' }}" --out data
+
+      - name: Summarize
+        if: always()
+        run: |
+          echo "## Data files" >> "$GITHUB_STEP_SUMMARY"
+          ls -la data data/raw 2>/dev/null | sed 's/^/    /' >> "$GITHUB_STEP_SUMMARY" || true
+          if [ -f data/index.json ]; then echo '```json' >> "$GITHUB_STEP_SUMMARY"; cat data/index.json >> "$GITHUB_STEP_SUMMARY"; echo '```' >> "$GITHUB_STEP_SUMMARY"; fi
+
+      - name: Upload discovery report and raw files
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nh-bills-data-${{ github.run_number }}
+          path: data
+          retention-days: 14
+          if-no-files-found: warn
+
+      - name: Commit refreshed data
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A data
+          if git diff --cached --quiet; then
+            echo "No data changes."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "data: NH bill tracker refresh $(date -u +%Y-%m-%dT%H:%MZ)"
+          git pull --rebase origin "${{ github.ref_name }}" || true
+          git push origin HEAD:"${{ github.ref_name }}"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    name: Publish to GitHub Pages
+    needs: refresh
+    if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4
