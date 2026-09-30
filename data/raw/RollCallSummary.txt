@@ -1,0 +1,419 @@
+2026|H|1|1/7/2026 10:15:33 AM||321|2|34|38|||Call of the Roll|||
+2026|H|2|1/7/2026 10:25:50 AM||57|280|20|38|||Rules Suspension|||
+2026|H|3|1/7/2026 11:12:09 AM|HB609|193|152|16|34|||Adopt Floor Amendment|relative to the general court's authority over the sale, purchase, ownership, use, possession, transportation, licensing, permitting, taxation, and other matter pertaining to firearms, stun guns, Tasers, pepper spray devices, knives and other self-defense||
+2026|H|4|1/7/2026 11:24:30 AM|HB609|193|151|17|34|||OTPA|relative to the general court's authority over the sale, purchase, ownership, use, possession, transportation, licensing, permitting, taxation, and other matter pertaining to firearms, stun guns, Tasers, pepper spray devices, knives and other self-defense||
+2026|H|5|1/7/2026 11:37:31 AM|SB15|179|159|23|34|||OTPA|relative to establishing a mandatory minimum sentence for the crime of distribution of a controlled drug with death resulting.||
+2026|H|6|1/7/2026 11:57:15 AM|HB112|192|158|13|32|||OTPA|requiring students in the university and community college systems of New Hampshire to pass the United States Citizenship and Immigration Services civics naturalization test.||
+2026|H|7|1/7/2026 1:23:40 PM|HB295|191|150|24|30|||ITL|making school building aid program funds nonlapsing.||
+2026|H|8|1/7/2026 1:34:00 PM|HB366|196|151|18|30|||Adopt Amendment|relative to school building aid for eligible projects.||
+2026|H|9|1/7/2026 1:39:05 PM|HB366|195|155|15|30|||OTPA|relative to school building aid for eligible projects.||
+2026|H|10|1/7/2026 1:49:50 PM|HB491|195|157|12|31|||ITL|establishing a committee to study alternative funding methods for public education and how to reduce its reliance on local real estate property taxes.||
+2026|H|11|1/7/2026 2:00:44 PM|HB510|197|149|17|32|||OTPA|relative to establishing certain due process rights for students, student organizations, and faculty members facing disciplinary actions by state institutions of higher learning.||
+2026|H|12|1/7/2026 2:14:32 PM|HB651|190|155|18|32|||ITL|modifying the base cost and differential aid costs of an adequate education.||
+2026|H|13|1/7/2026 2:29:44 PM|HB656|186|155|22|32|||OTPA|relative to the authority of local school districts to accept federal grants.||
+2026|H|14|1/7/2026 2:40:32 PM|HB665|189|158|16|32|||ITL|relative to eligibility for free school meals.||
+2026|H|15|1/7/2026 2:52:20 PM|SB204|183|161|17|34|||ITL|relative to the responsibility of local school districts to provide meals to students during school hours, reimbursing schools for meals provided to students at no cost, and making an appropriation therefor.||
+2026|H|16|1/7/2026 3:13:46 PM|HB121|187|154|17|37|||OTPA|establishing local school district special education parent advisory councils.||
+2026|H|17|1/7/2026 3:24:15 PM|HB131|190|149|18|38|||OTPA|requiring school boards to develop and enact policies regarding personal cell phone use in schools.||
+2026|H|18|1/7/2026 3:33:32 PM|HB360|183|155|18|39|||OTPA|prohibiting public schools from performing diagnostic tests or surgical procedures, or prescribing pharmaceutical drugs.||
+2026|H|19|1/7/2026 3:42:57 PM|HB564|191|148|16|40|||OTP|relative to the adoption of school administrative unit budgets.||
+2026|H|20|1/7/2026 3:55:19 PM|HB709|182|159|13|41|||OTPA|allowing parents or guardians to admit their children into any school district where they pay any property or school district taxes.||
+2026|H|21|1/7/2026 4:10:41 PM|SB33|181|157|17|40|||OTPA|relative to the regulation of public school materials.||
+2026|H|22|1/7/2026 4:21:39 PM|SB34|186|155|14|40|||OTPA|relative to parental consent for student participation in Medicaid to schools program.||
+2026|H|23|1/7/2026 4:35:36 PM|CACR4|184|157|13|41|||OTPA|relating to voting eligibility. Providing that only legal resident citizens who are at least 18 years of age or older who reside in the place they claim as a domicile shall be eligible voters.||
+2026|H|24|1/7/2026 5:03:54 PM|HB323|190|148|15|42|||OTPA|requiring the presentation of a government-issued photographic means of identification in order to vote.||
+2026|H|25|1/7/2026 5:36:23 PM|HB396|214|119|20|42|||OTPA|exempting meat and meat food products slaughtered and prepared in state for sale in state from certain inspections.||
+2026|H|26|1/7/2026 6:13:36 PM|HB349|133|205|16|41|||Indefinitely Postpone|relative to the practice of optometry and authorization to perform ophthalmic laser procedures.||
+2026|H|27|1/7/2026 6:17:16 PM|HB349|94|242|18|41|||Table|relative to the practice of optometry and authorization to perform ophthalmic laser procedures.||
+2026|H|28|1/7/2026 6:19:57 PM|HB349|193|143|18|41|||OTPA|relative to the practice of optometry and authorization to perform ophthalmic laser procedures.||
+2026|H|29|1/7/2026 6:30:23 PM|HB97|175|156|23|41|||ITL|making an appropriation to the department of environmental services for wastewater infrastructure projects.||
+2026|H|30|1/7/2026 6:44:51 PM|HB197|172|159|22|42|||ITL|relative to payment by the state of a portion of retirement system contributions of political subdivision employers.||
+2026|H|31|1/7/2026 7:00:56 PM|HB219|175|152|25|43|||OTPA|(New Title) relative to changes to the minimum electric renewable portfolio standards.||
+2026|H|32|1/8/2026 9:41:43 AM|HB365|195|142|25|33|||OTPA|relative to proof of United States citizenship for indigent voters.||
+2026|H|33|1/8/2026 9:54:07 AM|HB572|191|156|16|32|||ITL|(New Title) establishing the "partners in housing" program, an initiative under the housing champions fund to assist municipalities, counties, and developers in building workforce housing, and making an appropriation therefor.||
+2026|H|34|1/8/2026 10:03:53 AM|HB624|187|164|14|30|||ITL|establishing a local river management advisory committee grant program and making an appropriation therefor.||
+2026|H|35|1/8/2026 10:15:38 AM|HB675|184|168|14|29|||Adopt Amendment|(New Title) limiting the authority of school districts to make certain appropriations.||
+2026|H|36|1/8/2026 10:22:13 AM|HB675|177|176|13|29|||Adopt Floor Amendment|(New Title) limiting the authority of school districts to make certain appropriations.||
+2026|H|37|1/8/2026 10:38:10 AM|HB675|182|173|12|28|||Adopt Floor  Amendment|(New Title) limiting the authority of school districts to make certain appropriations.||
+2026|H|38|1/8/2026 10:48:44 AM|HB675|9|346|12|28|||OTPA|(New Title) limiting the authority of school districts to make certain appropriations.||
+2026|H|39|1/8/2026 11:05:47 AM|HB155|189|165|13|28|||OTPA|reducing the rate of the business enterprise tax.||
+2026|H|40|1/8/2026 11:29:48 AM|HB392|186|159|22|28|||Adopt Floor Amendment|directing the dissolution of the department of health and human services' office of health equity, department of environmental services' functions for civil rights and environmental justice, and the governor's council on diversity and inclusion.||
+2026|H|41|1/8/2026 11:43:19 AM|HB392|192|159|16|28|||OTPA|directing the dissolution of the department of health and human services' office of health equity, department of environmental services' functions for civil rights and environmental justice, and the governor's council on diversity and inclusion.||
+2026|H|42|1/8/2026 11:54:32 AM|SB36|188|162|17|28|||OTPA|relative to the collection and reporting of abortion statistics by health care providers and medical facilities.||
+2026|H|43|1/8/2026 11:58:35 AM|SB134|349|5|13|28|||Adopt Amendment|relative to work requirements under the state Medicaid program.||
+2026|H|44|1/8/2026 12:08:55 PM|SB134|204|150|13|28|||OTPA|relative to work requirements under the state Medicaid program.||
+2026|H|45|1/8/2026 12:20:42 PM|HB232|184|164|17|30|||OTPA|relative to the rights of conscience for medical professionals.||
+2026|H|46|1/8/2026 12:36:14 PM|SB268|185|159|21|30|||OTP|permitting classification of individuals based on biological sex under certain limited circumstances.||
+2026|H|47|1/8/2026 2:09:23 PM|HB314|152|198|15|30|||OTPA|prohibiting the use of federal, state, or local funds for lobbying activities.||
+2026|H|48|1/8/2026 2:36:47 PM|HB348|190|157|16|32|||OTPA|relative to eligibility for local assistance.||
+2026|H|49|1/8/2026 3:37:59 PM|HB104|159|182|20|34|||ITL|relative to requiring an official declaration of war for the activation of the New Hampshire national guard in a foreign state.||
+2026|H|50|1/8/2026 4:24:32 PM|SB106|172|152|27|44|||Indefinitely Postpone|relative to the participation of customer generators in net energy metering.||
+2026|H|51|2/5/2026 11:36:41 AM|HB1697|188|164|13|29|||OTP|exempting certain firearms and firearm accessories manufactured and retained in New Hampshire from federal regulation.||
+2026|H|52|2/5/2026 12:01:42 PM|HB1793|188|165|11|30|||OTP|prohibiting public colleges and universities from regulating the possession or carrying of firearms and non-lethal weapons on campus.||
+2026|H|53|2/5/2026 1:20:23 PM||162|187|16|29|||Rules Suspension|||
+2026|H|54|2/5/2026 1:30:40 PM|HB1448|184|167|14|29|||OTP|prohibiting the use of the World Economic Forum materials within state curriculum.||
+2026|H|55|2/5/2026 1:38:36 PM|HB1832|189|164|12|29|||OTPA|adding students with parents on active military duty to the education freedom accounts priority guidelines.||
+2026|H|56|2/5/2026 1:50:35 PM|HB1487|189|164|12|29|||ITL|creating an independent commission to propose redistricting maps for the legislature to consider.||
+2026|H|57|2/5/2026 2:02:48 PM|HB1196|185|166|13|30|||OTP|repealing the state housing champion designation and grant program.||
+2026|H|58|2/5/2026 2:18:27 PM|HB1405|186|162|15|31|||ITL|relative to the housing finance authority's affordable housing guarantee program.||
+2026|H|59|2/5/2026 2:34:07 PM|HB1661|179|166|17|32|||ITL|relative to expanding the housing finance authority's community heroes program and makes an appropriation therefor.||
+2026|H|60|2/5/2026 3:03:10 PM|HR30|72|274|15|33|||Reconsider|finding that planning, zoning, and related regulations have been and should continue to be the responsibility of municipal government.||
+2026|H|61|2/5/2026 3:59:07 PM|HR45|205|129|25|35|||OTPA|urging Congress to find that the Piscataqua River and Portsmouth Harbor lie within the state of New Hampshire.||
+2026|H|62|2/5/2026 4:07:30 PM|HB1452|178|155|25|36|||ITL|relative to parent-taught driver education as an alternative to traditional driver education programs.||
+2026|H|63|2/12/2026 10:28:18 AM|HB1323|197|157|19|21|||OTP|relative to parental alienation.||
+2026|H|64|2/12/2026 10:38:35 AM|HB1460|214|145|15|20|||OTP|prohibiting the sale of location and other sensitive data regarding children.||
+2026|H|65|2/12/2026 10:50:45 AM|HB1710|198|161|15|20|||OTP|relative to procedures relating to child abduction.||
+2026|H|66|2/12/2026 11:00:22 AM|HB1570|198|161|15|20|||ITL|relative to governmental budget authority for agreements for law enforcement agencies to participate in federal immigration enforcement.||
+2026|H|67|2/12/2026 11:10:58 AM|HB1642|206|153|15|20|||ITL|relative to extreme risk protection orders.||
+2026|H|68|2/12/2026 11:26:25 AM|HB1716|194|166|15|19|||ITL|relative to the academic accountability of education freedom accounts.||
+2026|H|69|2/12/2026 11:41:13 AM|HB1636|284|76|15|19|||ITL|directing the department of revenue administration to study options for generating state revenue.||
+2026|H|70|2/12/2026 11:57:28 AM|HB1584|197|163|15|19|||OTPA|directing the department of health and human services to provide notice of medical and religious exemptions from immunization requirements and relative to the form of such exemption.||
+2026|H|71|2/12/2026 1:42:39 PM|HB1596|200|157|16|21|||ITL|relative to the collection of certain health care program premiums; funding for the university system of New Hampshire; and raising the tobacco tax.||
+2026|H|72|2/12/2026 1:56:02 PM|HB1719|186|168|18|22|||OTP|removing Hepatitis B from the list of diseases for which immunization is required under state law.||
+2026|H|73|2/12/2026 2:01:24 PM|HB1798|197|158|17|22|||Table|relative to the coverage of diapers under the state Medicaid plan.||
+2026|H|74|2/12/2026 2:35:06 PM|HB1607|188|166|18|22|||Table|relative to the use and storage of road salt.||
+2026|H|75|2/12/2026 2:50:47 PM|HB1655|208|146|17|23|||OTPA|establishing a funding source for maintaining state owned dams.||
+2026|H|76|2/12/2026 3:08:26 PM|HB1664|194|156|20|24|||ITL|directing the department of natural and cultural resources to remove the Hannah Duston Memorial in Boscawen.||
+2026|H|77|2/12/2026 3:16:50 PM|HB1002|187|157|24|26|||Table|repealing the solar energy systems tax exemption.||
+2026|H|78|2/12/2026 3:23:19 PM|HB1542|160|188|20|26|||Table|relative to renewable energy fund compliance payments.||
+2026|H|79|2/12/2026 3:36:32 PM|HB1542|189|157|21|27|||OTPA|relative to renewable energy fund compliance payments.||
+2026|H|80|2/12/2026 3:51:20 PM|HB1176|321|27|19|27|||Table|relative to the display of license plates on vehicles.||
+2026|H|81|2/12/2026 4:07:59 PM|HB1580|284|55|26|29|||ITL|relative to the taxation of non-primary residences.||
+2026|H|82|2/12/2026 4:21:00 PM|HB1810|177|156|29|32|||ITL|relative to a road salt fee to support certified winter road maintenance practices.||
+2026|H|83|2/19/2026 9:45:06 AM|HB1557|184|157|19|33|||ITL|modifying the state average expenditure per pupil relative to students in special education.||
+2026|H|84|2/19/2026 9:51:46 AM|HB1791|187|157|16|33|||ITL|directing the department of education to establish a grant program at the post-secondary educational level for individuals with developmental disabilities, and making an appropriation therefor.||
+2026|H|85|2/19/2026 9:56:32 AM|HB1799|185|159|16|33|||ITL|relative to required state funding for providing an opportunity for an adequate education.||
+2026|H|86|2/19/2026 10:01:45 AM|HB1803|191|157|12|33|||ITL|rendering a recipient of an education tax credit scholarship ineligible to receive education freedom account funds in the same program year.||
+2026|H|87|2/19/2026 10:06:31 AM|HB1826|192|157|11|33|||ITL|relative to the cost of an opportunity for an adequate education.||
+2026|H|88|2/19/2026 10:11:22 AM|HB1831|187|158|15|33|||Table|repealing the education trust fund targeted aid cap.||
+2026|H|89|2/19/2026 10:36:19 AM|HB1792|184|164|11|34|||OTP|prohibiting school districts and personnel from the instruction of critical race theory and LGBTQ+ ideologies in schools as well as establishing a private right of action for violations.||
+2026|H|90|2/19/2026 10:45:51 AM|HB1083|188|161|11|33|||ITL|requiring the disclosure of the source of certain political donations in state elections.||
+2026|H|91|2/19/2026 11:23:20 AM|HB1811|155|192|15|31|||OTP|repealing statutory immunization requirements for children.||
+2026|H|92|2/19/2026 11:37:56 AM|HB1499|193|154|13|33|||OTPA|relative to additional grounds for eviction under the landlord and tenant statute.||
+2026|H|93|2/19/2026 11:52:49 AM|HB1786|189|158|12|34|||Table|relative to creating a state assessment on non-homestead luxury second homes to fund statewide housing development programs and address housing shortages and making appropriations therefor.||
+2026|H|94|2/19/2026 1:41:02 PM|HB1130|192|151|17|33|||OTPA|relative to judicial performance evaluations.||
+2026|H|95|2/19/2026 2:01:45 PM|HB1705|194|154|13|32|||OTPA|establishing an employee assistance program for small town and volunteer first responders and making an appropriation therefor.||
+2026|H|96|2/19/2026 2:08:02 PM|HB1427|234|112|15|32|||ITL|limiting the authority of a municipality, county, or school district to issue bonds.||
+2026|H|97|2/19/2026 2:43:49 PM|HB1775|191|149|18|35|||OTPA|relative to utility ownership of natural gas and nuclear power generation facilities.||
+2026|H|98|2/19/2026 3:15:04 PM|HB1602|84|254|20|35|||Table|creating a safe battery recycling stewardship program.||
+2026|H|99|2/19/2026 3:32:26 PM|HB1602|264|72|22|35|||OTPA|creating a safe battery recycling stewardship program.||
+2026|H|100|3/5/2026 9:35:39 AM|HB1225|185|152|22|33|||OTPA|relative to the definition of adjusted gross income with respect to child support guidelines.||
+2026|H|101|3/5/2026 9:52:55 AM|HB1048|192|154|17|29|||OTP|relative to repealing the prohibition on the possession or sale of blackjacks, slung shots, and metallic knuckles except by or to minors.||
+2026|H|102|3/5/2026 10:07:58 AM|HB1387|189|159|17|27|||Table|repealing limiting liability for certain design features of firearms.||
+2026|H|103|3/5/2026 10:18:52 AM|HB1822|193|155|17|27|||Table|relative to reporting of civil immigration detentions by state, county, and local law enforcement and correctional facilities.||
+2026|H|104|3/5/2026 10:23:19 AM|HB1495|185|162|18|27|||OTP|allowing a reimbursement anticipation note to be used as collateral in certain circumstances.||
+2026|H|105|3/5/2026 10:28:37 AM|HB1578|182|162|21|27|||Table|adds definitions and reporting requirements relative to education freedom accounts.||
+2026|H|106|3/5/2026 10:42:39 AM|HB1610|182|167|17|26|||OTPA|allowing school districts to annually retain year-end unassigned general funds.||
+2026|H|107|3/5/2026 10:56:35 AM|HB1815|188|162|16|26|||OTP|relative to education financing.||
+2026|H|108|3/5/2026 11:11:27 AM|HR19|191|155|20|26|||OTP|encouraging state colleges and universities to invite more conservative speakers to campus for the purpose of increasing diversity of viewpoints.||
+2026|H|109|3/5/2026 11:16:30 AM||171|177|18|26|||Reconsider|||
+2026|H|110|3/5/2026 11:36:08 AM|HB1264|186|165|15|26|||Table|increasing the requirements of the education freedom savings account oversight committee and modifying the purpose of the committee.||
+2026|H|111|3/5/2026 11:47:00 AM|HB1331|193|157|16|26|||OTPA|enabling the town of Derry to absorb the Derry cooperative school district.||
+2026|H|112|3/5/2026 11:58:37 AM|CACR10|193|158|15|26|||Adopt Floor Amendment|relating to the adoption of tax laws. Providing that no law shall establish or increase a state imposed tax unless adopted by not less than two-thirds of the members present and voting.||
+2026|H|113|3/5/2026 12:04:28 PM|CACR10|194|158|14|26|||OTPA|relating to the adoption of tax laws. Providing that no law shall establish or increase a state imposed tax unless adopted by not less than two-thirds of the members present and voting.||
+2026|H|114|3/5/2026 2:01:54 PM|HB1635|183|167|13|29|||OTP|modifying the requirements of suicide prevention education policies in schools.||
+2026|H|115|3/5/2026 2:06:41 PM|HB1217|168|180|15|29|||Table|permitting classification of individuals based on biological sex under certain limited circumstances.||
+2026|H|116|3/5/2026 2:16:01 PM|HB1217|168|180|15|29|||Interim Study|permitting classification of individuals based on biological sex under certain limited circumstances.||
+2026|H|117|3/5/2026 2:18:15 PM|HB1217|187|163|13|29|||OTP|permitting classification of individuals based on biological sex under certain limited circumstances.||
+2026|H|118|3/5/2026 2:25:51 PM|HB1442|163|186|14|29|||Table|limiting the use of certain facilities on the basis of sex and redefining the term "gender identity."||
+2026|H|119|3/5/2026 2:36:31 PM|HB1442|163|182|17|30|||Interim Study|limiting the use of certain facilities on the basis of sex and redefining the term "gender identity."||
+2026|H|120|3/5/2026 2:49:53 PM|HB1442|183|162|17|30|||Adopt Floor Amendment|limiting the use of certain facilities on the basis of sex and redefining the term "gender identity."||
+2026|H|121|3/5/2026 2:57:38 PM|HB1442|181|164|16|31|||OTPA|limiting the use of certain facilities on the basis of sex and redefining the term "gender identity."||
+2026|H|122|3/5/2026 3:21:05 PM|HB1820|179|157|17|39|||Table|requiring the department of education to administer the education freedom account program.||
+2026|H|123|3/5/2026 3:25:17 PM|HB1834|180|157|16|39|||Table|relative to the education freedom account enrollment cap.||
+2026|H|124|3/5/2026 3:36:34 PM|CACR14|182|157|14|39|||OTP|relating to qualifications for office. Providing that candidates of the office of governor, state senator, and state representative shall be citizens of the United States.||
+2026|H|125|3/5/2026 3:57:05 PM|HB1317|183|154|15|40|||Table|relative to patient privacy protections.||
+2026|H|126|3/5/2026 4:11:50 PM|HB1484|180|153|17|42|||Table|establishing a state minimum wage and providing for incremental increases.||
+2026|H|127|3/5/2026 4:16:31 PM|CACR22|175|153|21|43|||Table|relating to the compensation of the legislature. Providing that the present compensation per elected term for legislators is hereby abolished.||
+2026|H|128|3/5/2026 4:23:39 PM|HR42|308|11|28|45|||OTP|honoring the life and legacy of Melissa Hortman.||
+2026|H|129|3/5/2026 4:43:10 PM|HB1227|176|151|20|45|||ITL|relative to the calculation of the local tax cap.||
+2026|H|130|3/5/2026 4:57:50 PM|HR35|153|166|28|45|||Table|urging the prohibition of the intentional release of polluting emissions, including cloud seeding and weather modification, to preserve the atmosphere of New Hampshire.||
+2026|H|131|3/5/2026 5:09:31 PM|HR35|169|152|25|46|||OTPA|urging the prohibition of the intentional release of polluting emissions, including cloud seeding and weather modification, to preserve the atmosphere of New Hampshire.||
+2026|H|132|3/5/2026 5:34:18 PM||91|82|171|48|||Shall Member Continue|||
+2026|H|133|3/11/2026 9:23:27 AM||165|141|45|41|||Limit Debate|||
+2026|H|134|3/11/2026 9:28:32 AM|HB1376|171|143|37|41|||OTPA|relative to a parent's ability to raise their child in a manner consistent with the child's biological sex.||
+2026|H|135|3/11/2026 9:38:30 AM|HB1378|175|149|27|41|||OTP|relative to parental access to a minor child's electronic medical records.||
+2026|H|136|3/11/2026 9:52:50 AM|HB1565|18|311|22|41|||Reconsider|relative to the penalty for false reports of suspected abuse and neglect made to the division for children, youth, and families.||
+2026|H|137|3/11/2026 10:16:54 AM|HB1108|177|158|18|39|||Remove From Table|relative to the offense of criminal threatening.||
+2026|H|138|3/11/2026 10:21:05 AM|HB1108|151|186|16|39|||ITL|relative to the offense of criminal threatening.||
+2026|H|139|3/11/2026 10:30:38 AM|HB1108|193|144|16|39|||OTPA|relative to the offense of criminal threatening.||
+2026|H|140|3/11/2026 10:34:31 AM|HB1798|151|185|17|39|||Remove From Table|||
+2026|H|141|3/11/2026 11:13:09 AM|HB1464|136|199|20|37|||OTP|relative to discrimination, harassment, and violence based on political affiliation or opinion.||
+2026|H|142|3/11/2026 11:19:35 AM||222|115|19|36|||Print Remarks|||
+2026|H|143|3/11/2026 11:23:27 AM|HB1264|151|183|22|36|||Remove From Table|||
+2026|H|144|3/11/2026 11:31:23 AM|HB1121|149|187|20|36|||Adopt Amendment|defining the cost of an adequate education.||
+2026|H|145|3/11/2026 11:34:50 AM|HB1121|187|152|17|36|||OTPA|defining the cost of an adequate education.||
+2026|H|146|3/11/2026 11:49:39 AM|HB1061|188|149|19|36|||Indefinitely Postpone|establishing a commission to study alternatives to incarceration for nonviolent offenders who are primary caregivers.||
+2026|H|147|3/11/2026 11:54:50 AM||199|134|23|36|||Uphold Ruling of chair|||
+2026|H|148|3/11/2026 11:59:56 AM|HB1786|100|235|21|36|||Remove From Table|||
+2026|H|149|3/11/2026 1:36:28 PM|HB1561|157|173|25|37|||OTPA|prohibiting nationals of the People's Republic of China from attending state institutions of higher education.||
+2026|H|150|3/11/2026 1:42:53 PM|HB1824|151|180|25|36|||Special Order|relative to school district financial distress.||
+2026|H|151|3/11/2026 1:47:32 PM|HB1807|153|181|22|36|||Adopt Floor Amendment|relative to information on tax rates and tax impact information on warrant articles.||
+2026|H|152|3/11/2026 1:51:03 PM|HB1807|185|150|21|36|||OTPA|relative to information on tax rates and tax impact information on warrant articles.||
+2026|H|153|3/11/2026 1:59:07 PM|CACR24|181|156|19|36|||OTPA|relating to the right to educate children.Providing that parents and guardians have a right to direct the education of their children.||
+2026|H|154|3/11/2026 2:07:18 PM|HB1132|182|156|18|36|||OTPA|prohibiting the display of certain flags in public schools and public charter schools and establishing penalties for the display of prohibited flags.||
+2026|H|155|3/11/2026 2:11:46 PM|HB1155|183|151|22|36|||Adopt Amendment|relative to the home education advisory council.||
+2026|H|156|3/11/2026 2:15:42 PM|HB1155|180|156|20|36|||OTPA|relative to the home education advisory council.||
+2026|H|157|3/11/2026 2:20:34 PM|HB1268|178|160|18|36|||Adopt Amendment|modifying definitions and requirements relative to home education programs.||
+2026|H|158|3/11/2026 2:23:33 PM|HB1268|181|158|17|36|||Adopt Floor Amendment|modifying definitions and requirements relative to home education programs.||
+2026|H|159|3/11/2026 2:28:20 PM|HB1268|174|166|16|36|||OTPA|modifying definitions and requirements relative to home education programs.||
+2026|H|160|3/11/2026 2:34:03 PM|HB1358|169|163|25|35|||OTPA|establishing a commission to study transitioning all public schools to public charter schools and relative to the method for converting to a charter school.||
+2026|H|161|3/11/2026 2:45:14 PM|HB1817|179|156|22|35|||OTPA|permitting all students the choice to attend the school district in which they reside.||
+2026|H|162|3/11/2026 2:59:49 PM|CACR21|184|146|27|35|||OTPA|relating to voting eligibility. Providing that only legal residents who are at least 18 years of age or older who reside in the place they claim as domicile shall be eligible voters.||
+2026|H|163|3/11/2026 3:29:36 PM|HB1300|158|179|19|36|||Table|changing the state's congressional districts.||
+2026|H|164|3/11/2026 3:33:50 PM|HB1300|182|155|19|36|||Adopt Floor Amendment|changing the state's congressional districts.||
+2026|H|165|3/11/2026 3:36:48 PM|HB1300|177|160|19|36|||OTPA|changing the state's congressional districts.||
+2026|H|166|3/11/2026 4:14:27 PM||223|96|34|39|||Uphold Ruling of the Chair|||
+2026|H|167|3/11/2026 4:44:49 PM|HB1515|170|153|29|40|||OTPA|repealing the child care grant program administered by the department of health and human services.||
+2026|H|168|3/11/2026 4:52:43 PM|CACR15|199|128|25|40|||OTP|relating to the right to hunt, fish, and harvest game and fish. Providing that citizens of New Hampshire shall have the constitutional right to hunt, fish, and harvest game and fish, subject to restrictions existing in law.||
+2026|H|169|3/11/2026 5:04:25 PM|HB1022|179|150|23|40|||OTPA|relative to religious exemption from immunization requirements.||
+2026|H|170|3/11/2026 5:26:19 PM|HB1219|180|145|26|41|||OTPA|relative to immunization requirements in foster family homes.||
+2026|H|171|3/11/2026 5:44:35 PM|HB1337|178|155|18|41|||OTP|repealing the New Hampshire council on autism spectrum disorders.||
+2026|H|172|3/11/2026 5:49:58 PM|HB1449|172|154|25|41|||OTPA|limiting times vaccine clinics may operate at schools and requiring parents or legal guardians to be present with their child during the administration of vaccinations at such a clinic.||
+2026|H|173|3/11/2026 6:48:42 PM|HB1706|158|169|22|43|||Indefinitely Postpone|repealing the refugee resettlement program in the department of health and human services and prohibiting expenditure of state funds on refugee resettlement.||
+2026|H|174|3/11/2026 6:51:27 PM|HB1706|161|170|18|43|||Table|repealing the refugee resettlement program in the department of health and human services and prohibiting expenditure of state funds on refugee resettlement.||
+2026|H|175|3/11/2026 6:55:25 PM|HB1706|170|164|15|43|||OTP|repealing the refugee resettlement program in the department of health and human services and prohibiting expenditure of state funds on refugee resettlement.||
+2026|H|176|3/11/2026 7:11:33 PM|HB1735|181|151|17|43|||OTPA|permitting treatment of certain severe illness under the right to try act.||
+2026|H|177|3/11/2026 7:23:48 PM|HB1773|161|173|15|43|||OTPA|relative to food and drink purchased under SNAP, the Supplemental Nutritional Assistance Program.||
+2026|H|178|3/11/2026 7:29:47 PM|HB1797|172|161|17|42|||OTPA|relative to eligibility for public assistance, including the New Hampshire employment program, family assistance program, and SNAP.||
+2026|H|179|3/11/2026 7:34:29 PM|HB1336|157|177|16|42|||Table|allowing exceptions to the cap on residential security deposits for applicants not meeting standard approval criteria.||
+2026|H|180|3/11/2026 7:40:36 PM|HB1709|153|181|16|42|||Table|relative to prohibiting the rental of residential property to individuals unlawfully present in the United States.||
+2026|H|181|3/11/2026 7:42:48 PM|HB1709|181|154|15|42|||OTPA|relative to prohibiting the rental of residential property to individuals unlawfully present in the United States.||
+2026|H|182|3/11/2026 8:14:00 PM|HB1299|156|171|23|42|||Indefinitely Postpone|permitting classification of individuals based on biological sex under certain limited circumstances and establishing that certain biological sex distinctions do not qualify as discrimination.||
+2026|H|183|3/11/2026 8:17:49 PM|HB1299|176|156|18|42|||Adopt Amendment|permitting classification of individuals based on biological sex under certain limited circumstances and establishing that certain biological sex distinctions do not qualify as discrimination.||
+2026|H|184|3/11/2026 8:21:25 PM|HB1299|176|155|19|42|||OTPA|permitting classification of individuals based on biological sex under certain limited circumstances and establishing that certain biological sex distinctions do not qualify as discrimination.||
+2026|H|185|3/11/2026 8:30:01 PM|HB1313|171|163|16|42|||ITL|repealing buffer zones for reproductive health care facilities.||
+2026|H|186|3/11/2026 8:34:46 PM|HB1704|167|164|19|42|||Special Order|permitting public employees to bargain individually with public employers without any intervention.||
+2026|H|187|3/11/2026 8:42:15 PM|HB1704|165|171|15|41|||Adopt Floor Amendment|permitting public employees to bargain individually with public employers without any intervention.||
+2026|H|188|3/11/2026 8:46:18 PM|HB1704|177|159|15|41|||Indefinitely Postpone|permitting public employees to bargain individually with public employers without any intervention.||
+2026|H|189|3/12/2026 9:20:58 AM|HB1356|145|176|42|29|||Table|relative to the statute of limitations for bringing a private right of action for violation of the statute prohibiting medical procedures and treatments intended to alter a minor's gender.||
+2026|H|190|3/12/2026 9:24:36 AM|HB1356|180|146|36|30|||OTP|relative to the statute of limitations for bringing a private right of action for violation of the statute prohibiting medical procedures and treatments intended to alter a minor's gender.||
+2026|H|191|3/12/2026 9:42:13 AM|HB1447|184|154|25|29|||OTP|restricting the use of certain public and private facilities on the basis of sex and establishing that such restriction does not qualify as discrimination.||
+2026|H|192|3/12/2026 10:00:18 AM|HB1043|189|155|20|28|||OTPA|relative to employer discretion in offering minimum payment options to employees.||
+2026|H|193|3/12/2026 10:11:12 AM|HB1245|188|151|26|27|||OTPA|relative to voluntary portable benefits plans for independent contractors.||
+2026|H|194|3/12/2026 10:15:04 AM||191|153|21|27|||Uphold Ruling of the Chair|||
+2026|H|195|3/12/2026 10:23:38 AM|HB1066|167|175|23|27|||Table|relative to warrant articles authorizing lease agreements.||
+2026|H|196|3/12/2026 11:18:56 AM|HB1224|186|160|21|25|||OTPA|relative to the default budget for official ballot town meetings.||
+2026|H|197|3/12/2026 1:23:52 PM|HB1484|159|183|22|28|||Remove From Table|||
+2026|H|198|3/12/2026 1:27:44 PM|HB2026|345|3|17|27|||Adopt Amendment|relative to the state 10-year transportation improvement plan.||
+2026|H|199|3/12/2026 1:31:28 PM|HB2026|46|305|14|27|||Adopt Floor Amendment|relative to the state 10-year transportation improvement plan.||
+2026|H|200|3/12/2026 1:33:42 PM|HB2026|338|13|14|27|||OTPA|relative to the state 10-year transportation improvement plan.||
+2026|H|201|3/12/2026 1:38:06 PM|HB1708|156|195|14|27|||Special Order|relative to statewide education property taxes and other tax revenues.||
+2026|H|202|3/12/2026 1:44:16 PM|HB1607|156|194|15|27|||Remove From Table|||
+2026|H|203|3/12/2026 1:58:13 PM|HCR13|189|159|16|28|||Table|requesting Congress to call a constitutional convention relative to implementing term limits for elected members of both houses of Congress.||
+2026|H|204|3/12/2026 2:12:37 PM|HB1178|204|143|17|28|||ITL|relative to permissible window tinting on motor vehicles.||
+2026|H|205|3/12/2026 2:24:15 PM|HB1252|194|156|14|28|||OTPA|requiring the department of motor vehicles to only administer the skills test for commercial driver's licenses in English and prohibiting the support of an interpreter for the administration of the skills test for commercial driver's licenses.||
+2026|H|206|3/12/2026 3:19:33 PM|HB1760|184|153|20|35|||ITL|repealing the directive that the department of health and human services seek a waiver to establish pharmacy copayment and premium requirements under the state Medicaid plan and making an appropriation therefor.||
+2026|H|207|3/12/2026 3:30:32 PM|HB1171|186|155|16|35|||ITL|relative to eviction safeguards for tenants whose Social Security payments are disrupted.||
+2026|H|208|3/12/2026 3:38:42 PM|HB1722|185|156|16|35|||ITL|relative to consumer protections and energy classifications for large-use electric facilities.||
+2026|H|209|3/12/2026 3:46:50 PM|HB1416|165|176|15|36|||ITL|prohibits certain government regulations regarding pregnancy resource centers in connection with abortion and contraception service offerings.||
+2026|H|210|3/12/2026 3:49:36 PM|HB1416|179|161|15|37|||Adopt Amendment|prohibits certain government regulations regarding pregnancy resource centers in connection with abortion and contraception service offerings.||
+2026|H|211|3/12/2026 3:52:00 PM|HB1416|165|174|16|37|||Table|prohibits certain government regulations regarding pregnancy resource centers in connection with abortion and contraception service offerings.||
+2026|H|212|3/12/2026 3:54:07 PM|HB1416|176|163|15|38|||OTPA|prohibits certain government regulations regarding pregnancy resource centers in connection with abortion and contraception service offerings.||
+2026|H|213|3/12/2026 4:06:32 PM|HB1609|185|154|15|38|||ITL|limiting the use of state, county, and municipal funds and property for construction and operation of certain immigrant detention facilities.||
+2026|H|214|3/12/2026 4:11:39 PM|HB1675|148|186|19|39|||Remove From Table|establishing a commission to investigate the New Hampshire Coalition Against Sexual and Domestic Violence and requiring funding only be provided for the direct services materially benefitting survivors of sexual and domestic assault.||
+2026|H|215|3/12/2026 4:17:57 PM|CACR25|176|162|15|39|||ITL|relative to the right to marry. Providing that the right to marry is a fundamental civil right and that the state shall protect the right of every individual, regardless of sex, gender identity, sexual orientation, or race, to marry and to have their ma||
+2026|H|216|3/12/2026 4:34:45 PM|HCR12|180|151|20|41|||ITL|calling upon the federal delegation from New Hampshire to support Medicare for All, a universal health insurance program that guarantees all people the health care they need.||
+2026|H|217|3/12/2026 4:40:22 PM|HCR13|139|193|19|41|||Remove From Table|requesting Congress to call a constitutional convention relative to implementing term limits for elected members of both houses of Congress.||
+2026|H|218|3/26/2026 10:32:23 AM|HB112|191|157|18|27|||OTP|(New Title) requiring students in the university and community college systems of New Hampshire to pass the United States Citizenship and Immigration Services civics naturalization test, take a course that covers fundamental American documents as part of||
+2026|H|219|3/26/2026 11:02:20 AM|HB1458|158|193|14|28|||Table|(New Title) relative to the licensing of massage establishments and massage, reflexology, structural integration, and Asian bodywork facilities.||
+2026|H|220|3/26/2026 11:07:36 AM|HB1469|323|28|14|28|||OTPA|(New Title) relative to the licensing requirements for massage therapy establishments.||
+2026|H|221|3/26/2026 11:23:20 AM|HB1477|172|180|15|26|||ITL|relative to the permitting and regulation of anchored seasonal floating platforms on public waters.||
+2026|H|222|3/26/2026 11:35:52 AM|HB1555|192|162|13|26|||OTP|relative to the administration and enforcement of the state fire code.||
+2026|H|223|3/26/2026 12:04:31 PM|HB1602|128|226|15|24|||Interim Study|creating a safe battery recycling stewardship program.||
+2026|H|224|3/26/2026 12:14:47 PM|HB1602|244|112|13|24|||OTPA|creating a safe battery recycling stewardship program.||
+2026|H|225|3/26/2026 1:39:34 PM|HB1633|340|1|25|27|||OTP|expanding the information provided to survivors of sexual assault regarding their existing rights.||
+2026|H|226|3/26/2026 2:07:29 PM|HB1775|198|153|15|27|||OTP|relative to utility ownership of natural gas and nuclear power generation facilities.||
+2026|H|227|3/26/2026 2:12:12 PM|HB1446|81|270|14|28|||Remove From Table|||
+2026|H|228|3/26/2026 2:42:15 PM|HB1542|189|162|13|29|||OTPA|(New Title) allowing alternative compliance payments to the renewable energy fund to be refunded to ratepayers on a per kilowatt hour basis.||
+2026|H|229|3/26/2026 2:47:19 PM|HB1655|187|161|15|30|||Table|establishing a funding source for maintaining state owned dams.||
+2026|H|230|4/9/2026 10:34:58 AM|HB349|145|206|13|29|||Veto Override|||
+2026|H|231|4/9/2026 10:46:48 AM|HB451|186|169|10|28|||Veto Override|||
+2026|H|232|4/9/2026 11:25:48 AM|HB1689|65|287|14|27|||Concur|||
+2026|H|233|4/9/2026 11:47:27 AM|SB620|259|94|13|27|||OTPA|relative to refusal of consent to testing to determine alcohol concentration and penalties for aggravated driving while intoxicated.||
+2026|H|234|4/9/2026 12:02:52 PM||155|181|30|27|||Shall Member Continue|||
+2026|H|235|4/9/2026 12:22:34 PM||115|149|102|27|||Shall Member Continue|||
+2026|H|236|4/23/2026 10:51:09 AM|SB482|214|140|11|28|||OTP|establishing consumer protections for digital access transaction kiosks.||
+2026|H|237|4/23/2026 11:02:29 AM|CACR11|199|157|11|26|||OTP|(New Title) relating to sheriffs. Providing that  there shall be no age limitation for a person to hold the office of county sheriff.||
+2026|H|238|4/23/2026 11:18:34 AM|SB460|225|128|14|26|||Adopt Amendment|relative to the offense of loitering or prowling.||
+2026|H|239|4/23/2026 11:21:11 AM|SB460|146|207|14|26|||Table|relative to the offense of loitering or prowling.||
+2026|H|240|4/23/2026 11:32:56 AM|SB586|162|193|13|25|||Adopt Floor Amendment|requiring school districts to publish a school administrative unit audit report after the end of the fiscal year.||
+2026|H|241|4/23/2026 11:56:49 AM|SB101|182|172|14|25|||Adopt Amendment|(New Title) authorizing parents to enroll their children in any public school in the state and creating a limited exemption from parental consent required for certain recordings under the parental bill of rights.||
+2026|H|242|4/23/2026 12:12:10 PM|SB101|169|184|14|26|||Adopt Amendment|(New Title) authorizing parents to enroll their children in any public school in the state and creating a limited exemption from parental consent required for certain recordings under the parental bill of rights.||
+2026|H|243|4/23/2026 12:25:59 PM|SB101|168|184|15|26|||OTPA|(New Title) authorizing parents to enroll their children in any public school in the state and creating a limited exemption from parental consent required for certain recordings under the parental bill of rights.||
+2026|H|244|4/23/2026 1:53:38 PM|SB543|182|154|23|34|||ITL|relative to long-term care eligibility and making an appropriation therefor.||
+2026|H|245|4/23/2026 2:00:18 PM|SB545|182|153|24|34|||ITL|relative to financial eligibility for the Medicare savings program.||
+2026|H|246|4/23/2026 2:55:23 PM|SB449|181|158|18|36|||ITL|(New Title) relative to relative to the participation of large customer-generators in net metering and relative to energy storage in connection with net metering.||
+2026|H|247|4/23/2026 3:38:31 PM|SB559|218|110|23|42|||ITL|reducing the minimum allowable speed limit on locally controlled roads.||
+2026|H|248|5/7/2026 10:17:17 AM|HB564|184|140|39|30|||Concur|||
+2026|H|249|5/7/2026 11:04:59 AM|SB669|173|171|20|29|||Interim Study|relative to on-premises licenses for licensed barbershops and salons.||
+2026|H|250|5/7/2026 11:23:00 AM|SB481|186|157|21|29|||OTPA|(New Title) relative to the sale of the Sununu youth services center property.||
+2026|H|251|5/7/2026 11:37:21 AM|SB603|186|158|20|29|||ITL|relative to the funding of the SNAP program by the department of health and human services.||
+2026|H|252|5/7/2026 12:07:31 PM|SB501|188|154|21|30|||Table|relative to authorization of seclusion or restraint during a personal safety emergency by a physician, physician associate, or advanced practice registered nurse.||
+2026|H|253|5/7/2026 12:16:07 PM|SB520|193|150|20|30|||Table|relative to breast surgeries for minors.||
+2026|H|254|5/14/2026 11:12:59 AM|SB409|172|184|10|27|||Adopt Floor Amendment|relative to the penalties for the offense of disobeying an officer.||
+2026|H|255|5/14/2026 12:03:34 PM|SB430|193|163|10|27|||OTPA|(New Title) relative to mandatory disclosure by school district employees to parents and legal guardians.||
+2026|H|256|5/14/2026 1:46:29 PM|SB434|188|161|13|31|||OTPA|relative to regulation of public school materials.||
+2026|H|257|5/14/2026 1:53:03 PM|SB498|162|183|17|31|||Reconsider|relative to children's mental health services for persons 18 years of age and younger.||
+2026|H|258|5/14/2026 1:58:05 PM|SB574|191|157|14|31|||Adopt Amendment|establishing a commission to study the efficiency and structure of school administrative units.||
+2026|H|259|5/14/2026 2:07:50 PM|SB574|197|151|13|32|||OTPA|establishing a commission to study the efficiency and structure of school administrative units.||
+2026|H|260|5/14/2026 2:23:51 PM|CACR12|192|148|21|32|||Adopt Amendment|relating to voting on broad-based taxes.  Providing that a supermajority vote of the general court shall be required to enact any broad-bases taxes.||
+2026|H|261|5/14/2026 2:37:35 PM|CACR12|17|322|21|33|||Adopt Floor Amendment|relating to voting on broad-based taxes.  Providing that a supermajority vote of the general court shall be required to enact any broad-bases taxes.||
+2026|H|262|5/14/2026 2:42:00 PM|CACR12|193|148|19|33|||OTPA|relating to voting on broad-based taxes.  Providing that a supermajority vote of the general court shall be required to enact any broad-bases taxes.||
+2026|H|263|5/14/2026 2:50:58 PM|SB223|187|157|16|33|||OTPA|(New Title) prohibiting student identification cards from being used as photo identification for purposes of obtaining a ballot.||
+2026|H|264|5/14/2026 3:21:00 PM|SB504|188|153|19|33|||Adopt Floor Amendment|relative to the practice of pharmacy and the dispensing of certain medications by pharmacists.||
+2026|H|265|5/14/2026 3:23:35 PM|SB504|197|145|18|33|||OTPA|relative to the practice of pharmacy and the dispensing of certain medications by pharmacists.||
+2026|H|266|5/14/2026 3:45:26 PM|SB552|179|159|18|37|||OTP|permitting classification of individuals based on biological sex under certain limited circumstances.||
+2026|H|267|5/14/2026 3:57:11 PM|SB408|159|177|17|40|||Adopt Floor Amendment|relative to health insurance coverage for prosthetics. ||
+2026|H|268|5/14/2026 4:33:31 PM|SB557|171|162|17|43|||Adopt Floor Amendment|(Third New Title) making it illegal for liquor commission licensees to sell, distribute, furnish, offer for sale, advertise, manufacture, possess, or allow the ingestion, inhalation, smoking, or vaping of certain kratom products.||
+2026|H|269|5/14/2026 4:48:03 PM|SB88|162|167|21|43|||OTPA|prohibiting state government entities from including specified terms related to labor organization agreements in construction related contracts and grants.||
+2026|H|270|5/14/2026 5:22:24 PM|SB508|151|161|29|52|||OTP|relative to the zoning board of adjustments appeal period.||
+2026|H|271|5/14/2026 5:30:28 PM||163|147|31|52|||Table|||
+2026|H|272|5/14/2026 5:38:40 PM|SB643|164|150|28|51|||OTPA|(New Title) requiring municipalities to hold a public hearing and conduct a roll call vote when seeking to override a tax or spending cap.||
+2026|H|273|5/14/2026 5:44:48 PM|SB653|164|145|32|52|||Adopt Amendment|enabling counties to change the dates of their biennial budgets.||
+2026|H|274|5/14/2026 5:47:22 PM|SB653|167|146|28|52|||OTPA|enabling counties to change the dates of their biennial budgets.||
+2026|H|275|5/14/2026 6:03:57 PM|SB627|151|157|32|53|||Interim Study|(New Title) relative to toll rate adjustments and periodic inflation-based toll reviews for the New Hampshire turnpike system to support the 2027-2036 ten-year transportation plan.||
+2026|H|276|5/14/2026 6:10:43 PM|SB567|158|143|39|53|||Adopt Floor Amendment|(New Title) relative to the composition of the board of dental examiners.||
+2026|H|277|5/14/2026 6:13:11 PM|SB567|134|166|40|53|||Table|(New Title) relative to the composition of the board of dental examiners.||
+2026|H|278|5/14/2026 6:15:25 PM|SB567|167|133|40|53|||OTPA|(New Title) relative to the composition of the board of dental examiners.||
+2026|H|279|5/14/2026 6:19:36 PM|SB625|146|150|44|53|||ITL|(New Title) establishing a committee to study options for family members of intentional homicide victims where the department of justice does not file charges in a case.||
+2026|H|280|5/14/2026 6:24:43 PM|SB625|157|138|45|53|||Adopt Floor Amendment|(New Title) establishing a committee to study options for family members of intentional homicide victims where the department of justice does not file charges in a case.||
+2026|H|281|5/14/2026 6:30:11 PM|SB625|155|140|45|53|||Adopt Floor Amendment|(New Title) establishing a committee to study options for family members of intentional homicide victims where the department of justice does not file charges in a case.||
+2026|H|282|5/14/2026 6:32:20 PM|SB625|156|139|45|53|||OTPA|(New Title) establishing a committee to study options for family members of intentional homicide victims where the department of justice does not file charges in a case.||
+2026|H|283|5/21/2026 10:51:15 AM|HB1610|186|163|18|26|||Concur|||
+2026|H|284|5/21/2026 11:00:24 AM|HB1358|184|164|19|26|||Concur|||
+2026|H|285|5/21/2026 11:19:48 AM|HB1792|127|222|18|26|||Concur|||
+2026|H|286|5/21/2026 11:47:29 AM|HB1336|180|162|24|27|||Concur|||
+2026|H|287|5/21/2026 12:01:03 PM|HB1681|242|102|22|27|||Concur|||
+2026|H|288|5/21/2026 1:29:53 PM|HB232|179|154|31|29|||Concur|||
+2026|H|289|5/21/2026 1:44:12 PM|HB1442|184|155|25|29|||Concur|||
+2026|H|290|5/21/2026 2:28:06 PM||288|54|23|28|||Affirm The Report|||
+2026|H|291|5/21/2026 2:36:21 PM||158|179|28|28|||Remove From Table|||
+2026|H|292|6/4/2026 10:24:50 AM|SB481|189|158|24|20|||Adopt CofC Report|||
+2026|H|293|6/4/2026 11:16:55 AM|HB1588|185|171|16|19|||Adopt CofC Report|||
+2026|H|294|6/4/2026 11:25:56 AM|HB317|197|159|16|19|||Adopt CofC Report|||
+2026|H|295|6/4/2026 11:53:41 AM|HB1062|196|156|19|20|||Adopt CofC Report|||
+2026|H|296|6/4/2026 12:07:55 PM|HB1279|208|140|21|22|||Adopt CofC Report|||
+2026|H|297|6/4/2026 12:28:42 PM|HB155|195|157|17|22|||Adopt CofC Report|||
+2026|H|298|6/4/2026 12:38:05 PM|HB1300|183|170|17|21|||Adopt CofC Report|||
+2026|H|299|6/4/2026 2:27:07 PM|HB609|182|160|22|27|||Table|||
+2026|H|300|6/4/2026 2:39:37 PM|HB1374|179|161|24|27|||Adopt CofC Report|||
+2026|H|301|6/4/2026 2:49:46 PM|HB1376|183|158|21|29|||Adopt CofC Report|||
+2026|H|302|8/19/2026 10:38:43 AM|HB2026|292|25|41|26|||Veto Override|||
+2026|H|303|8/19/2026 10:42:14 AM|HB221|152|167|39|26|||Veto Override|||
+2026|H|304|8/19/2026 10:47:53 AM|HB232|166|154|38|26|||Veto Override|||
+2026|H|305|8/19/2026 11:07:59 AM|HB396|204|116|38|26|||Veto Override|||
+2026|H|306|8/19/2026 11:13:53 AM|HB1072|160|159|39|26|||Veto Override|||
+2026|H|307|8/19/2026 11:18:58 AM|HB1097|193|125|40|26|||Veto Override|||
+2026|H|308|8/19/2026 11:22:06 AM|HB1102|231|88|39|26|||Veto Override|||
+2026|H|309|8/19/2026 11:27:49 AM|HB1184|290|29|39|26|||Veto Override|||
+2026|H|310|8/19/2026 11:33:09 AM|HB1267|311|6|41|26|||Veto Override|||
+2026|H|311|8/19/2026 11:35:40 AM|HB1336|159|155|44|26|||Veto Override|||
+2026|H|312|8/19/2026 11:44:01 AM|HB1337|148|172|38|26|||Veto Override|||
+2026|H|313|8/19/2026 11:47:27 AM|HB1358|150|166|42|26|||Veto Override|||
+2026|H|314|8/19/2026 11:52:12 AM|HB1369|305|12|41|26|||Veto Override|||
+2026|H|315|8/19/2026 11:58:29 AM|HB1422|314|7|37|26|||Veto Override|||
+2026|H|316|8/19/2026 12:13:25 PM|HB1442|165|149|44|26|||Veto Override|||
+2026|H|317|8/19/2026 1:55:48 PM|HB396|187|120|45|32|||Reconsider|||
+2026|H|318|8/19/2026 2:00:41 PM|HB396|202|107|43|32|||Veto Override|||
+2026|H|319|8/19/2026 2:03:32 PM|HB1491|160|148|44|32|||Veto Override|||
+2026|H|320|8/19/2026 2:12:32 PM|HB1565|168|140|44|32|||Veto Override|||
+2026|H|321|8/19/2026 2:22:27 PM|HB1610|162|148|42|32|||Veto Override|||
+2026|H|322|8/19/2026 2:31:12 PM|HB1643|157|152|43|32|||Veto Override|||
+2026|H|323|8/19/2026 2:33:31 PM|HB1726|101|206|45|32|||Veto Override|||
+2026|H|324|8/19/2026 2:50:14 PM|HB1766|249|56|47|32|||Veto Override|||
+2026|H|325|8/19/2026 2:55:59 PM|SB434|165|140|47|32|||Veto Override|||
+2026|H|326|8/19/2026 3:01:08 PM|SB468|257|44|50|33|||Veto Override|||
+2026|H|327|8/19/2026 3:07:19 PM|SB552|161|142|47|34|||Veto Override|||
+2026|H|328|8/19/2026 3:11:39 PM|SB661|84|216|50|34|||Veto Override|||
+2026|H|329|8/19/2026 3:37:01 PM||185|93|70|36|||Affirm The Report|||
+2026|S|1|1/7/2026 12:00:00 AM|HB292|7|17|24|0|||Floor Amendment|(New Title) establishing a revolving loan fund for school districts.||1/7/2026 3:24:43 PM
+2026|S|2|1/7/2026 12:00:00 AM|HB292|8|16|24|0|||Floor Amendment|(New Title) establishing a revolving loan fund for school districts.||1/7/2026 3:28:04 PM
+2026|S|3|1/7/2026 12:00:00 AM|HB292|16|8|24|0|||Ought to Pass w/Amendment|(New Title) establishing a revolving loan fund for school districts.||1/7/2026 3:32:13 PM
+2026|S|4|1/7/2026 12:00:00 AM|HB707|12|12|24|0|||Floor Amendment|(Second New Title) establishing a solid waste site evaluation committee.||1/7/2026 3:45:02 PM
+2026|S|5|1/7/2026 12:00:00 AM|HB191|16|8|24|0|||Ought to Pass w/Amendment|(Second New Title) providing criminal penalties for the transporting of an unemancipated minor in order to obtain a surgical procedure or a termination of the minor's pregnancy without parental permission.||1/7/2026 3:47:30 PM
+2026|S|6|1/7/2026 12:00:00 AM|HB451|13|11|24|0|||Ought to Pass|establishing the paint product stewardship program.||1/7/2026 3:53:42 PM
+2026|S|7|1/29/2026 12:00:00 AM|SB101|14|10|24|0|||Committee Amendment|(New Title) authorizing parents to enroll their children in any public school in the state and creating a limited exemption from parental consent required for certain recordings under the parental bill of rights.||1/29/2026 2:06:13 PM
+2026|S|8|1/29/2026 12:00:00 AM|SB101|14|10|24|0|||Ought to Pass w/Amendment|(New Title) authorizing parents to enroll their children in any public school in the state and creating a limited exemption from parental consent required for certain recordings under the parental bill of rights.||1/29/2026 2:11:34 PM
+2026|S|9|1/29/2026 12:00:00 AM|HB751|24|0|24|0|||Floor Amendment- Sections 14, 15, & effective date|(Second New Title) establishing a committee to study licensure of outpatient substance use disorder treatment facilities, authorizing parents to enroll their children in any public school in the state, and creating a limited exemption from parental consen||1/30/2026 11:12:35 AM
+2026|S|10|1/29/2026 12:00:00 AM|HB751|16|8|24|0|||Floor Amendment - Remainder|(Second New Title) establishing a committee to study licensure of outpatient substance use disorder treatment facilities, authorizing parents to enroll their children in any public school in the state, and creating a limited exemption from parental consen||1/29/2026 3:20:39 PM
+2026|S|11|1/29/2026 12:00:00 AM|HB751|24|0|24|0|||Ought to Pass w/ Amendment Sections 14, 15 & effective date|(Second New Title) establishing a committee to study licensure of outpatient substance use disorder treatment facilities, authorizing parents to enroll their children in any public school in the state, and creating a limited exemption from parental consen||1/30/2026 11:16:40 AM
+2026|S|12|1/29/2026 12:00:00 AM|HB751|16|8|24|0|||Ought To Pass w/ Amendment - Remainder|(Second New Title) establishing a committee to study licensure of outpatient substance use disorder treatment facilities, authorizing parents to enroll their children in any public school in the state, and creating a limited exemption from parental consen||1/29/2026 3:30:15 PM
+2026|S|13|1/29/2026 12:00:00 AM|SB406|16|8|24|0|||Laid on Table|making an appropriation to the city of Nashua for the purpose of purchasing the former Daniel Webster College property. ||1/29/2026 3:32:23 PM
+2026|S|14|1/29/2026 12:00:00 AM|SB634|15|9|24|0|||Inexpedient to Legislate|enabling municipalities to adopt a municipal occupancy fee.||1/29/2026 3:40:48 PM
+2026|S|15|1/29/2026 12:00:00 AM|SB636|16|8|24|0|||Inexpedient to Legislate|establishing tax credits for qualifying small businesses against documented tariff-related costs.||1/29/2026 3:41:57 PM
+2026|S|16|1/29/2026 12:00:00 AM|SB439|16|8|24|0|||Committee Amendment|relative to municipal data center zoning.||1/29/2026 3:43:02 PM
+2026|S|17|1/29/2026 12:00:00 AM|SB439|16|8|24|0|||Ought to Pass w/Amendment|relative to municipal data center zoning.||1/29/2026 3:44:04 PM
+2026|S|18|2/5/2026 12:00:00 AM|SB134|15|9|24|0|||Concur|relative to work requirements under the state Medicaid program.||2/5/2026 5:11:22 PM
+2026|S|19|2/5/2026 12:00:00 AM|SB582|16|8|24|0|||Inexpedient to Legislate|modifying the base cost of an adequate education.||2/5/2026 5:12:43 PM
+2026|S|20|2/5/2026 12:00:00 AM|SB584|16|8|24|0|||Inexpedient to Legislate|increasing the amount of funding provided for students receiving special education services. ||2/5/2026 5:14:10 PM
+2026|S|21|2/5/2026 12:00:00 AM|SB463|16|8|24|0|||Inexpedient to Legislate|relative to possession of firearms in safe school zones.||2/5/2026 5:16:01 PM
+2026|S|22|2/5/2026 12:00:00 AM|SB555|16|8|24|0|||Inexpedient to Legislate|relative to critical risk protection orders.||2/5/2026 5:18:42 PM
+2026|S|23|2/5/2026 12:00:00 AM|SB651|15|9|24|0|||Laid on Table|relative to the legalization and regulation of cannabis and making appropriations therefor.||2/5/2026 5:22:08 PM
+2026|S|24|2/5/2026 12:00:00 AM|SB406|16|7|23|1|||Inexpedient to Legislate|making an appropriation to the city of Nashua for the purpose of purchasing the former Daniel Webster College property. ||2/5/2026 5:24:10 PM
+2026|S|25|2/19/2026 12:00:00 AM|SB430|16|8|24|0|||Ought to Pass w/Amendment|(New Title) relative to mandatory disclosure by school district employees to parents and legal guardians.||2/19/2026 5:01:48 PM
+2026|S|26|2/19/2026 12:00:00 AM|SB434|16|8|24|0|||Ought to Pass w/Amendment|relative to regulation of public school materials.||2/19/2026 5:02:40 PM
+2026|S|27|2/19/2026 12:00:00 AM|SB532|16|8|24|0|||Inexpedient to Legislate|increasing the requirements of the education freedom savings account oversight committee and modifying the purpose of the committee.||2/19/2026 5:03:22 PM
+2026|S|28|2/19/2026 12:00:00 AM|SB533|16|8|24|0|||Inexpedient to Legislate|requiring the state to seek bids for contracts to oversee and operate the state's education freedom account program every three years.||2/19/2026 5:04:27 PM
+2026|S|29|2/19/2026 12:00:00 AM|SB576|16|8|24|0|||Inexpedient to Legislate|adds definitions and reporting requirements relative to education freedom accounts. ||2/19/2026 5:05:16 PM
+2026|S|30|2/19/2026 12:00:00 AM|SB513|16|8|24|0|||Ought to Pass|requiring schools to engage an owner's project manager for construction of school building aid projects at the time of application.||2/19/2026 5:06:55 PM
+2026|S|31|2/19/2026 12:00:00 AM|CACR12|16|8|24|0|||Ought to Pass|relating to voting on broad-based taxes.  Providing that a supermajority vote of the general court shall be required to enact any broad-bases taxes. ||2/19/2026 5:16:58 PM
+2026|S|32|2/19/2026 12:00:00 AM|SB419|16|8|24|0|||Refer to Interim Study|relative to the housing champion designation and program and the affordable housing fund, and making appropriations therefor. ||2/19/2026 5:10:27 PM
+2026|S|33|2/19/2026 12:00:00 AM|SB484|16|8|24|0|||Inexpedient to Legislate|prohibiting Medicaid premiums and limiting Medicaid expansion cost sharing.||2/19/2026 5:11:45 PM
+2026|S|34|2/19/2026 12:00:00 AM|SB601|16|8|24|0|||Inexpedient to Legislate|relative to the allocation and disbursement of state contributions for non-state employer pension costs under the New Hampshire retirement system.||2/19/2026 5:13:19 PM
+2026|S|35|2/19/2026 12:00:00 AM|SB604|16|8|24|0|||Refer to Interim Study|making an appropriation to the university system of New Hampshire.||2/19/2026 5:14:05 PM
+2026|S|36|2/19/2026 12:00:00 AM|SB467|16|8|24|0|||Ought to Pass|relative to the penalty for certain fentanyl-related offenses and establishing a mandatory minimum sentence for the crime of distribution of a controlled drug with death resulting.||2/19/2026 5:15:50 PM
+2026|S|37|3/5/2026 12:00:00 AM|HB323|16|8|24|0|||Ought to Pass|requiring the presentation of a government-issued photographic means of identification in order to vote.  ||3/5/2026 4:15:41 PM
+2026|S|38|3/5/2026 12:00:00 AM|SB643|16|8|24|0|||Ought to Pass w/Amendment|(New Title) requiring municipalities to hold a public hearing and conduct a roll call vote when seeking to override a tax or spending cap.||3/5/2026 4:17:00 PM
+2026|S|39|3/5/2026 12:00:00 AM|SB551|16|8|24|0|||Inexpedient to Legislate| relative to legal protections for legal reproductive health care services.||3/5/2026 4:18:02 PM
+2026|S|40|3/5/2026 12:00:00 AM|SB552|16|8|24|0|||Ought to Pass|permitting classification of individuals based on biological sex under certain limited circumstances.||3/5/2026 4:18:52 PM
+2026|S|41|3/5/2026 12:00:00 AM|SB554|16|8|24|0|||Inexpedient to Legislate|repealing the limitation of liability for certain design features of firearms.||3/5/2026 4:19:37 PM
+2026|S|42|3/5/2026 12:00:00 AM|SB623|16|8|24|0|||Inexpedient to Legislate|relative to requirements for law enforcement officers assisting in immigration enforcement.||3/5/2026 4:20:35 PM
+2026|S|43|3/5/2026 12:00:00 AM|HB186|15|9|24|0|||Laid on Table|relative to the legalization and regulation of cannabis and making appropriations therefor.||3/5/2026 4:22:53 PM
+2026|S|44|3/12/2026 12:00:00 AM|SB431|16|8|24|0|||Ought to Pass|relative to violations of the prohibition on teaching discrimination.||3/12/2026 3:09:41 PM
+2026|S|45|3/12/2026 12:00:00 AM|SB566|24|0|24|0|||Ought to Pass|relative to recruiting incentive programs for the national guard.||3/12/2026 3:10:53 PM
+2026|S|46|3/26/2026 12:00:00 AM|HB1815|16|8|24|0|||Ought to Pass|relative to education financing.||3/26/2026 3:44:54 PM
+2026|S|47|3/26/2026 12:00:00 AM|CACR13|23|1|24|0|||Ought to Pass|relating to registers of probate. Providing that the office of register of probate and all references to such office be eliminated.||3/26/2026 3:46:32 PM
+2026|S|48|3/26/2026 12:00:00 AM|SB441|16|8|24|0|||Floor Amendment|(New Title) relative to the financial responsibility for local assistance and enabling municipalities to request a hearing regarding the residency of an assisted person.||3/26/2026 3:47:31 PM
+2026|S|49|3/26/2026 12:00:00 AM|SB665|24|0|24|0|||Ought to Pass w/Amendment|(New Title) relative to pharmacy benefits managers, managed care laws, notice of drug pricing options and pharmacy benefit manager business practices.||3/26/2026 3:48:57 PM
+2026|S|50|3/26/2026 12:00:00 AM|CACR11|23|1|24|0|||Ought to Pass w/Amendment|(New Title) relating to sheriffs. Providing that  there shall be no age limitation for a person to hold the office of county sheriff.||3/26/2026 3:51:25 PM
+2026|S|51|3/26/2026 12:00:00 AM|SB476|16|8|24|0|||Ought to Pass w/Amendment|relative to consumer health care cost transparency.||3/26/2026 3:53:24 PM
+2026|S|52|3/26/2026 12:00:00 AM|SB459|15|9|24|0|||Reconsideration|(New Title) exempting classification of individuals based on biological sex from the definition of an unlawful discriminatory practice in certain limited circumstances.||3/26/2026 3:55:40 PM
+2026|S|53|3/26/2026 12:00:00 AM|SB459|15|9|24|0|||Ought to Pass w/Amendment|(New Title) exempting classification of individuals based on biological sex from the definition of an unlawful discriminatory practice in certain limited circumstances.||3/26/2026 3:57:41 PM
+2026|S|54|4/16/2026 12:00:00 AM|HB1442|15|8|23|1|||Ought to Pass w/Amendment|(New Title) permitting classification of individuals based on biological sex under certain limited circumstances.||4/16/2026 10:41:23 AM
+2026|S|55|5/7/2026 12:00:00 AM|HB1268|14|8|22|2|||Ought to Pass with Amendment- Sections 1-10 and the effective date|(New Title) modifying the structure and administration of home education programs.||5/7/2026 4:58:37 PM
+2026|S|56|5/7/2026 12:00:00 AM|HB1374|14|8|22|2|||Ought to Pass w/Amendment|(New Title) modifying the procedures for withdrawal from a cooperative school district and the discontinuance of elementary and high schools and requiring the review of school district operating documents by school boards.||5/7/2026 5:00:17 PM
+2026|S|57|5/7/2026 12:00:00 AM|HB1448|14|8|22|2|||Ought to Pass|prohibiting the use of the World Economic Forum materials within state curriculum.||5/7/2026 5:01:12 PM
+2026|S|58|5/7/2026 12:00:00 AM|HB1573|14|8|22|2|||Committee Amendment|permitting excused absences for students participating in civic engagement or attending a career or technical education event.||5/7/2026 5:02:44 PM
+2026|S|59|5/7/2026 12:00:00 AM|HB1816|14|8|22|2|||Ought to Pass w/Amendment|(New Title) relative to the intervention of the department of education into a school or school district during a financial emergency and requiring the state school board to establish rules governing the vetting of school district business administrator c||5/7/2026 5:04:17 PM
+2026|S|60|5/7/2026 12:00:00 AM|HB1478|13|9|22|2|||Refer to Interim Study|requiring the department of environmental services to revise the rules for proposed new landfills.||5/7/2026 5:05:45 PM
+2026|S|61|5/7/2026 12:00:00 AM|HB1252|14|8|22|2|||Ought to Pass w/Amendment|(New Title) requiring the department of safety to only administer tests for commercial driver's licenses in English and prohibiting the assistance of an interpreter during such tests.||5/7/2026 5:07:56 PM
+2026|S|62|5/14/2026 12:00:00 AM|HB1793|14|8|22|1|||Ought to Pass w/Amendment|(New Title) prohibiting public colleges and universities from regulating the possession or carrying of certain weapons on campus and establishing a committee to study the feasibility of allowing guns on campuses of public institutions of higher education.||5/15/2026 8:31:40 AM
+2026|S|63|5/14/2026 12:00:00 AM|HB1010|8|15|23|1|||Floor Amendment|(New Title) relative to multi-family residential development on commercially zoned land.||5/15/2026 8:33:24 AM
+2026|S|64|5/14/2026 12:00:00 AM|HB1792|15|8|23|1|||Floor Amendment|(New Title) relative to the prohibition on teaching discrimination.||5/15/2026 8:35:00 AM
+2026|S|65|5/14/2026 12:00:00 AM|HB1336|14|9|23|1|||Committee Amendment|(New Title) relative to regulated conditional deposits.||5/15/2026 8:37:06 AM
+2026|S|66|5/14/2026 12:00:00 AM|HB1336|14|9|23|1|||Ought to Pass w/Amendment|(New Title) relative to regulated conditional deposits.||5/15/2026 8:39:27 AM
+2026|S|67|5/14/2026 12:00:00 AM|HB1817|15|8|23|1|||Ought to Pass|(New Title) relative to access to curricular courses and cocurricular programs within school districts.||5/15/2026 8:40:39 AM
+2026|S|68|5/21/2026 12:00:00 AM|SB223|14|8|22|2|||Concur|(Second New Title) relative valid photo identification for purposes of obtaining a ballot and relative to the production of lists of certain schools of higher education.||5/21/2026 4:26:06 PM
+2026|S|69|5/21/2026 12:00:00 AM|SB430|14|8|22|2|||Concur|(New Title) relative to mandatory disclosure by school district employees to parents and legal guardians.||5/21/2026 4:28:07 PM
+2026|S|70|5/21/2026 12:00:00 AM|SB434|14|8|22|2|||Concur|relative to regulation of public school materials.||5/21/2026 4:30:26 PM
+2026|S|71|5/21/2026 12:00:00 AM|SB574|13|9|22|2|||Concur|establishing a commission to study the efficiency and structure of school administrative units.||5/21/2026 4:31:28 PM
+2026|S|72|6/4/2026 12:00:00 AM|HB1735|14|9|23|1|||Ought To Pass w/ Amendment - Remainder|(New Title) relative to the practice of pharmacy, the dispensing of certain medications by pharmacists, and permitting treatment of certain severe illness under the right to try act.||6/4/2026 3:53:04 PM
+2026|S|73|6/4/2026 12:00:00 AM|HB609|15|8|23|1|||Conference Committee Report|relative to the general court's authority over the sale, purchase, ownership, use, possession, transportation, licensing, permitting, taxation, and other matter pertaining to firearms, stun guns, Tasers, pepper spray devices, knives and other self-defense||6/4/2026 3:54:50 PM
+2026|S|74|6/4/2026 12:00:00 AM|HB1300|15|8|23|1|||Conference Committee Report|(Second New Title) establishing a school district local tax cap question for the state general election of 2026 and related limitations on central office administrative expenses in school districts.||6/4/2026 3:57:38 PM
+2026|S|75|8/19/2026 12:00:00 AM|HB2026|24|0|24|0|||VETO MESSAGE - Roll Call Required|(New Title) relative to the state 10-year transportation improvement plan; relative to toll rate adjustments and periodic toll reviews for the New Hampshire turnpike system to support the 2027-2036 ten-year transportation plan; and relative to reconstruct||8/20/2026 9:18:06 AM
+2026|S|76|8/19/2026 12:00:00 AM|SB627|0|24|24|0|||VETO MESSAGE - Roll Call Required|(Second New Title) relative to toll rate adjustments for the New Hampshire turnpike system to support the 2027-2036 ten-year transportation plan||8/20/2026 9:19:45 AM
+2026|S|77|8/19/2026 12:00:00 AM|SB552|16|8|24|0|||VETO MESSAGE - Roll Call Required|permitting classification of individuals based on biological sex under certain limited circumstances.||8/20/2026 9:22:22 AM
+2026|S|78|8/19/2026 12:00:00 AM|SB268|0|24|24|0|||VETO MESSAGE - Roll Call Required|permitting classification of individuals based on biological sex under certain limited circumstances.||8/20/2026 9:23:31 AM
+2026|S|79|8/19/2026 12:00:00 AM|SB434|16|8|24|0|||VETO MESSAGE - Roll Call Required|relative to regulation of public school materials.||8/20/2026 9:24:12 AM
+2026|S|80|8/19/2026 12:00:00 AM|SB468|16|8|24|0|||VETO MESSAGE - Roll Call Required|relative to enabling alternative treatment centers to operate a greenhouse cultivation location. ||8/20/2026 9:27:53 AM
+2026|S|81|8/19/2026 12:00:00 AM|SB475|8|16|24|0|||VETO MESSAGE - Roll Call Required|(New Title) relative to pet vendor foster homes, defining pet vendor foster facility, and relative to cruelty to livestock.  ||8/20/2026 9:30:05 AM
+2026|S|82|8/19/2026 12:00:00 AM|SB481|0|24|24|0|||VETO MESSAGE - Roll Call Required|(New Title) relative to the sale of the Sununu youth services center property.||8/20/2026 9:31:23 AM
+2026|S|83|8/19/2026 12:00:00 AM|SB535|5|19|24|0|||VETO MESSAGE - Roll Call Required|(New Title) defining residential breeder and imported animal for the purposes of animal transfers and removing references to commercial kennels.||8/20/2026 9:33:02 AM
+2026|S|84|8/19/2026 12:00:00 AM|SB661|23|1|24|0|||VETO MESSAGE - Roll Call Required|relative to pooled risk management programs.||8/20/2026 9:34:14 AM
+2026|S|85|8/19/2026 12:00:00 AM|HB1102|24|0|24|0|||VETO MESSAGE - Roll Call Required|(New Title) increasing the research and development tax credit cap and relative to state park fees for state residents. ||8/20/2026 9:39:34 AM
+2026|S|86|8/19/2026 12:00:00 AM|HB1184|24|0|24|0|||VETO MESSAGE - Roll Call Required|relative to the issuance of no trespass orders on municipal or school district property.||8/20/2026 9:40:16 AM
+2026|S|87|8/19/2026 12:00:00 AM|HB1267|24|0|24|0|||VETO MESSAGE - Roll Call Required|prohibiting school district attorneys and non-school personnel from questioning students without their parent or guardian present. ||8/20/2026 9:41:41 AM
+2026|S|88|8/19/2026 12:00:00 AM|HB1369|24|0|24|0|||VETO MESSAGE - Roll Call Required|(New Title) relative to the manner of posting the warrant for town meetings.||8/20/2026 9:42:35 AM
+2026|S|89|8/19/2026 12:00:00 AM|HB1422|18|6|24|0|||VETO MESSAGE - Roll Call Required|relative to the time to petition for a new trial.||8/20/2026 9:43:45 AM
+2026|S|90|8/19/2026 12:00:00 AM|HB1766|11|13|24|0|||VETO MESSAGE - Roll Call Required|relative to cruelty to livestock.  ||8/20/2026 9:45:28 AM

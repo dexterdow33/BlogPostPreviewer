@@ -1,0 +1,55 @@
+H05|Education|EDUCATION
+H06|Environment and Agriculture|E&A
+H07|Executive Departments and Administration|ED&A
+H09|Health, Human Services and Elderly Affairs|HHS&EA
+H10|Judiciary|JUDICIARY
+H11|Labor, Industrial and Rehabilitative Services|LABOR
+H12|Legislative Administration|LEG ADMIN
+H18|Municipal and County Government|M&C
+H20|Public Works and Highways|PUBLIC WKS
+H22|Resources, Recreation and Development|RR&D
+H23|Rules|RULES
+H24|Science, Technology and Energy|ST&E
+H25|State-Federal Relations and Veterans Affairs|ST-FD&VETS
+H26|Criminal Justice and Public Safety|CRIM&SFTY
+H27|Transportation|TRANSPORT
+H28|Ways and Means|WAYS&MEANS
+H29|No Committee Assignment|NO ASSGNMT
+H30|Committee of Conference|COMM OF CONFERENCE
+H34|Finance|FINANCE
+H36|Election Law|ELEC LAW
+H37|Children and Family Law|CHILD&FAMI
+H42|Fish and Game and Marine Resources|F&G&MR
+H43|Commerce and Consumer Affairs|COMMERCE
+H47|Special Committee on Public Employee Pension Plans|SC PEN
+H53|Criminal Justice and Public Safety Joint with Judiciary|CJPS&JUD
+H55|Special Committee on Redistricting|Special Committee on Redistricting
+H56|Special Committee on Childcare|Special Committee on Childcare
+H57|Special Committee on Commissions|Special Committee on Commissions
+H58|Special Committee on Housing|Special Committee on Housing
+H59|Special Committee on the Family Division of the Circuit Court|Special Committee on the Family Division of the Circuit Court
+H60|Special Committee on COVID Response Efficacy|Special Committee on COVID Response Efficacy
+H61|Special Committee on the Division for Children, Youth and Families (DCYF)|Special Committee on the Division for Children, Youth and Families (DCYF)
+H62|Education Policy and Administration|EPA
+H63|Education Funding|EDFUNDING
+H64|Housing|HOUSING
+S02|Capital Budget|CB
+S05|Education|EDU
+S06|Executive Departments and Administration|EDA
+S07|Finance|FIN
+S10|Judiciary|JUD
+s100|Senate Special Committee on Redistricting|SENATE SPECIAL COMMITTEE ON REDISTRICTING
+S16|Transportation|TRANS
+S17|Ways and Means|WM
+S26|Health and Human Services|HHS
+S27|Public and Municipal Affairs|PMA
+S31|Special Committee|SPEC COMM
+S37|Commerce|COM
+S38|Energy and Natural Resources|ENR
+S40|Rules, Enrolled Bills and Internal Affairs|R,EB & IA
+S41|Children and Family Law|CFL
+s42|Education Finance|EF
+S45|Rules and Enrolled Bills|REB
+S50|Election Law and Internal Affairs|ELIA
+S91|Education and Workforce Development|EDWFD
+S92|Election Law and Municipal Affairs|ELMA
