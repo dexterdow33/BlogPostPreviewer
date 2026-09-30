@@ -1,0 +1,124 @@
+{
+  "bodyClass": "wp-singular page-template-default page page-id-9290 wp-theme-davenport jps-theme-davenport blog-post-transparent-header-disable blog-small-page-width blog-slider-disable blog-enable-images-animations blog-enable-sticky-header blog-style-corners-rounded blog-home-block-title-center",
+  "docWidth": 1440,
+  "scrollHeight": 6863,
+  "chain": [
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "gsr-sub",
+      "left": 330,
+      "width": 780,
+      "maxWidth": "780px",
+      "padding": "50px 56px 40px",
+      "bg": "rgb(255, 255, 255)",
+      "overflow": "visible"
+    },
+    {
+      "tag": "ARTICLE",
+      "id": "",
+      "cls": "",
+      "left": 295,
+      "width": 850,
+      "maxWidth": "none",
+      "padding": "0px",
+      "bg": "rgba(0, 0, 0, 0)",
+      "overflow": "visible"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "entry-content clearfix",
+      "left": 295,
+      "width": 850,
+      "maxWidth": "none",
+      "padding": "0px",
+      "bg": "rgba(0, 0, 0, 0)",
+      "overflow": "visible"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-md-12",
+      "left": 135,
+      "width": 1170,
+      "maxWidth": "none",
+      "padding": "0px 15px",
+      "bg": "rgba(0, 0, 0, 0)",
+      "overflow": "visible"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "row",
+      "left": 135,
+      "width": 1170,
+      "maxWidth": "none",
+      "padding": "0px",
+      "bg": "rgba(0, 0, 0, 0)",
+      "overflow": "visible"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "page-container container span-col-md-12",
+      "left": 135,
+      "width": 1170,
+      "maxWidth": "none",
+      "padding": "0px 15px",
+      "bg": "rgba(0, 0, 0, 0)",
+      "overflow": "visible"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "content-block ",
+      "left": 0,
+      "width": 1440,
+      "maxWidth": "none",
+      "padding": "0px",
+      "bg": "rgba(0, 0, 0, 0)",
+      "overflow": "visible"
+    },
+    {
+      "tag": "BODY",
+      "id": "",
+      "cls": "wp-singular page-template-default page page-id-9290 wp-theme-davenport jps-theme-davenport blog-post-transparent-header-",
+      "left": 0,
+      "width": 1440,
+      "maxWidth": "none",
+      "padding": "0px",
+      "bg": "rgb(255, 255, 255)",
+      "overflow": "visible"
+    }
+  ],
+  "iframe": {
+    "top": 1168,
+    "width": 668,
+    "height": 3570
+  },
+  "inner": {
+    "ready": "complete",
+    "rows": 1,
+    "open": "bill-HB2026",
+    "openTopInViewport": 110,
+    "htmlClass": "embed",
+    "loading": "Loading the 2026 session…",
+    "loadingHidden": true,
+    "summary": "Of 1,387 bills and resolutions in the 2026 session, 344 became law and 654 were killed. 25 vetoes stood, and lawmakers overrode 7 more. 63 bills have committee work on the calendar.",
+    "stamp": "Data pulled from the New Hampshire General Court September 29, 2026 at 11:54 PM ET.",
+    "tabs": 12,
+    "docW": 668,
+    "docH": 3570,
+    "bodyH": 3570,
+    "innerOverflowX": 0
+  },
+  "pageOverflowX": 0,
+  "hash": "#HB2026",
+  "scrollY": 2743,
+  "bodyFont": "\"\"",
+  "bodyBg": "rgb(255, 255, 255)"
+}
+
+[log] JQMIGRATE: Migrate is installed, version 3.4.1
+[failed] https://analytics.google.com/g/collect?v=2&tid=G-NBF8CYM7B4&gtm=45Pe69t1v9229660466za200zd9229660466xf1&_p=1790810871575&_gaz=1&gcd=13l3l3l3l1l1&npa=0&dma=0&gdid=dZTNiMT&_eu=AAAAACAC&are=1&cid=2007925573.1790810872&frm=0&ibt=1&ngs=1&pscdl=noapi&rcb=5&sr=1440x900&uaa=x86&uab=64&uafvl=HeadlessChrome%3B131.0.6778.33%7CChromium%3B131.0.6778.33%7CNot_A%2520Brand%3B24.0.0.0&uam=&uamb=0&uap=Linux&uapv=6.17.0&uaw=0&ul=en-us%40posix&_s=1&tag_exp=115938466~115938468~118897920~118897930~120213116~120385423~120469145~120469153&sid=1790810871&sct=1&seg=0&dl=https%3A%2F%2Fgranitestatereport.com%2Fnh-bill-tracker%2F&dt=NH%20Bill%20Tracker%20%E2%80%93%20Granite%20State%20Report&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=321 net::ERR_ABORTED
