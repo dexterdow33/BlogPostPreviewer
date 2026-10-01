@@ -1,8 +1,38 @@
 # NH dynamicdatadump discovery report
 
-Generated 2026-09-30T23:24:52+00:00 (offline rebuild from data/raw)
+Generated 2026-10-01T14:43:26+00:00
 
-_Offline rebuild: files read from data/raw._
+## LSRs.txt
+
+**Served empty (0 bytes); reused the previous run's copy.**
+
+## LsrsOnly.txt
+
+**Served empty (0 bytes); reused the previous run's copy.**
+
+## Docket.txt
+
+**Served empty (0 bytes); reused the previous run's copy.**
+
+## LsrSponsors.txt
+
+**Served empty (3 bytes); reused the previous run's copy.**
+
+## legislators.txt
+
+**Served empty (3 bytes); reused the previous run's copy.**
+
+## RollCallSummary.txt
+
+**Served empty (0 bytes); reused the previous run's copy.**
+
+## RollCallHistory.txt
+
+**Served empty (0 bytes); reused the previous run's copy.**
+
+## Committees.txt
+
+**Served empty (0 bytes); reused the previous run's copy.**
 
 _Files last pulled from the General Court: 2026-09-30T03:54:44+00:00._
 
