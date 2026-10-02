@@ -15,7 +15,9 @@ const targets = fs.readFileSync('targets.txt', 'utf8').split('\n').map(s => s.tr
       page.on('pageerror', e => log.push(`[pageerror] ${e.message}`));
       page.on('requestfailed', r => log.push(`[failed] ${r.url()} ${r.failure() && r.failure().errorText}`));
       page.on('response', async r => { try { const ct = r.headers()['content-type'] || ''; if (name === 'desktop' && ct.includes('text/css')) css.push({ url: r.url(), body: await r.text() }); } catch (e) {} });
-      try { await page.goto(url, { waitUntil: 'networkidle', timeout: 90000 }); } catch (e) { log.push('[goto] ' + e.message); }
+      let resp = null;
+      try { resp = await page.goto(url, { waitUntil: 'networkidle', timeout: 90000 }); } catch (e) { log.push('[goto] ' + e.message); }
+      if (resp) { log.push('[status] ' + resp.status()); if (name === 'desktop') { try { fs.writeFileSync(`${OUT}/${slug}-raw.html`, await resp.text()); } catch (e) { log.push('[raw] ' + e.message); } } }
       await page.waitForTimeout(9000);
       const geo = await page.evaluate(() => {
         const out = { bodyClass: document.body.className, docWidth: document.documentElement.clientWidth, scrollHeight: document.documentElement.scrollHeight };
