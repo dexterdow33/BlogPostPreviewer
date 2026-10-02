@@ -37,6 +37,17 @@ const targets = fs.readFileSync('targets.txt', 'utf8').split('\n').map(s => s.tr
         out.bodyFont = getComputedStyle(document.body).fontFamily; out.bodyBg = getComputedStyle(document.body).backgroundColor;
         return out;
       });
+      if (fs.existsSync('inject_footer.html') && await page.$('.gsr-footer')) {
+        const ft = await page.$('.gsr-footer'); await ft.scrollIntoViewIfNeeded(); await page.waitForTimeout(600);
+        await ft.screenshot({ path: `${OUT}/${slug}-${name}-footer-live.jpg`, type: 'jpeg', quality: 80 });
+        const markup = fs.readFileSync('inject_footer.html', 'utf8');
+        await page.evaluate((m) => { const old = document.querySelector('.gsr-footer'); const t = document.createElement('template'); t.innerHTML = m.trim(); old.replaceWith(t.content.firstElementChild); }, markup);
+        await page.waitForTimeout(800);
+        const nf = await page.$('.gsr-footer'); await nf.scrollIntoViewIfNeeded(); await page.waitForTimeout(400);
+        await nf.screenshot({ path: `${OUT}/${slug}-${name}-footer-v11-preview.jpg`, type: 'jpeg', quality: 80 });
+        geo.footerPreview = await page.evaluate(() => ({ overflowX: document.documentElement.scrollWidth - document.documentElement.clientWidth, groups: [...document.querySelectorAll('.gsr-footer .gsr-footer-group')].map(g => g.querySelector('.gsr-footer-label').textContent + ': ' + [...g.querySelectorAll('a')].map(a => a.textContent).join(' | ')) }));
+        await page.evaluate(() => window.scrollTo(0, 0));
+      }
       await page.screenshot({ path: `${OUT}/${slug}-${name}-fold.jpg`, type: 'jpeg', quality: 72 });
       await page.screenshot({ path: `${OUT}/${slug}-${name}-full.jpg`, type: 'jpeg', quality: 60, fullPage: true });
       if (url.includes('#')) { await page.screenshot({ path: `${OUT}/${slug}-${name}-deeplink.jpg`, type: 'jpeg', quality: 72 }); }
