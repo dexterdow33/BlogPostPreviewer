@@ -1,0 +1,138 @@
+{
+  "bodyClass": "wp-singular post-template-default single single-post postid-8938 single-format-standard wp-theme-davenport jps-theme-davenport blog-post-transparent-header-disable blog-small-page-width blog-slider-disable blog-enable-images-animations blog-enable-sticky-header blog-style-corners-rounded blog-home-block-title-center blog-post-header-with-bg",
+  "docWidth": 1440,
+  "scrollHeight": 4342,
+  "chain": [
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "gsr-article",
+      "left": 330,
+      "width": 780,
+      "maxWidth": "780px",
+      "padding": "50px 56px 60px",
+      "bg": "rgb(255, 255, 255)",
+      "overflow": "visible"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "entry-content",
+      "left": 295,
+      "width": 850,
+      "maxWidth": "none",
+      "padding": "0px",
+      "bg": "rgba(0, 0, 0, 0)",
+      "overflow": "visible"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "post-content clearfix",
+      "left": 295,
+      "width": 850,
+      "maxWidth": "none",
+      "padding": "0px",
+      "bg": "rgba(0, 0, 0, 0)",
+      "overflow": "visible"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "post-content-wrapper",
+      "left": 295,
+      "width": 850,
+      "maxWidth": "none",
+      "padding": "0px",
+      "bg": "rgba(0, 0, 0, 0)",
+      "overflow": "visible"
+    },
+    {
+      "tag": "ARTICLE",
+      "id": "post-8938",
+      "cls": "post-8938 post type-post status-publish format-standard has-post-thumbnail category-right-to-know",
+      "left": 295,
+      "width": 850,
+      "maxWidth": "none",
+      "padding": "0px",
+      "bg": "rgba(0, 0, 0, 0)",
+      "overflow": "visible"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "blog-post blog-post-single hentry clearfix",
+      "left": 295,
+      "width": 850,
+      "maxWidth": "none",
+      "padding": "0px",
+      "bg": "rgba(0, 0, 0, 0)",
+      "overflow": "visible"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-md-12 post-single-content",
+      "left": 135,
+      "width": 1170,
+      "maxWidth": "none",
+      "padding": "0px 15px",
+      "bg": "rgba(0, 0, 0, 0)",
+      "overflow": "visible"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "row",
+      "left": 135,
+      "width": 1170,
+      "maxWidth": "none",
+      "padding": "0px",
+      "bg": "rgba(0, 0, 0, 0)",
+      "overflow": "visible"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "post-container container span-col-md-12 post-single-content",
+      "left": 135,
+      "width": 1170,
+      "maxWidth": "none",
+      "padding": "0px 15px",
+      "bg": "rgba(0, 0, 0, 0)",
+      "overflow": "visible"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "content-block post-header-incontent post-sidebar-disable",
+      "left": 0,
+      "width": 1440,
+      "maxWidth": "none",
+      "padding": "0px",
+      "bg": "rgba(0, 0, 0, 0)",
+      "overflow": "visible"
+    },
+    {
+      "tag": "BODY",
+      "id": "",
+      "cls": "wp-singular post-template-default single single-post postid-8938 single-format-standard wp-theme-davenport jps-theme-dav",
+      "left": 0,
+      "width": 1440,
+      "maxWidth": "none",
+      "padding": "0px",
+      "bg": "rgb(255, 255, 255)",
+      "overflow": "visible"
+    }
+  ],
+  "bodyFont": "\"\"",
+  "bodyBg": "rgb(255, 255, 255)"
+}
+
+[log] JQMIGRATE: Migrate is installed, version 3.4.1
+[failed] https://analytics.google.com/g/collect?v=2&tid=G-NBF8CYM7B4&gtm=45Pe69u2v9229660466za200zd9229660466xf1&_p=1790976490721&_gaz=1&gcd=13l3l3l3l1l1&npa=0&dma=0&gdid=dZTNiMT&_eu=AAAAACAC&are=1&cid=1278790156.1790976491&frm=0&ibt=1&ngs=1&pscdl=noapi&rcb=13&sr=1440x900&uaa=x86&uab=64&uafvl=HeadlessChrome%3B131.0.6778.33%7CChromium%3B131.0.6778.33%7CNot_A%2520Brand%3B24.0.0.0&uam=&uamb=0&uap=Linux&uapv=6.17.0&uaw=0&ul=en-us%40posix&_s=1&tag_exp=115938466~115938468~118897920~118897930~120213116~120385422~120469145~120469153~121046263~121046271&sid=1790976490&sct=1&seg=0&dl=https%3A%2F%2Fgranitestatereport.com%2F2026%2F09%2F29%2Fgsr-tools%2F&dt=GSR%20Tools%3A%20free%20NH%20Right-to-Know%20request%20builder%20and%20redaction%20%7C%20Granite%20State%20Report&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=1597 net::ERR_ABORTED
+[warning] Error with Permissions-Policy header: Unrecognized feature: 'bluetooth'.
+[failed] https://eleven-public-cdn.elevenlabs.io/audio-native/da2ba38ba92bae51572e48651de200ff79c71f1c3ff9ddc118245de3954b226a/BDVRxJJlsvnhZIE83HMa/BDVRxJJlsvnhZIE83HMa.mp3 net::ERR_ABORTED
+[failed] https://api.us.elevenlabs.io/v1/audio-native/da2ba38ba92bae51572e48651de200ff79c71f1c3ff9ddc118245de3954b226a/BDVRxJJlsvnhZIE83HMa/metrics net::ERR_ABORTED
+[failed] https://eleven-public-cdn.elevenlabs.io/audio-native/da2ba38ba92bae51572e48651de200ff79c71f1c3ff9ddc118245de3954b226a/BDVRxJJlsvnhZIE83HMa/BDVRxJJlsvnhZIE83HMa.mp3 net::ERR_ABORTED
+[status] 200
