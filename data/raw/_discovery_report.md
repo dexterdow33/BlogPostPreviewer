@@ -1,17 +1,10 @@
 # NH dynamicdatadump discovery report
 
-Generated 2026-10-03T05:54:19+00:00
-
-## Directory index
-
-- /house/aboutthehouse/houseRules.pdf
-- /misc/ADAnotice3.pdf
-- /misc/General%20Court%20Harassment%20Policy%20and%20Addendum-1%202020.pdf
-- /misc/State House Complex Public Conduct Policy 2023.pdf
+Generated 2026-10-03T08:06:32+00:00
 
 ## LSRs.txt
 
-**Served empty (0 bytes); reused the previous run's copy.**
+**Served empty (3 bytes); reused the previous run's copy.**
 
 ## LsrsOnly.txt
 
