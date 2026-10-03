@@ -3,12 +3,16 @@ name: NH bill tracker refresh
 # Pulls the General Court's bill-status data dump, rebuilds data/*.json, commits
 # the result, and (on the default branch) publishes the site to GitHub Pages.
 #
-# Schedule: 07:35 UTC is 03:35 EDT / 02:35 EST, inside the window when the
-# General Court asks automated clients to use the site (before 6 a.m. Eastern).
+# Schedule: the General Court asks automated clients to use the site between
+# 9 p.m. and 6 a.m. Eastern. GitHub starts scheduled runs late, sometimes by
+# hours (the 07:35 UTC slot ran at 14:03 and 14:43 UTC on Oct 1-2, 2026, after
+# the dump had gone empty for the day). So the job is offered every hour from
+# 02:17 to 09:17 UTC (22:17-05:17 EDT, 21:17-04:17 EST). The first slot that
+# fetches a full set of files wins; the later slots see a fresh fetch and stop.
 
 on:
   schedule:
-    - cron: "35 7 * * *"
+    - cron: "17 2-9 * * *"
   workflow_dispatch:
     inputs:
       sessions:
@@ -51,6 +55,7 @@ jobs:
     timeout-minutes: 30
     outputs:
       changed: ${{ steps.commit.outputs.changed }}
+      action: ${{ steps.plan.outputs.action }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -60,29 +65,51 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Build dataset
+      - name: Decide whether to fetch
+        id: plan
         # The General Court asks automated clients to stay off the site between
-        # 6 a.m. and 9 p.m. Eastern. Scheduled runs fetch (they are timed for the
-        # off-hours window). A run started by a push or a pull request during the
-        # day rebuilds from the last saved raw files instead of fetching.
+        # 6 a.m. and 9 p.m. Eastern, and in those hours the dump is often empty.
+        # Any run in that window rebuilds from the saved raw files instead of
+        # fetching, unless a manual run sets force_fetch. A scheduled run stops
+        # early when the files were pulled in the last 18 hours (an earlier slot
+        # already got them) or, in the daytime, when the data was rebuilt in the
+        # last 18 hours.
         run: |
-          HOUR=$(TZ=America/New_York date +%H)
+          HOUR=$((10#$(TZ=America/New_York date +%H)))
+          NOW=$(date -u +%s)
+          age() { if [ -f "$1" ]; then T=$(date -u -d "$(head -c 40 "$1" | tr -d '\n')" +%s 2>/dev/null || echo 0); echo $(( (NOW - T) / 3600 )); else echo 9999; fi; }
+          FETCH_AGE=$(age data/raw/_fetched_at.txt)
+          BUILT=$(python3 -c "import json;print(json.load(open('data/index.json')).get('generated_at',''))" 2>/dev/null || true)
+          if [ -n "$BUILT" ]; then BUILT_AGE=$(( (NOW - $(date -u -d "$BUILT" +%s 2>/dev/null || echo 0)) / 3600 )); else BUILT_AGE=9999; fi
+          DAY=false; if [ "$HOUR" -ge 6 ] && [ "$HOUR" -lt 21 ]; then DAY=true; fi
+          ACTION=fetch
+          if [ "${{ github.event.inputs.force_fetch || 'false' }}" != "true" ] && [ "$DAY" = true ]; then ACTION=offline; fi
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            if [ "$FETCH_AGE" -lt 18 ]; then ACTION=skip
+            elif [ "$ACTION" = offline ] && [ "$BUILT_AGE" -lt 18 ]; then ACTION=skip; fi
+          fi
+          echo "Eastern hour $HOUR; files pulled ${FETCH_AGE} h ago; data built ${BUILT_AGE} h ago; event ${{ github.event_name }}: $ACTION"
+          echo "action=$ACTION" >> "$GITHUB_OUTPUT"
+
+      - name: Build dataset
+        if: steps.plan.outputs.action != 'skip'
+        run: |
           MODE=""
-          if [ "${{ github.event_name }}" != "schedule" ] && [ "${{ github.event.inputs.force_fetch || 'false' }}" != "true" ] && [ "$HOUR" -ge 6 ] && [ "$HOUR" -lt 21 ]; then
+          if [ "${{ steps.plan.outputs.action }}" = "offline" ]; then
             MODE="--offline"
-            echo "Daytime Eastern ($HOUR h): rebuilding from data/raw without fetching."
+            echo "Daytime Eastern: rebuilding from data/raw without fetching."
           fi
           python scripts/fetch_nh_bills.py --sessions "${{ github.event.inputs.sessions || '2025,2026,2027' }}" --out data $MODE
 
       - name: Summarize
-        if: always()
+        if: always() && steps.plan.outputs.action != 'skip'
         run: |
           echo "## Data files" >> "$GITHUB_STEP_SUMMARY"
           ls -la data data/raw 2>/dev/null | sed 's/^/    /' >> "$GITHUB_STEP_SUMMARY" || true
           if [ -f data/index.json ]; then echo '```json' >> "$GITHUB_STEP_SUMMARY"; cat data/index.json >> "$GITHUB_STEP_SUMMARY"; echo '```' >> "$GITHUB_STEP_SUMMARY"; fi
 
       - name: Upload discovery report and raw files
-        if: always()
+        if: always() && steps.plan.outputs.action != 'skip'
         uses: actions/upload-artifact@v4
         with:
           name: nh-bills-data-${{ github.run_number }}
@@ -94,7 +121,7 @@ jobs:
         id: commit
         # Pull-request runs validate the build only. A bot commit on a PR branch
         # would start another pull_request run that GitHub holds for approval.
-        if: always() && github.event_name != 'pull_request'
+        if: always() && github.event_name != 'pull_request' && steps.plan.outputs.action != 'skip'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -112,7 +139,7 @@ jobs:
   pages-check:
     name: Is GitHub Pages enabled?
     needs: refresh
-    if: github.ref_name == github.event.repository.default_branch
+    if: github.ref_name == github.event.repository.default_branch && needs.refresh.outputs.action != 'skip'
     runs-on: ubuntu-latest
     outputs:
       enabled: ${{ steps.check.outputs.enabled }}

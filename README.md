@@ -21,11 +21,15 @@ sponsors, legislators, roll-call summary and history), parses them, classifies
 each bill's outcome from its docket text, builds a per-bill link hub, and
 computes data-driven story leads. It has no third-party dependencies.
 
-`.github/workflows/nh-bills.yml` runs the script every day at 07:35 UTC, which
-is early morning Eastern. The General Court asks automated clients to use the
-site outside 6 a.m. to 9 p.m. Eastern, and the schedule respects that. The
-workflow commits the refreshed `data/` files and, on the default branch,
-publishes the site to GitHub Pages. It can also be run from the Actions tab.
+`.github/workflows/nh-bills.yml` offers the script a slot every hour from
+02:17 to 09:17 UTC, which is overnight Eastern. GitHub often starts scheduled
+runs hours late, so the first slot that pulls a full set of files does the
+refresh and the later slots stop early. The General Court asks automated
+clients to use the site outside 6 a.m. to 9 p.m. Eastern, and the workflow
+respects that: any run that lands in those hours, scheduled or not, rebuilds
+from the last saved raw files instead of fetching. The workflow commits the
+refreshed `data/` files and, on the default branch, publishes the site to
+GitHub Pages. It can also be run from the Actions tab.
 Runs started by a push or pull request during the day rebuild from the last
 saved raw files instead of fetching, and pull-request runs validate the build
 without committing data.

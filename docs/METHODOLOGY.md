@@ -61,14 +61,19 @@ and has no titles or sponsors; the page says so on a banner.
 
 ## Courtesy to the source
 
-The General Court asks automated clients to stay off the site between
-6 a.m. and 9 p.m. Eastern. The scheduled refresh runs at 07:35 UTC (03:35
-EDT / 02:35 EST), fetches each file once, and identifies itself with a
-User-Agent naming this repository. A run started by a push or pull request
-during the day does not fetch; it rebuilds from the last saved raw files
-(`--offline`). A manual run can force a daytime fetch with the
-`force_fetch` input; use that sparingly. Pull-request runs validate the
-build and do not commit data; commits come from the nightly schedule,
+The General Court asks automated clients to stay off the site between 6
+a.m. and 9 p.m. Eastern. The scheduled refresh is offered every hour from
+02:17 to 09:17 UTC (22:17 to 05:17 EDT, 21:17 to 04:17 EST), because
+GitHub can start a scheduled run hours after its slot. Each night, the
+first slot that pulls a complete set of files does the refresh, fetching
+each file once and identifying itself with a User-Agent naming this
+repository. Later slots see the fresh pull (under 18 hours old) and stop
+without contacting the site. No run fetches between 6 a.m. and 9 p.m.
+Eastern unless a manual run forces it (below); a daytime run rebuilds from
+the last saved raw files (`--offline`), and a scheduled daytime run does
+even that at most once a day. A manual run can force a daytime fetch with
+the `force_fetch` input; use that sparingly. Pull-request runs validate
+the build and do not commit data; commits come from the nightly schedule,
 manual runs, and pushes to the default branch.
 
 ## Outcome classification
