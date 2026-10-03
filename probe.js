@@ -23,7 +23,7 @@ const strip = (o) => { const { body, ...rest } = o; return rest; };
   const footer = (home.body.match(/<div class="gsr-footer">([\s\S]*?)<div class="gsr-footer-copy">/) || [])[1] || '';
   const groups = [...footer.matchAll(/<div class="gsr-footer-label">([^<]+)<\/div>\s*(?:<nav[^>]*>([\s\S]*?)<\/nav>|<p>)/g)].map(m => ({ label: m[1], links: [...(m[2] || '').matchAll(/<a href="([^"]+)">([^<]+)<\/a>/g)].map(x => ({ url: x[1], text: x[2] })) }));
   out.site.footerGroups = groups.map(g => ({ label: g.label, items: g.links.map(l => l.text) }));
-  const toolsMenu = (home.body.match(/>Tools<\/a>\s*<ul class="sub-menu[^"]*">([\s\S]*?)<\/ul>/) || [])[1] || '';
+  const ti = home.body.indexOf('>Tools</a>'); const tu = ti >= 0 ? home.body.indexOf('<ul', ti) : -1; const toolsMenu = tu >= 0 ? home.body.slice(tu, home.body.indexOf('</ul>', tu)) : '';
   const menuLinks = [...toolsMenu.matchAll(/<a href="([^"]+)">([^<]+)<\/a>/g)].map(x => ({ url: x[1], text: x[2] }));
   out.site.toolsMenu = menuLinks.map(l => l.text);
   const allLinks = new Map();
@@ -50,6 +50,19 @@ const strip = (o) => { const { body, ...rest } = o; return rest; };
     out.desk.feeds.push({ id: f.id, name: f.name, group: f.group, status: r.status, ms: r.ms, ct: r.ct, items, error: r.error, finalUrl: r.finalUrl !== f.url ? r.finalUrl : undefined });
   }));
   out.desk.feeds.sort((a, b) => a.id.localeCompare(b.id));
+
+  // ---- candidate replacement sources ----
+  const GN = (q) => 'https://news.google.com/rss/search?q=' + encodeURIComponent(q) + '&hl=en-US&gl=US&ceid=US:en';
+  const cands = [
+    ['gn-site-laconia', GN('site:laconiadailysun.com')], ['gn-site-keene', GN('site:keenesentinel.com')], ['gn-site-sentinelsource', GN('site:sentinelsource.com')],
+    ['gn-site-conway', GN('site:conwaydailysun.com')], ['gn-site-eagletrib', GN('site:eagletribune.com')], ['gn-site-caledonian', GN('site:caledonianrecord.com')],
+    ['gn-fbi-nh', GN('FBI "New Hampshire"')], ['gn-fbi-boston', GN('"FBI Boston"')], ['nhpr-new', 'https://www.nhpr.org/latest-from-nhpr-rss.rss'],
+    ['usao-nh-rss', 'https://www.justice.gov/usao-nh/pr/rss.xml'], ['keene-direct', 'https://www.keenesentinel.com/search/?f=rss&t=article&l=25&s=start_time&sd=desc'],
+  ];
+  out.desk.candidates = [];
+  await Promise.all(cands.map(async ([id, url]) => { const r = await get(url, { ua: UA_WP }); const items = r.body ? (r.body.match(/<item[\s>]/g) || []).length + (r.body.match(/<entry[\s>]/g) || []).length : 0; const first = (r.body || '').match(/<item>[\s\S]*?<title>([^<]*)<\/title>/)?.[1] || null; out.desk.candidates.push({ id, url, status: r.status, items, first, error: r.error }); }));
+  out.desk.bskyAlt = [];
+  for (const host of ['https://api.bsky.app', 'https://public.api.bsky.app', 'https://bsky.social']) { const r = await get(host + '/xrpc/app.bsky.feed.searchPosts?q=' + encodeURIComponent('"New Hampshire" police') + '&sort=latest&limit=5', { headers: H }); let n = null; try { n = JSON.parse(r.body).posts.length; } catch (_) {} out.desk.bskyAlt.push({ host, status: r.status, acao: r.acao, items: n, err: n === null ? (r.body || r.error || '').slice(0, 120) : undefined }); }
   // ---- scanner players ----
   out.desk.scanners = [];
   for (const s of D.scanners.slice(0, 3)) { const r = await get(`https://www.broadcastify.com/webPlayer/${s.id}`); const r2 = await get(`https://www.broadcastify.com/listen/feed/${s.id}`); out.desk.scanners.push({ id: s.id, webPlayer: { status: r.status, xfo: r.xfo, csp: r.csp, finalUrl: r.finalUrl }, feedPage: { status: r2.status, title: (r2.body || '').match(/<title>([^<]*)<\/title>/)?.[1] || null } }); }
