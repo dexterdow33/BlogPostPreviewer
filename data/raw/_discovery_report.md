@@ -1,8 +1,45 @@
 # NH dynamicdatadump discovery report
 
-Generated 2026-10-03T00:42:02+00:00 (offline rebuild from data/raw)
+Generated 2026-10-03T05:54:19+00:00
 
-_Offline rebuild: files read from data/raw._
+## Directory index
+
+- /house/aboutthehouse/houseRules.pdf
+- /misc/ADAnotice3.pdf
+- /misc/General%20Court%20Harassment%20Policy%20and%20Addendum-1%202020.pdf
+- /misc/State House Complex Public Conduct Policy 2023.pdf
+
+## LSRs.txt
+
+**Served empty (0 bytes); reused the previous run's copy.**
+
+## LsrsOnly.txt
+
+**Served empty (0 bytes); reused the previous run's copy.**
+
+## Docket.txt
+
+**Served empty (0 bytes); reused the previous run's copy.**
+
+## LsrSponsors.txt
+
+**Served empty (3 bytes); reused the previous run's copy.**
+
+## legislators.txt
+
+**Served empty (0 bytes); reused the previous run's copy.**
+
+## RollCallSummary.txt
+
+**Served empty (3 bytes); reused the previous run's copy.**
+
+## RollCallHistory.txt
+
+**Served empty (3 bytes); reused the previous run's copy.**
+
+## Committees.txt
+
+**Served empty (0 bytes); reused the previous run's copy.**
 
 _Files last pulled from the General Court: 2026-09-30T03:54:44+00:00._
 
