@@ -1,0 +1,260 @@
+{
+ "feeds": [
+  {
+   "id": "nhbulletin",
+   "name": "NH Bulletin",
+   "url": "https://newhampshirebulletin.com/feed/",
+   "group": "NH news"
+  },
+  {
+   "id": "nhpr",
+   "name": "NHPR",
+   "url": "https://www.nhpr.org/rss.xml",
+   "group": "NH news"
+  },
+  {
+   "id": "indepth",
+   "name": "InDepthNH",
+   "url": "https://indepthnh.org/feed/",
+   "group": "NH news"
+  },
+  {
+   "id": "wmur",
+   "name": "WMUR",
+   "url": "https://www.wmur.com/topstories-rss",
+   "group": "NH news"
+  },
+  {
+   "id": "keene",
+   "name": "Keene Sentinel",
+   "url": "https://www.sentinelsource.com/search/?f=rss&t=article&l=25&s=start_time&sd=desc",
+   "group": "NH news"
+  },
+  {
+   "id": "vnews",
+   "name": "Valley News",
+   "url": "https://vnews.com/feed/",
+   "group": "NH news"
+  },
+  {
+   "id": "conway",
+   "name": "Conway Daily Sun",
+   "url": "https://www.conwaydailysun.com/search/?f=rss&t=article&l=25&s=start_time&sd=desc",
+   "group": "NH news"
+  },
+  {
+   "id": "eagletrib",
+   "name": "Eagle-Tribune",
+   "url": "https://www.eagletribune.com/search/?f=rss&t=article&l=25&s=start_time&sd=desc",
+   "group": "NH news"
+  },
+  {
+   "id": "caledonian",
+   "name": "Caledonian-Record",
+   "url": "https://www.caledonianrecord.com/search/?f=rss&t=article&l=25&s=start_time&sd=desc",
+   "group": "NH news"
+  },
+  {
+   "id": "nhbr",
+   "name": "NH Business Review",
+   "url": "https://www.nhbr.com/feed/",
+   "group": "NH news"
+  },
+  {
+   "id": "granitepost",
+   "name": "Granite Post",
+   "url": "https://granitepostnews.com/feed/",
+   "group": "NH news"
+  },
+  {
+   "id": "nhfpi",
+   "name": "NH Fiscal Policy Institute",
+   "url": "https://nhfpi.org/feed/",
+   "group": "Policy"
+  },
+  {
+   "id": "monitor",
+   "name": "Concord Monitor",
+   "url": "https://www.concordmonitor.com/feed/",
+   "group": "Local",
+   "local": true
+  },
+  {
+   "id": "laconia",
+   "name": "Laconia Daily Sun",
+   "url": "https://www.laconiadailysun.com/search/?f=rss&t=article&l=25&s=start_time&sd=desc",
+   "group": "Local",
+   "local": true
+  },
+  {
+   "id": "gn-lakes",
+   "name": "Google News · Lakes Region",
+   "url": "https://news.google.com/rss/search?q=Laconia+OR+Tilton+OR+Northfield+OR+Belmont+OR+Gilford+OR+Franklin+OR+Sanbornton+OR+Meredith+%22NH%22&hl=en-US&gl=US&ceid=US:en",
+   "group": "Local",
+   "local": true
+  },
+  {
+   "id": "gn-concord",
+   "name": "Google News · Concord NH",
+   "url": "https://news.google.com/rss/search?q=%22Concord%2C+NH%22+OR+%22Concord%2C+N.H.%22&hl=en-US&gl=US&ceid=US:en",
+   "group": "Local",
+   "local": true
+  },
+  {
+   "id": "gn-nh",
+   "name": "Google News · New Hampshire",
+   "url": "https://news.google.com/rss/search?q=%22New+Hampshire%22&hl=en-US&gl=US&ceid=US:en",
+   "group": "Sweeps"
+  },
+  {
+   "id": "bing-nh",
+   "name": "Bing News · New Hampshire",
+   "url": "https://www.bing.com/news/search?q=%22New+Hampshire%22&format=rss",
+   "group": "Sweeps"
+  },
+  {
+   "id": "gn-rtk",
+   "name": "Google News · Right-to-Know NH",
+   "url": "https://news.google.com/rss/search?q=%22Right-to-Know%22+%22New+Hampshire%22&hl=en-US&gl=US&ceid=US:en",
+   "group": "Sweeps"
+  },
+  {
+   "id": "gn-ag",
+   "name": "Google News · NH Attorney General",
+   "url": "https://news.google.com/rss/search?q=Formella+OR+%22New+Hampshire+Attorney+General%22&hl=en-US&gl=US&ceid=US:en",
+   "group": "Sweeps"
+  },
+  {
+   "id": "gn-usao",
+   "name": "Google News · U.S. Attorney NH",
+   "url": "https://news.google.com/rss/search?q=%22U.S.+Attorney%22+%22New+Hampshire%22&hl=en-US&gl=US&ceid=US:en",
+   "group": "Sweeps"
+  },
+  {
+   "id": "gn-police",
+   "name": "Google News · NH police",
+   "url": "https://news.google.com/rss/search?q=police+%22New+Hampshire%22+(arrest+OR+shooting+OR+lawsuit+OR+investigation)&hl=en-US&gl=US&ceid=US:en",
+   "group": "Sweeps"
+  },
+  {
+   "id": "gn-court",
+   "name": "Google News · NH courts",
+   "url": "https://news.google.com/rss/search?q=%22New+Hampshire%22+(%22Supreme+Court%22+OR+%22Superior+Court%22+OR+indicted+OR+sentenced)&hl=en-US&gl=US&ceid=US:en",
+   "group": "Sweeps"
+  },
+  {
+   "id": "cl-nhsc",
+   "name": "NH Supreme Court opinions",
+   "url": "https://www.courtlistener.com/feed/court/nh/",
+   "group": "Courts"
+  },
+  {
+   "id": "cl-nhd",
+   "name": "D.N.H. opinions (CourtListener)",
+   "url": "https://www.courtlistener.com/feed/court/nhd/",
+   "group": "Courts"
+  },
+  {
+   "id": "cl-recap",
+   "name": "D.N.H. docket filings (RECAP)",
+   "url": "https://www.courtlistener.com/feed/search/?q=court_id%3Anhd&type=r&order_by=dateFiled+desc",
+   "group": "Courts"
+  },
+  {
+   "id": "govinfo-nhd",
+   "name": "D.N.H. opinions (GovInfo)",
+   "url": "https://www.govinfo.gov/rss/uscourts-nhd.xml",
+   "group": "Courts"
+  },
+  {
+   "id": "cl-ca1",
+   "name": "First Circuit opinions",
+   "url": "https://www.courtlistener.com/feed/court/ca1/",
+   "group": "Courts"
+  },
+  {
+   "id": "fbi-boston",
+   "name": "FBI Boston",
+   "url": "https://www.fbi.gov/feeds/boston-news/rss.xml",
+   "group": "Federal"
+  },
+  {
+   "id": "fbi-national",
+   "name": "FBI national",
+   "url": "https://www.fbi.gov/feeds/national-press-releases/rss.xml",
+   "group": "Federal"
+  },
+  {
+   "id": "fedreg",
+   "name": "Federal Register · New Hampshire",
+   "url": "https://www.federalregister.gov/api/v1/documents.rss?conditions%5Bterm%5D=%22New+Hampshire%22&order=newest",
+   "group": "Federal"
+  }
+ ],
+ "blueskyAccounts": [
+  "newhampshirebulletin.com",
+  "nhpr.org",
+  "aclu-nh.bsky.social",
+  "globenh.bsky.social",
+  "nhpbs.bsky.social",
+  "nhtrafficcams.bsky.social"
+ ],
+ "blueskyQueries": [
+  "\"New Hampshire\" police",
+  "\"Right-to-Know\" NH",
+  "Laconia OR Tilton OR Northfield OR Gilford OR Belmont",
+  "Concord NH"
+ ],
+ "scanners": [
+  {
+   "id": 5138,
+   "name": "Lakes Region Mutual Fire Aid",
+   "area": "Belknap and Lakes Region fire/EMS dispatch (Northfield, Tilton, Belmont, Laconia, Gilford, Sanbornton, Meredith, Franklin)"
+  },
+  {
+   "id": 47127,
+   "name": "Laconia Area Public Safety",
+   "area": "Belknap County"
+  },
+  {
+   "id": 47130,
+   "name": "Belknap County Police",
+   "area": "Belknap County"
+  },
+  {
+   "id": 41783,
+   "name": "Merrimack County Public Safety",
+   "area": "Merrimack County (Northfield)"
+  },
+  {
+   "id": 36946,
+   "name": "Concord Police Dispatch",
+   "area": "Concord"
+  },
+  {
+   "id": 2341,
+   "name": "Concord Fire Alarm · Capital Area",
+   "area": "Concord and Capital Area Mutual Aid"
+  },
+  {
+   "id": 36730,
+   "name": "New Hampshire State Police",
+   "area": "Statewide"
+  },
+  {
+   "id": 6169,
+   "name": "Upper Valley Area Police and Fire",
+   "area": "Grafton County"
+  },
+  {
+   "id": 45906,
+   "name": "Manchester Fire",
+   "area": "Manchester"
+  },
+  {
+   "id": 43744,
+   "name": "Nashua Fire Rescue",
+   "area": "Nashua"
+  }
+ ]
+}

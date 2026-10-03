@@ -4,7 +4,7 @@ name: Site snapshot
 on:
   push:
     branches: [site-snapshot]
-    paths: [targets.txt, snap.js, .github/workflows/site-snapshot.yml, trigger.txt]
+    paths: [targets.txt, snap.js, probe.js, .github/workflows/site-snapshot.yml, trigger.txt]
 permissions:
   contents: write
 jobs:
@@ -23,6 +23,7 @@ jobs:
           export OUT="snapshots/$STAMP"
           mkdir -p "$OUT"
           node snap.js
+          if [ -f probe.js ]; then node probe.js || echo 'probe failed'; fi
           echo "$STAMP" > snapshots/LATEST
           ls -la "$OUT"
       - name: Commit
