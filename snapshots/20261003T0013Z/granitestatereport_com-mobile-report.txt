@@ -1,0 +1,13 @@
+{
+  "bodyClass": "home wp-singular page-template-default page page-id-9485 wp-theme-davenport jps-theme-davenport gsr-sr-title blog-post-transparent-header-disable blog-small-page-width blog-slider-disable blog-enable-images-animations blog-enable-sticky-header blog-style-corners-rounded blog-home-block-title-center",
+  "docWidth": 390,
+  "scrollHeight": 3650,
+  "chain": [],
+  "bodyFont": "\"\"",
+  "bodyBg": "rgb(255, 255, 255)"
+}
+
+[log] JQMIGRATE: Migrate is installed, version 3.4.1
+[failed] https://analytics.google.com/g/collect?v=2&tid=G-NBF8CYM7B4&gtm=45Pe69u2v9229660466za208zd9229660466xf1&_p=1790986408528&_gaz=1&gcd=13l3l3l3l1l1&npa=0&dma=0&gdid=dZTNiMT&_eu=AAAAACAC&are=1&cid=1824565439.1790986409&frm=0&ibt=1&ngs=1&pscdl=noapi&rcb=12&sr=390x844&uaa=x86&uab=64&uafvl=HeadlessChrome%3B131.0.6778.33%7CChromium%3B131.0.6778.33%7CNot_A%2520Brand%3B24.0.0.0&uam=&uamb=0&uap=Linux&uapv=6.17.0&uaw=0&ul=en-us%40posix&_s=1&tag_exp=115938465~115938468~118897920~118897930~120213116~120385423~120469145~120469153~121280971&sid=1790986408&sct=1&seg=0&dl=https%3A%2F%2Fgranitestatereport.com%2F&dt=Granite%20State%20Report%20%7C%20Independent%20New%20Hampshire%20records%20journalism&en=page_view&_fv=1&_nsi=1&_ss=1&_ee=1&tfd=216 net::ERR_ABORTED
+[error] Failed to load resource: the server responded with a status of 404 ()
+[status] 200
