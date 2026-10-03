@@ -1,0 +1,757 @@
+{
+ "at": "2026-10-03T02:08:55.422Z",
+ "site": {
+  "homeStatus": 200,
+  "footerVersion": "v10 · 2026-09-30 · added Code of Ethics to Standards ",
+  "footerGroups": [
+   {
+    "label": "The Record Room",
+    "items": []
+   },
+   {
+    "label": "Standards",
+    "items": [
+     "Code of Ethics",
+     "How This Is Made",
+     "Corrections Policy",
+     "Corrections Register",
+     "Granite State Archive",
+     "The Noncompliance List",
+     "91-A Request Builder",
+     "Redact",
+     "Editor",
+     "About"
+    ]
+   },
+   {
+    "label": "Legal",
+    "items": [
+     "Privacy Policy",
+     "Terms of Use",
+     "Comment Policy",
+     "DMCA & Copyright",
+     "Accessibility"
+    ]
+   }
+  ],
+  "toolsMenu": [
+   "Granite State Archive",
+   "91-A Request Builder",
+   "Redact",
+   "The Noncompliance List",
+   "NH Bill Tracker",
+   "Nothing to See Here",
+   "Send a Tip",
+   "Inside the Building"
+  ],
+  "links": [
+   {
+    "text": "Code of Ethics",
+    "url": "https://granitestatereport.com/code-of-ethics/",
+    "status": 200,
+    "ms": 14,
+    "title": "Code of Ethics | Granite State Report"
+   },
+   {
+    "text": "How This Is Made",
+    "url": "https://granitestatereport.com/how-this-is-made/",
+    "status": 200,
+    "ms": 717,
+    "title": "How Granite State Report Is Made | Methodology"
+   },
+   {
+    "text": "Corrections Policy",
+    "url": "https://granitestatereport.com/corrections-policy/",
+    "status": 200,
+    "ms": 729,
+    "title": "Granite State Report&#039;s Corrections Policy Explained"
+   },
+   {
+    "text": "Corrections Register",
+    "url": "https://granitestatereport.com/corrections/",
+    "status": 200,
+    "ms": 859,
+    "title": "Corrections Register | Granite State Report"
+   },
+   {
+    "text": "Granite State Archive",
+    "url": "https://granitestatereport.com/archive/",
+    "status": 200,
+    "ms": 12,
+    "title": "Granite State Archive &#8211; Granite State Report"
+   },
+   {
+    "text": "The Noncompliance List",
+    "url": "https://granitestatereport.com/noncompliance-list/",
+    "status": 200,
+    "ms": 808,
+    "title": "The Noncompliance List — New Hampshire Right-to-Know | Granite State Report"
+   },
+   {
+    "text": "91-A Request Builder",
+    "url": "https://granitestatereport.com/91a-request-builder/",
+    "status": 200,
+    "ms": 707,
+    "title": "91-A Request Builder — free NH Right-to-Know request tool | Granite State Report"
+   },
+   {
+    "text": "Redact",
+    "url": "https://granitestatereport.com/2026/09/19/redact/",
+    "status": 200,
+    "ms": 12,
+    "title": "Redact — free document redaction tool | Granite State Report"
+   },
+   {
+    "text": "Editor",
+    "url": "https://granitestatereport.com/editor/",
+    "status": 200,
+    "ms": 659,
+    "title": "Granite State Report: Independent New Hampshire Journalism"
+   },
+   {
+    "text": "About",
+    "url": "https://granitestatereport.com/about/",
+    "status": 200,
+    "ms": 805,
+    "title": "Granite State Report: Independent Journalism for NH Insights"
+   },
+   {
+    "text": "Privacy Policy",
+    "url": "https://granitestatereport.com/privacy-policy/",
+    "status": 200,
+    "ms": 629,
+    "title": "Granite State Report Privacy Policy Overview and Guidelines"
+   },
+   {
+    "text": "Terms of Use",
+    "url": "https://granitestatereport.com/terms-of-use/",
+    "status": 200,
+    "ms": 700,
+    "title": "Granite State Report Terms of Use: Your Guide to Usage"
+   },
+   {
+    "text": "Comment Policy",
+    "url": "https://granitestatereport.com/comment-policy/",
+    "status": 200,
+    "ms": 683,
+    "title": "Granite State Report Comment Policy: Guidelines for Participation"
+   },
+   {
+    "text": "DMCA & Copyright",
+    "url": "https://granitestatereport.com/dmca-copyright/",
+    "status": 200,
+    "ms": 725,
+    "title": "Understanding DMCA &amp; Copyright: Reporting Infringement"
+   },
+   {
+    "text": "Accessibility",
+    "url": "https://granitestatereport.com/accessibility/",
+    "status": 200,
+    "ms": 668,
+    "title": "Ensuring Accessibility for All on Granite State Report"
+   },
+   {
+    "text": "NH Bill Tracker",
+    "url": "https://granitestatereport.com/nh-bill-tracker/",
+    "status": 200,
+    "ms": 637,
+    "title": "NH Bill Tracker &#8211; Granite State Report"
+   },
+   {
+    "text": "Nothing to See Here",
+    "url": "https://granitestatereport.com/nothing-to-see-here/",
+    "status": 200,
+    "ms": 12,
+    "title": "Nothing to See Here: a document drop box for New Hampshire public records | Granite State Report"
+   },
+   {
+    "text": "Send a Tip",
+    "url": "https://granitestatereport.com/tips/",
+    "status": 200,
+    "ms": 10,
+    "title": "Send a Tip to Granite State Report | Granite State Report"
+   },
+   {
+    "text": "Inside the Building",
+    "url": "https://granitestatereport.com/inside-the-building/",
+    "status": 200,
+    "ms": 708,
+    "title": "Inside the Building: how New Hampshire public employees can reach Granite State Report | Granite State Report"
+   },
+   {
+    "text": "https://granitestatereport.com/2026/09/29/gsr-tools/",
+    "url": "https://granitestatereport.com/2026/09/29/gsr-tools/",
+    "status": 200,
+    "ms": 10,
+    "title": "GSR Tools: free NH Right-to-Know request builder and redaction | Granite State Report"
+   },
+   {
+    "text": "https://granitestatereport.com/2026/09/17/record-room/",
+    "url": "https://granitestatereport.com/2026/09/17/record-room/",
+    "status": 200,
+    "ms": 10,
+    "title": "Granite State Record Room | Granite State Report"
+   },
+   {
+    "text": "https://granitestatereport.com/subscribe/",
+    "url": "https://granitestatereport.com/subscribe/",
+    "status": 200,
+    "ms": 857,
+    "title": "Subscribe | Granite State Report"
+   },
+   {
+    "text": "https://granitestatereport.com/desk/",
+    "url": "https://granitestatereport.com/desk/",
+    "status": 404,
+    "ms": 634,
+    "title": "Page not found &#8211; Granite State Report"
+   }
+  ],
+  "trackerData": {
+   "generated_at": "2026-10-03T00:42:02+00:00",
+   "fetched_at": "2026-09-30T03:54:44+00:00"
+  }
+ },
+ "desk": {
+  "nws": {
+   "status": 200,
+   "ms": 208,
+   "finalUrl": "https://api.weather.gov/alerts/active?area=NH",
+   "ct": "application/geo+json",
+   "acao": "*",
+   "xfo": null,
+   "csp": null,
+   "bytes": 226
+  },
+  "mastodon": {
+   "status": 200,
+   "ms": 1047,
+   "finalUrl": "https://mastodon.social/api/v1/timelines/tag/newhampshire?limit=20",
+   "ct": "application/json; charset=utf-8",
+   "acao": "*",
+   "xfo": "DENY",
+   "csp": "frame-ancestors 'none'",
+   "bytes": 127138,
+   "items": 20,
+   "sample": "[{\"id\":\"117373678907174619\",\"created_at\":\"2026-10-02T22:30:07.186Z\",\"in_reply_to_id\":null,\"in_reply_to_account_id\":null,\"sensitive\":false,\"spoiler_text\":\"\",\"vis"
+  },
+  "bluesky": [
+   {
+    "kind": "account",
+    "q": "newhampshirebulletin.com",
+    "status": 200,
+    "acao": "*",
+    "items": 12
+   },
+   {
+    "kind": "account",
+    "q": "nhpr.org",
+    "status": 200,
+    "acao": "*",
+    "items": 12
+   },
+   {
+    "kind": "account",
+    "q": "aclu-nh.bsky.social",
+    "status": 200,
+    "acao": "*",
+    "items": 12
+   },
+   {
+    "kind": "account",
+    "q": "globenh.bsky.social",
+    "status": 200,
+    "acao": "*",
+    "items": 12
+   },
+   {
+    "kind": "account",
+    "q": "nhpbs.bsky.social",
+    "status": 200,
+    "acao": "*",
+    "items": 1
+   },
+   {
+    "kind": "account",
+    "q": "nhtrafficcams.bsky.social",
+    "status": 200,
+    "acao": "*",
+    "items": 12
+   },
+   {
+    "kind": "search",
+    "q": "\"New Hampshire\" police",
+    "status": 403,
+    "acao": null,
+    "items": null,
+    "err": "<html><head><title>403 Forbidden</title><link href='//fonts.bunny.net/css?family=Rubik:300,400,500' rel='stylesheet' type='text/css'><style>html, body { width: "
+   },
+   {
+    "kind": "search",
+    "q": "\"Right-to-Know\" NH",
+    "status": 403,
+    "acao": null,
+    "items": null,
+    "err": "<html><head><title>403 Forbidden</title><link href='//fonts.bunny.net/css?family=Rubik:300,400,500' rel='stylesheet' type='text/css'><style>html, body { width: "
+   },
+   {
+    "kind": "search",
+    "q": "Laconia OR Tilton OR Northfield OR Gilford OR Belmont",
+    "status": 403,
+    "acao": null,
+    "items": null,
+    "err": "<html><head><title>403 Forbidden</title><link href='//fonts.bunny.net/css?family=Rubik:300,400,500' rel='stylesheet' type='text/css'><style>html, body { width: "
+   },
+   {
+    "kind": "search",
+    "q": "Concord NH",
+    "status": 403,
+    "acao": null,
+    "items": null,
+    "err": "<html><head><title>403 Forbidden</title><link href='//fonts.bunny.net/css?family=Rubik:300,400,500' rel='stylesheet' type='text/css'><style>html, body { width: "
+   }
+  ],
+  "feeds": [
+   {
+    "id": "bing-nh",
+    "name": "Bing News · New Hampshire",
+    "group": "Sweeps",
+    "status": 200,
+    "ms": 1068,
+    "ct": "application/xml; charset=utf-8",
+    "items": 11
+   },
+   {
+    "id": "caledonian",
+    "name": "Caledonian-Record",
+    "group": "NH news",
+    "status": 429,
+    "ms": 547,
+    "ct": "text/plain",
+    "items": 0
+   },
+   {
+    "id": "cl-ca1",
+    "name": "First Circuit opinions",
+    "group": "Courts",
+    "status": 200,
+    "ms": 1888,
+    "ct": "application/atom+xml; charset=utf-8",
+    "items": 20
+   },
+   {
+    "id": "cl-nhd",
+    "name": "D.N.H. opinions (CourtListener)",
+    "group": "Courts",
+    "status": 200,
+    "ms": 5401,
+    "ct": "application/atom+xml; charset=utf-8",
+    "items": 20
+   },
+   {
+    "id": "cl-nhsc",
+    "name": "NH Supreme Court opinions",
+    "group": "Courts",
+    "status": 200,
+    "ms": 5975,
+    "ct": "application/atom+xml; charset=utf-8",
+    "items": 20
+   },
+   {
+    "id": "cl-recap",
+    "name": "D.N.H. docket filings (RECAP)",
+    "group": "Courts",
+    "status": 200,
+    "ms": 4876,
+    "ct": "application/atom+xml; charset=utf-8",
+    "items": 20
+   },
+   {
+    "id": "conway",
+    "name": "Conway Daily Sun",
+    "group": "NH news",
+    "status": 429,
+    "ms": 472,
+    "ct": "text/plain",
+    "items": 0
+   },
+   {
+    "id": "eagletrib",
+    "name": "Eagle-Tribune",
+    "group": "NH news",
+    "status": 200,
+    "ms": 742,
+    "ct": "application/rss+xml; charset=UTF-8",
+    "items": 25
+   },
+   {
+    "id": "fbi-boston",
+    "name": "FBI Boston",
+    "group": "Federal",
+    "status": 403,
+    "ms": 1049,
+    "ct": "text/html; charset=UTF-8",
+    "items": 0
+   },
+   {
+    "id": "fbi-national",
+    "name": "FBI national",
+    "group": "Federal",
+    "status": 403,
+    "ms": 1048,
+    "ct": "text/html; charset=UTF-8",
+    "items": 0
+   },
+   {
+    "id": "fedreg",
+    "name": "Federal Register · New Hampshire",
+    "group": "Federal",
+    "status": 200,
+    "ms": 1080,
+    "ct": "application/rss+xml; charset=utf-8",
+    "items": 52
+   },
+   {
+    "id": "gn-ag",
+    "name": "Google News · NH Attorney General",
+    "group": "Sweeps",
+    "status": 200,
+    "ms": 1285,
+    "ct": "application/xml; charset=utf-8",
+    "items": 100
+   },
+   {
+    "id": "gn-concord",
+    "name": "Google News · Concord NH",
+    "group": "Local",
+    "status": 200,
+    "ms": 1273,
+    "ct": "application/xml; charset=utf-8",
+    "items": 100
+   },
+   {
+    "id": "gn-court",
+    "name": "Google News · NH courts",
+    "group": "Sweeps",
+    "status": 200,
+    "ms": 1333,
+    "ct": "application/xml; charset=utf-8",
+    "items": 100
+   },
+   {
+    "id": "gn-lakes",
+    "name": "Google News · Lakes Region",
+    "group": "Local",
+    "status": 200,
+    "ms": 1371,
+    "ct": "application/xml; charset=utf-8",
+    "items": 100
+   },
+   {
+    "id": "gn-nh",
+    "name": "Google News · New Hampshire",
+    "group": "Sweeps",
+    "status": 200,
+    "ms": 1396,
+    "ct": "application/xml; charset=utf-8",
+    "items": 103
+   },
+   {
+    "id": "gn-police",
+    "name": "Google News · NH police",
+    "group": "Sweeps",
+    "status": 200,
+    "ms": 1336,
+    "ct": "application/xml; charset=utf-8",
+    "items": 100
+   },
+   {
+    "id": "gn-rtk",
+    "name": "Google News · Right-to-Know NH",
+    "group": "Sweeps",
+    "status": 200,
+    "ms": 1296,
+    "ct": "application/xml; charset=utf-8",
+    "items": 100
+   },
+   {
+    "id": "gn-usao",
+    "name": "Google News · U.S. Attorney NH",
+    "group": "Sweeps",
+    "status": 200,
+    "ms": 1338,
+    "ct": "application/xml; charset=utf-8",
+    "items": 100
+   },
+   {
+    "id": "govinfo-nhd",
+    "name": "D.N.H. opinions (GovInfo)",
+    "group": "Courts",
+    "status": 200,
+    "ms": 960,
+    "ct": "text/xml",
+    "items": 100
+   },
+   {
+    "id": "granitepost",
+    "name": "Granite Post",
+    "group": "NH news",
+    "status": 200,
+    "ms": 654,
+    "ct": "application/rss+xml; charset=UTF-8",
+    "items": 10
+   },
+   {
+    "id": "indepth",
+    "name": "InDepthNH",
+    "group": "NH news",
+    "status": 200,
+    "ms": 386,
+    "ct": "application/rss+xml; charset=UTF-8",
+    "items": 15
+   },
+   {
+    "id": "keene",
+    "name": "Keene Sentinel",
+    "group": "NH news",
+    "status": 429,
+    "ms": 1299,
+    "ct": "text/plain",
+    "items": 0,
+    "finalUrl": "https://www.keenesentinel.com/search/?f=rss&t=article&l=25&s=start_time&sd=desc"
+   },
+   {
+    "id": "laconia",
+    "name": "Laconia Daily Sun",
+    "group": "Local",
+    "status": 429,
+    "ms": 832,
+    "ct": "text/plain",
+    "items": 0
+   },
+   {
+    "id": "monitor",
+    "name": "Concord Monitor",
+    "group": "Local",
+    "status": 200,
+    "ms": 805,
+    "ct": "application/rss+xml; charset=UTF-8",
+    "items": 10
+   },
+   {
+    "id": "nhbr",
+    "name": "NH Business Review",
+    "group": "NH news",
+    "status": 200,
+    "ms": 760,
+    "ct": "application/rss+xml; charset=UTF-8",
+    "items": 10
+   },
+   {
+    "id": "nhbulletin",
+    "name": "NH Bulletin",
+    "group": "NH news",
+    "status": 200,
+    "ms": 199,
+    "ct": "application/rss+xml; charset=UTF-8",
+    "items": 100
+   },
+   {
+    "id": "nhfpi",
+    "name": "NH Fiscal Policy Institute",
+    "group": "Policy",
+    "status": 200,
+    "ms": 977,
+    "ct": "application/rss+xml; charset=UTF-8",
+    "items": 10
+   },
+   {
+    "id": "nhpr",
+    "name": "NHPR",
+    "group": "NH news",
+    "status": 200,
+    "ms": 1047,
+    "ct": "application/xml;charset=UTF-8",
+    "items": 10,
+    "finalUrl": "https://www.nhpr.org/latest-from-nhpr-rss.rss"
+   },
+   {
+    "id": "vnews",
+    "name": "Valley News",
+    "group": "NH news",
+    "status": 200,
+    "ms": 423,
+    "ct": "application/rss+xml; charset=UTF-8",
+    "items": 10
+   },
+   {
+    "id": "wmur",
+    "name": "WMUR",
+    "group": "NH news",
+    "status": 200,
+    "ms": 369,
+    "ct": "text/xml; charset=UTF-8",
+    "items": 20
+   }
+  ],
+  "candidates": [
+   {
+    "id": "nhpr-new",
+    "url": "https://www.nhpr.org/latest-from-nhpr-rss.rss",
+    "status": 200,
+    "items": 10,
+    "first": "NH families sue Trump administration over Medicaid ban on transgender health care"
+   },
+   {
+    "id": "keene-direct",
+    "url": "https://www.keenesentinel.com/search/?f=rss&t=article&l=25&s=start_time&sd=desc",
+    "status": 200,
+    "items": 25,
+    "first": "22 new books coming in October 2026 to add to your reading list"
+   },
+   {
+    "id": "gn-site-keene",
+    "url": "https://news.google.com/rss/search?q=site%3Akeenesentinel.com&hl=en-US&gl=US&ceid=US:en",
+    "status": 200,
+    "items": 100,
+    "first": "After organizational collapse, new plan for MCVP - The Keene Sentinel"
+   },
+   {
+    "id": "gn-site-laconia",
+    "url": "https://news.google.com/rss/search?q=site%3Alaconiadailysun.com&hl=en-US&gl=US&ceid=US:en",
+    "status": 200,
+    "items": 100,
+    "first": "Milner out as Meredith town manager, police chief serving as interim - The Laconia Daily Sun"
+   },
+   {
+    "id": "gn-fbi-nh",
+    "url": "https://news.google.com/rss/search?q=FBI%20%22New%20Hampshire%22&hl=en-US&gl=US&ceid=US:en",
+    "status": 200,
+    "items": 100,
+    "first": "FBI hunting the hackers who stole its employees' sensitive data - New Hampshire Public Radio"
+   },
+   {
+    "id": "gn-site-eagletrib",
+    "url": "https://news.google.com/rss/search?q=site%3Aeagletribune.com&hl=en-US&gl=US&ceid=US:en",
+    "status": 200,
+    "items": 100,
+    "first": "Obituaries - The Eagle-Tribune Obituaries"
+   },
+   {
+    "id": "gn-site-caledonian",
+    "url": "https://news.google.com/rss/search?q=site%3Acaledonianrecord.com&hl=en-US&gl=US&ceid=US:en",
+    "status": 200,
+    "items": 100,
+    "first": "St. Johnsbury Considering Four Applicants For Police Chief - Caledonian Record"
+   },
+   {
+    "id": "gn-site-conway",
+    "url": "https://news.google.com/rss/search?q=site%3Aconwaydailysun.com&hl=en-US&gl=US&ceid=US:en",
+    "status": 200,
+    "items": 100,
+    "first": "Wheels: AM radio mandate - The Conway Daily Sun"
+   },
+   {
+    "id": "gn-fbi-boston",
+    "url": "https://news.google.com/rss/search?q=%22FBI%20Boston%22&hl=en-US&gl=US&ceid=US:en",
+    "status": 200,
+    "items": 100,
+    "first": "Mass. man accused of ‘sustained campaign of harassment' against prominent Republican - NBC Boston"
+   },
+   {
+    "id": "gn-site-sentinelsource",
+    "url": "https://news.google.com/rss/search?q=site%3Asentinelsource.com&hl=en-US&gl=US&ceid=US:en",
+    "status": 200,
+    "items": 31,
+    "first": "Keene Sentinel - The Keene Sentinel"
+   },
+   {
+    "id": "usao-nh-rss",
+    "url": "https://www.justice.gov/usao-nh/pr/rss.xml",
+    "status": 200,
+    "items": 0,
+    "first": null
+   }
+  ],
+  "bskyAlt": [
+   {
+    "host": "https://api.bsky.app",
+    "status": 200,
+    "acao": "*",
+    "items": 5
+   },
+   {
+    "host": "https://public.api.bsky.app",
+    "status": 403,
+    "acao": null,
+    "items": null,
+    "err": "<html><head><title>403 Forbidden</title><link href='//fonts.bunny.net/css?family=Rubik:300,400,500' rel='stylesheet' typ"
+   },
+   {
+    "host": "https://bsky.social",
+    "status": 401,
+    "acao": "*",
+    "items": null,
+    "err": "{\"error\":\"AuthMissing\",\"message\":\"Authentication Required\"}"
+   }
+  ],
+  "scanners": [
+   {
+    "id": 5138,
+    "webPlayer": {
+     "status": 200,
+     "xfo": "DENY",
+     "csp": "frame-ancestors 'none'",
+     "finalUrl": "https://www.broadcastify.com/listen/feed/popout.php?feedId=5138"
+    },
+    "feedPage": {
+     "status": 200,
+     "title": "Lakes Region Mutual Fire Aid Association"
+    }
+   },
+   {
+    "id": 47127,
+    "webPlayer": {
+     "status": 200,
+     "xfo": "DENY",
+     "csp": "frame-ancestors 'none'",
+     "finalUrl": "https://www.broadcastify.com/listen/feed/popout.php?feedId=47127"
+    },
+    "feedPage": {
+     "status": 200,
+     "title": "Laconia Area Public Safety"
+    }
+   },
+   {
+    "id": 47130,
+    "webPlayer": {
+     "status": 200,
+     "xfo": "DENY",
+     "csp": "frame-ancestors 'none'",
+     "finalUrl": "https://www.broadcastify.com/listen/feed/popout.php?feedId=47130"
+    },
+    "feedPage": {
+     "status": 200,
+     "title": "Belknap County Police"
+    }
+   }
+  ]
+ },
+ "sources": {
+  "rsa-91-A-4": {
+   "status": 200,
+   "finalUrl": "https://gc.nh.gov/rsa/html/VI/91-A/91-A-4.htm",
+   "bytes": 11264
+  },
+  "rsa-91-A-mrg": {
+   "status": 200,
+   "finalUrl": "https://gc.nh.gov/rsa/html/VI/91-A/91-A-mrg.htm",
+   "bytes": 64436
+  },
+  "nh-state-holidays": {
+   "status": 403,
+   "finalUrl": "https://www.employeeportal.nh.gov/compensation-savings/state-holiday-schedule",
+   "bytes": 442
+  }
+ }
+}
