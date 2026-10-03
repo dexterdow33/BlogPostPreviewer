@@ -66,6 +66,11 @@ const strip = (o) => { const { body, ...rest } = o; return rest; };
   // ---- scanner players ----
   out.desk.scanners = [];
   for (const s of D.scanners.slice(0, 3)) { const r = await get(`https://www.broadcastify.com/webPlayer/${s.id}`); const r2 = await get(`https://www.broadcastify.com/listen/feed/${s.id}`); out.desk.scanners.push({ id: s.id, webPlayer: { status: r.status, xfo: r.xfo, csp: r.csp, finalUrl: r.finalUrl }, feedPage: { status: r2.status, title: (r2.body || '').match(/<title>([^<]*)<\/title>/)?.[1] || null } }); }
+  // ---- primary sources the sandbox cannot reach (saved raw for reading) ----
+  out.sources = {};
+  for (const [id, url] of [['rsa-91-A-4', 'https://gc.nh.gov/rsa/html/VI/91-A/91-A-4.htm'], ['rsa-91-A-mrg', 'https://gc.nh.gov/rsa/html/VI/91-A/91-A-mrg.htm'], ['nh-state-holidays', 'https://www.employeeportal.nh.gov/compensation-savings/state-holiday-schedule']]) {
+    try { const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 30000); const r = await fetch(url, { redirect: 'follow', signal: ctl.signal, headers: { 'User-Agent': UA_BROWSER } }); clearTimeout(t); const b = await r.text(); fs.writeFileSync(`${process.env.OUT}/source-${id}.html`, b); out.sources[id] = { status: r.status, finalUrl: r.url, bytes: b.length }; } catch (e) { out.sources[id] = { error: String(e) }; }
+  }
   fs.writeFileSync(process.env.OUT + '/probe.json', JSON.stringify(out, null, 1));
   console.log('probe written');
 })().catch(e => { console.error(e); process.exit(1); });
