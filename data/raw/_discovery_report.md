@@ -1,6 +1,6 @@
 # NH dynamicdatadump discovery report
 
-Generated 2026-10-03T08:06:32+00:00
+Generated 2026-10-04T08:27:20+00:00
 
 ## LSRs.txt
 
@@ -8,7 +8,7 @@ Generated 2026-10-03T08:06:32+00:00
 
 ## LsrsOnly.txt
 
-**Served empty (0 bytes); reused the previous run's copy.**
+**Served empty (3 bytes); reused the previous run's copy.**
 
 ## Docket.txt
 
@@ -20,11 +20,11 @@ Generated 2026-10-03T08:06:32+00:00
 
 ## legislators.txt
 
-**Served empty (0 bytes); reused the previous run's copy.**
+**Served empty (3 bytes); reused the previous run's copy.**
 
 ## RollCallSummary.txt
 
-**Served empty (3 bytes); reused the previous run's copy.**
+**Served empty (0 bytes); reused the previous run's copy.**
 
 ## RollCallHistory.txt
 
@@ -32,7 +32,7 @@ Generated 2026-10-03T08:06:32+00:00
 
 ## Committees.txt
 
-**Served empty (0 bytes); reused the previous run's copy.**
+**Served empty (3 bytes); reused the previous run's copy.**
 
 _Files last pulled from the General Court: 2026-09-30T03:54:44+00:00._
 
