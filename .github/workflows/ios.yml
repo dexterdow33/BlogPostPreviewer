@@ -44,9 +44,14 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - name: swift test
-        working-directory: ios/GSRKit
-        run: swift test --parallel
+      - name: swift test, with a local stand-in for the drop box so the real HTTP code runs too
+        env:
+          GSR_MOCK_DROP_URL: http://127.0.0.1:8787/wp-json/gsr-drop/v1/
+        run: |
+          command -v python3 || (apt-get update -qq && apt-get install -y -qq python3 >/dev/null)
+          python3 ios/tools/mock_drop_server.py --port 8787 &
+          sleep 2
+          cd ios/GSRKit && swift test --parallel
 
   app:
     name: Build and test (macOS)
