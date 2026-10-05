@@ -69,6 +69,7 @@ jobs:
         working-directory: ios/GSRKit
         run: swift test
       - name: Build the app and share extension for the simulator
+        if: success() || failure()
         run: |
           set -o pipefail
           xcodebuild build \
@@ -77,6 +78,7 @@ jobs:
             -derivedDataPath ios/build \
             CODE_SIGNING_ALLOWED=NO | xcbeautify --renderer github-actions
       - name: Build for a device (unsigned) to catch device-only errors
+        if: success() || failure()
         run: |
           set -o pipefail
           xcodebuild build \
@@ -85,6 +87,7 @@ jobs:
             -derivedDataPath ios/build-device \
             CODE_SIGNING_ALLOWED=NO | xcbeautify --renderer github-actions
       - name: App Store screenshots (iPhone 17 Pro Max, 6.9-inch)
+        if: success() || failure()
         continue-on-error: true
         run: |
           set -x

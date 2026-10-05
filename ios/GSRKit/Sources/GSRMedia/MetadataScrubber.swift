@@ -162,21 +162,120 @@ public enum MetadataScrubber {
 
     // MARK: Videos
 
-    /// Writes a copy of the video at `source` with the movie's metadata removed: location,
-    /// make, model, software, creation date. The picture and sound are copied as they are.
+    /// Writes a copy of the video at `source` with no metadata: no location, make, model,
+    /// software, or creation date. The picture and sound are copied sample for sample, not
+    /// re-encoded, so quality and size stay the same.
+    ///
+    /// The main path rewrites the movie with AVAssetReader and AVAssetWriter, which write only
+    /// what they are given. If that cannot handle the file, the passthrough export with
+    /// Apple's sharing filter is tried. Either way the result is read back and checked, and
+    /// the clean fails rather than hand back a file that still says where or on what it was shot.
     @discardableResult
     public static func cleanVideo(at source: URL, to out: URL) async throws -> AVFileType {
+        let fileType: AVFileType = source.pathExtension.lowercased() == "mp4" ? .mp4 : .mov
+        var lastError: Error = Failure.unsupported
+        for attempt in [remux, exportForSharing] {
+            try? FileManager.default.removeItem(at: out)
+            do {
+                try await attempt(source, out, fileType)
+                let left = try await identifyingVideoKeys(at: out)
+                if left.isEmpty { return fileType }
+                lastError = Failure.stillIdentifying(left)
+            } catch {
+                lastError = error
+            }
+        }
         try? FileManager.default.removeItem(at: out)
+        throw lastError
+    }
+
+    /// Copies the video and audio tracks into a new movie that carries no metadata.
+    /// Other tracks (timed metadata, which can include location) are left out.
+    static func remux(_ source: URL, _ out: URL, _ fileType: AVFileType) async throws {
+        let asset = AVURLAsset(url: source)
+        let reader = try AVAssetReader(asset: asset)
+        let writer = try AVAssetWriter(outputURL: out, fileType: fileType)
+        writer.metadata = []
+        writer.shouldOptimizeForNetworkUse = false
+
+        var pairs: [(AVAssetReaderTrackOutput, AVAssetWriterInput)] = []
+        for track in try await asset.load(.tracks) {
+            let type = track.mediaType
+            guard type == .video || type == .audio else { continue }
+            let output = AVAssetReaderTrackOutput(track: track, outputSettings: nil)
+            output.alwaysCopiesSampleData = false
+            guard reader.canAdd(output) else { throw Failure.unsupported }
+            reader.add(output)
+            let formats = try await track.load(.formatDescriptions)
+            let input = AVAssetWriterInput(mediaType: type, outputSettings: nil, sourceFormatHint: formats.first)
+            input.expectsMediaDataInRealTime = false
+            if type == .video {
+                // Keep the picture the right way up.
+                input.transform = try await track.load(.preferredTransform)
+            }
+            guard writer.canAdd(input) else { throw Failure.unsupported }
+            writer.add(input)
+            pairs.append((output, input))
+        }
+        guard pairs.contains(where: { $0.1.mediaType == .video }) else { throw Failure.unsupported }
+        guard reader.startReading() else {
+            throw Failure.exportFailed(reader.error.map { String(describing: $0) } ?? "reader did not start")
+        }
+        guard writer.startWriting() else {
+            reader.cancelReading()
+            throw Failure.exportFailed(writer.error.map { String(describing: $0) } ?? "writer did not start")
+        }
+        writer.startSession(atSourceTime: .zero)
+
+        await withTaskGroup(of: Void.self) { group in
+            for (index, pair) in pairs.enumerated() {
+                let (output, input) = pair
+                group.addTask {
+                    await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+                        let queue = DispatchQueue(label: "gsr.media.remux.\(index)")
+                        let state = RemuxState()
+                        input.requestMediaDataWhenReady(on: queue) {
+                            guard !state.finished else { return }
+                            while input.isReadyForMoreMediaData {
+                                if let buffer = output.copyNextSampleBuffer(), input.append(buffer) {
+                                    continue
+                                }
+                                state.finished = true
+                                input.markAsFinished()
+                                cont.resume()
+                                return
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if reader.status == .failed {
+            writer.cancelWriting()
+            throw Failure.exportFailed(reader.error.map { String(describing: $0) } ?? "reading failed")
+        }
+        await writer.finishWriting()
+        guard writer.status == .completed else {
+            throw Failure.exportFailed(writer.error.map { String(describing: $0) } ?? "writing failed")
+        }
+    }
+
+    /// Touched only on the remux queue for its track.
+    private final class RemuxState: @unchecked Sendable {
+        var finished = false
+    }
+
+    /// The fallback: passthrough export with Apple's sharing filter and no movie metadata.
+    static func exportForSharing(_ source: URL, _ out: URL, _ wanted: AVFileType) async throws {
         let asset = AVURLAsset(url: source)
         guard let session = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetPassthrough) else {
             throw Failure.unsupported
         }
-        let wanted: AVFileType = source.pathExtension.lowercased() == "mp4" ? .mp4 : .mov
         let fileType = session.supportedFileTypes.contains(wanted) ? wanted : .mov
         session.metadataItemFilter = AVMetadataItemFilter.forSharing()
         session.metadata = []
         session.shouldOptimizeForNetworkUse = false
-
         if #available(iOS 18.0, macOS 15.0, *) {
             do {
                 try await session.export(to: out, as: fileType)
@@ -191,13 +290,6 @@ public enum MetadataScrubber {
                 throw Failure.exportFailed(session.error.map { String(describing: $0) } ?? "status \(session.status.rawValue)")
             }
         }
-
-        let left = try await identifyingVideoKeys(at: out)
-        guard left.isEmpty else {
-            try? FileManager.default.removeItem(at: out)
-            throw Failure.stillIdentifying(left)
-        }
-        return fileType
     }
 
     static let identifyingVideoKeyWords = ["location", "iso6709", "make", "model", "software", "creationdate",
@@ -227,7 +319,9 @@ public enum MetadataScrubber {
 
     /// "IMG_0001.HEIC" → "IMG_0001.jpg".
     public static func renamed(_ name: String, ext: String) -> String {
-        let stem = (name as NSString).deletingPathExtension
+        var stem = (name as NSString).deletingPathExtension
+        // ".HEIC" is all extension: Foundation reads it as a hidden file with no extension.
+        if stem.hasPrefix("."), !stem.dropFirst().contains(".") { stem = "" }
         return (stem.isEmpty ? "file" : stem) + "." + ext
     }
 }
