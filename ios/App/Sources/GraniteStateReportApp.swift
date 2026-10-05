@@ -4,7 +4,7 @@ import SwiftUI
 import UIKit
 
 @main
-struct GSRApp: App {
+struct GraniteStateReportApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @StateObject private var router = AppRouter.shared
     @StateObject private var app = AppModel.shared
