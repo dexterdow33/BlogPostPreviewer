@@ -1,0 +1,140 @@
+# Granite State Report for iPhone. Generate the Xcode project with XcodeGen 2.46+:
+#
+#   brew install xcodegen
+#   cd ios && xcodegen generate     # writes GSR.xcodeproj (not committed)
+#
+# Signing: set DEVELOPMENT_TEAM below, or pass DEVELOPMENT_TEAM=<team id> to xcodebuild.
+# The release workflow (.github/workflows/ios.yml) passes it from a repository secret.
+name: GSR
+options:
+  minimumXcodeGenVersion: 2.46.0
+  deploymentTarget:
+    iOS: "17.0"
+  xcodeVersion: "26.0"
+  createIntermediateGroups: true
+  developmentLanguage: en
+
+packages:
+  GSRKit:
+    path: GSRKit
+
+settings:
+  base:
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.0"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+    TARGETED_DEVICE_FAMILY: "1"
+    IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    DEAD_CODE_STRIPPING: YES
+
+targets:
+  GSR:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: App
+        excludes:
+          - "**/*.md"
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: GSR
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSApplicationCategoryType: public.app-category.news
+        ITSAppUsesNonExemptEncryption: false
+        UILaunchScreen:
+          UIColorName: Paper
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UIUserInterfaceStyle: Light
+        NSCameraUsageDescription: "Take a photo or video, or scan a document, to send to Granite State Report. Nothing leaves your phone until you press Send."
+        NSMicrophoneUsageDescription: "Record a voice note, or a video with sound, to send to Granite State Report. Nothing leaves your phone until you press Send."
+        # iOS 26 and later can keep a send going in the background after you leave the
+        # app, with progress on the Lock Screen. Identifiers are this prefix plus an id.
+        BGTaskSchedulerPermittedIdentifiers:
+          - com.granitestatereport.app.send.*
+        UIBackgroundModes:
+          - processing
+        UIApplicationShortcutItems:
+          - UIApplicationShortcutItemType: com.granitestatereport.app.tip
+            UIApplicationShortcutItemTitle: Send a Tip
+            UIApplicationShortcutItemIconSymbolName: paperplane
+          - UIApplicationShortcutItemType: com.granitestatereport.app.scan
+            UIApplicationShortcutItemTitle: Scan a Document
+            UIApplicationShortcutItemIconSymbolName: doc.viewfinder
+          - UIApplicationShortcutItemType: com.granitestatereport.app.video
+            UIApplicationShortcutItemTitle: Record a Video
+            UIApplicationShortcutItemIconSymbolName: video
+    entitlements:
+      path: App/GSR.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.granitestatereport.app
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.granitestatereport.app
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+    dependencies:
+      - target: GSRShare
+      - package: GSRKit
+        products: [GSRKit, GSRMedia, GSRUI]
+
+  GSRShare:
+    type: app-extension
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: ShareExtension
+    info:
+      path: ShareExtension/Info.plist
+      properties:
+        CFBundleDisplayName: Send to GSR
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UIUserInterfaceStyle: Light
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.share-services
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ShareViewController
+          NSExtensionAttributes:
+            NSExtensionActivationRule:
+              NSExtensionActivationSupportsImageWithMaxCount: 50
+              NSExtensionActivationSupportsMovieWithMaxCount: 50
+              NSExtensionActivationSupportsFileWithMaxCount: 50
+              NSExtensionActivationSupportsAttachmentsWithMaxCount: 50
+              NSExtensionActivationSupportsWebURLWithMaxCount: 1
+              NSExtensionActivationSupportsText: true
+    entitlements:
+      path: ShareExtension/GSRShare.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.granitestatereport.app
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.granitestatereport.app.share
+    dependencies:
+      - package: GSRKit
+        products: [GSRKit, GSRMedia, GSRUI]
+
+schemes:
+  GSR:
+    build:
+      targets:
+        GSR: all
+        GSRShare: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - package: GSRKit/GSRKitTests
+        - package: GSRKit/GSRMediaTests
+    archive:
+      config: Release

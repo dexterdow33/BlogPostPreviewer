@@ -1,0 +1,473 @@
+{
+  "api": "https://granitestatereport.com/wp-json/gsr-drop/v1/",
+  "source": "Read from the live pages by ios/tools/forms_from_site.py",
+  "forms": [
+    {
+      "form": "tips",
+      "slug": "tips",
+      "pageURL": "https://granitestatereport.com/tips/",
+      "title": "Send a Tip",
+      "dek": "Something wrong in a New Hampshire public body? Here is how to tell Granite State Report, and what happens to what you send.",
+      "pageVersion": {
+        "number": "1.3",
+        "date": "October 2, 2026"
+      },
+      "mainLabel": "What should GSR look into? Who, what, where, and when. Type it, paste it, or skip it if your files say it.",
+      "sendLabel": "Send the tip",
+      "consent": "By sending, you confirm you have read this page and accept the terms above.",
+      "readFirst": [
+        {
+          "heading": "What you are agreeing to",
+          "blocks": [
+            {
+              "kind": "p",
+              "text": "By sending a tip, you confirm and accept the following."
+            },
+            {
+              "kind": "li",
+              "text": "What you send is information you lawfully have. You did not break into a system or take files you were never given access to."
+            },
+            {
+              "kind": "li",
+              "text": "You are not sending classified national-security information, another person’s medical records, or anything involving a child."
+            },
+            {
+              "kind": "li",
+              "text": "Granite State Report may use what you send for reporting, will try to verify it, and decides on its own whether and how to publish."
+            },
+            {
+              "kind": "li",
+              "text": "Granite State Report does not pay for tips, is not your lawyer, and gives no legal advice. If your job or safety is at stake, talk to a lawyer first. For free civil legal help, call 603 Legal Aid at 1-800-639-5290 or apply at 603legalaid.org ."
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "key": "where",
+          "kind": "text",
+          "label": "Town, agency, or office involved",
+          "default": ""
+        },
+        {
+          "key": "identity",
+          "kind": "select",
+          "label": "How should GSR treat your identity?",
+          "options": [
+            {
+              "label": "Do not use my name or anything that identifies me",
+              "value": "Do not use my name or anything that identifies me"
+            },
+            {
+              "label": "Contact me before using anything I sent",
+              "value": "Contact me before using anything I sent"
+            },
+            {
+              "label": "You may name me",
+              "value": "You may name me"
+            }
+          ],
+          "default": "Do not use my name or anything that identifies me"
+        },
+        {
+          "key": "contact",
+          "kind": "textarea",
+          "label": "A way to reach you: personal email, Signal, or phone, never a work account. Leave blank to stay unnamed.",
+          "default": "",
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "form": "story",
+      "slug": "share-your-story",
+      "pageURL": "https://granitestatereport.com/share-your-story/",
+      "title": "Tell Us Your Story",
+      "dek": "What happened to you, what you saw, or what this newsroom should be looking at. Start here.",
+      "pageVersion": {
+        "number": "1.3",
+        "date": "October 2, 2026"
+      },
+      "mainLabel": "Tell it. What happened, when, and who was involved? Type it, paste it, or skip it if your files say it.",
+      "sendLabel": "Send your story",
+      "consent": null,
+      "readFirst": [
+        {
+          "heading": "What helps",
+          "blocks": [
+            {
+              "kind": "li",
+              "text": "Dates, names of offices, and documents. “The planning board, March 2026, the minutes leave out the vote” is a story GSR can check. “The town is corrupt” is not, yet."
+            },
+            {
+              "kind": "li",
+              "text": "What you have in writing. Letters, emails, notices, denials, receipts. Attach one if you have it."
+            },
+            {
+              "kind": "li",
+              "text": "What you want. A story, a correction, a records request GSR could file, or just someone who reads it."
+            },
+            {
+              "kind": "box",
+              "text": "What GSR can and cannot do. Granite State Report reports on public institutions: agencies, towns, courts, schools, police, and the officials who run them. It cannot investigate a private dispute, find a person, give legal advice, or act for you in court. If you need a lawyer, call 603 Legal Aid at 1-800-639-5290 or apply at 603legalaid.org for free civil legal help. If you are in danger, call 911."
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "key": "name",
+          "kind": "text",
+          "label": "Your name",
+          "default": ""
+        },
+        {
+          "key": "email",
+          "kind": "email",
+          "label": "Email, so GSR can reply. Leave blank and there is no way to write back.",
+          "default": ""
+        },
+        {
+          "key": "town",
+          "kind": "text",
+          "label": "Town or city",
+          "default": ""
+        },
+        {
+          "key": "kind",
+          "kind": "select",
+          "label": "What are you sending?",
+          "options": [
+            {
+              "label": "Skip this",
+              "value": ""
+            },
+            {
+              "label": "My own experience with a New Hampshire public body",
+              "value": "My own experience with a New Hampshire public body"
+            },
+            {
+              "label": "A story idea or tip",
+              "value": "A story idea or tip"
+            },
+            {
+              "label": "A correction to something GSR published",
+              "value": "A correction to something GSR published"
+            },
+            {
+              "label": "Something else",
+              "value": "Something else"
+            }
+          ],
+          "default": ""
+        },
+        {
+          "key": "agency",
+          "kind": "text",
+          "label": "Which agency, town, court, school, or official is involved?",
+          "default": ""
+        },
+        {
+          "key": "maycontact",
+          "kind": "checkbox",
+          "label": "GSR may contact me about this.",
+          "default": false
+        }
+      ]
+    },
+    {
+      "form": "inside",
+      "slug": "inside-the-building",
+      "pageURL": "https://granitestatereport.com/inside-the-building/",
+      "title": "Inside the Building",
+      "dek": "For the people who work in New Hampshire government and have seen something the public should know.",
+      "pageVersion": {
+        "number": "1.3",
+        "date": "October 2, 2026"
+      },
+      "mainLabel": "What happened, and what should the public know? Type it, paste it, or skip it if your files say it.",
+      "sendLabel": "Send it to the editor",
+      "consent": "By sending, you confirm you have read this page, accept the terms above, and are not sending classified information.",
+      "readFirst": [
+        {
+          "heading": "Protect yourself first",
+          "blocks": [
+            {
+              "kind": "p",
+              "text": "The biggest risk to a source is the trail they leave before the reporter ever sees anything. Most people who are identified are identified by their own employer’s systems."
+            },
+            {
+              "kind": "li",
+              "text": "Never use anything your employer owns or runs. No work computer, work phone, work email, work Wi-Fi, or VPN. Your employer can log what crosses them, and work email can itself be a public record."
+            },
+            {
+              "kind": "li",
+              "text": "Do not print, scan, or download at work if you can avoid it. Printers, copiers, and document systems keep logs of who did what and when."
+            },
+            {
+              "kind": "li",
+              "text": "Think about who else saw it. If only three people had a document, sending it narrows the field to three."
+            },
+            {
+              "kind": "li",
+              "text": "Files carry hidden data: author names, edit history, the device that made them, and in photos, often the location. Send a photo of a printout or a screenshot instead of the original file when you can."
+            },
+            {
+              "kind": "li",
+              "text": "Do not tell coworkers. Including the ones you trust."
+            },
+            {
+              "kind": "p",
+              "text": "A story can wait. Your job and your safety come first."
+            }
+          ]
+        },
+        {
+          "heading": "What you are agreeing to",
+          "blocks": [
+            {
+              "kind": "p",
+              "text": "By sending anything through this page, you confirm and accept the following."
+            },
+            {
+              "kind": "li",
+              "text": "You are sending information you lawfully have. You did not break into a system, take files you were never given access to, or go somewhere you were not allowed to be."
+            },
+            {
+              "kind": "li",
+              "text": "You are not sending classified national-security information, another person’s medical records, or anything involving a child."
+            },
+            {
+              "kind": "li",
+              "text": "Granite State Report may use what you send for reporting, will try to verify it, and decides on its own whether and how to publish. Sending something does not guarantee a story."
+            },
+            {
+              "kind": "li",
+              "text": "Granite State Report does not pay for information and does not act as your lawyer or advocate. Nothing on this page is legal advice."
+            },
+            {
+              "kind": "li",
+              "text": "Granite State Report will protect your identity as described above. You may ask at any time how your information is being handled."
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "key": "body",
+          "kind": "select",
+          "label": "What kind of public body?",
+          "options": [
+            {
+              "label": "Skip this",
+              "value": ""
+            },
+            {
+              "label": "Town or city",
+              "value": "Town or city"
+            },
+            {
+              "label": "County",
+              "value": "County"
+            },
+            {
+              "label": "School district or SAU",
+              "value": "School district or SAU"
+            },
+            {
+              "label": "State agency",
+              "value": "State agency"
+            },
+            {
+              "label": "Court",
+              "value": "Court"
+            },
+            {
+              "label": "Federal agency",
+              "value": "Federal agency"
+            },
+            {
+              "label": "Other or would rather not say",
+              "value": "Other or would rather not say"
+            }
+          ],
+          "default": ""
+        },
+        {
+          "key": "office",
+          "kind": "text",
+          "label": "Which office, department, or agency?",
+          "default": ""
+        },
+        {
+          "key": "records",
+          "kind": "textarea",
+          "label": "Where are the records? Office, system, file name, dates, who holds them",
+          "default": "",
+          "rows": 3
+        },
+        {
+          "key": "identity",
+          "kind": "select",
+          "label": "How should GSR treat your identity?",
+          "options": [
+            {
+              "label": "Do not use my name or anything that identifies me",
+              "value": "Do not use my name or anything that identifies me"
+            },
+            {
+              "label": "Contact me before using anything I sent",
+              "value": "Contact me before using anything I sent"
+            },
+            {
+              "label": "You may name me",
+              "value": "You may name me"
+            }
+          ],
+          "default": "Do not use my name or anything that identifies me"
+        },
+        {
+          "key": "contact",
+          "kind": "textarea",
+          "label": "A safe way to reach you: personal email, Signal, or phone, never a work account. Leave blank to stay unnamed.",
+          "default": "",
+          "rows": 3
+        }
+      ]
+    },
+    {
+      "form": "nothing",
+      "slug": "nothing-to-see-here",
+      "pageURL": "https://granitestatereport.com/nothing-to-see-here/",
+      "title": "Nothing to See Here",
+      "dek": "A drop box for the documents New Hampshire’s public bodies would rather keep in the drawer. The record belongs to the people who paid for it.",
+      "pageVersion": {
+        "number": "2.1",
+        "date": "October 2, 2026"
+      },
+      "mainLabel": "Paste text here: an email, a memo, a chat, meeting notes, anything you would rather paste than attach. Or say what the files are. Or leave it blank.",
+      "sendLabel": "Drop it in the box",
+      "consent": "By sending, you confirm you have read the warning at the top of this page.",
+      "readFirst": [
+        {
+          "heading": "Read this before you send anything",
+          "blocks": [
+            {
+              "kind": "p",
+              "text": "This form is not anonymous. It is convenient, and convenient is not the same as safe."
+            },
+            {
+              "kind": "li",
+              "text": "The site is hosted by WordPress.com (Automattic). Files you send are stored on this site’s server there, the entry is kept in the site’s private Drop Box, and a notice is emailed to the newsroom’s Gmail account, with the files attached when they total under 15 MB."
+            },
+            {
+              "kind": "li",
+              "text": "Like every page load, sending this form leaves your IP address, browser, and the time with the hosting platform, as the Privacy Policy describes."
+            },
+            {
+              "kind": "li",
+              "text": "Files carry hidden data: author names, the computer or phone that made them, edit history, and in photos, often the location. Printed pages can carry printer tracking marks."
+            },
+            {
+              "kind": "li",
+              "text": "Never use a work computer, a work phone, or a work network. Your employer can see what crosses them. A call or a text from your own phone leaves a record with your carrier."
+            },
+            {
+              "kind": "li",
+              "text": "Files you drop on other pages of this site are held in your own browser only until this page opens, then cleared."
+            },
+            {
+              "kind": "p",
+              "text": "If being identified could cost you a job, your safety, or your freedom, use the mail, or wait. A document will keep. You cannot take back a trail."
+            }
+          ]
+        },
+        {
+          "heading": "Send what you have a right to have",
+          "blocks": [
+            {
+              "kind": "p",
+              "text": "Do not break into anything, take a file from a place you were not allowed to be, or copy what you were never given access to. If the only way to get a document is to take it, do not. Tell this newsroom where it is instead, using the box marked Can’t send it? Every person in New Hampshire has the same right to ask for public records under RSA 91-A, and asking for the right record by name is often all it takes."
+            },
+            {
+              "kind": "box",
+              "text": "If your job is on the line, talk to a lawyer first. New Hampshire’s Whistleblowers’ Protection Act, RSA 275-E:2 , is written around reporting a violation of law and taking part in a government investigation. It says nothing about talking to a reporter. Granite State Report is a newsroom, not a law firm, and nothing on this page is legal advice."
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "key": "agency",
+          "kind": "text",
+          "label": "Agency, town, court, or office the document comes from",
+          "default": ""
+        },
+        {
+          "key": "how",
+          "kind": "select",
+          "label": "How did you come to have it?",
+          "options": [
+            {
+              "label": "Skip this",
+              "value": ""
+            },
+            {
+              "label": "It crossed my desk at work",
+              "value": "It crossed my desk at work"
+            },
+            {
+              "label": "Someone sent it to me",
+              "value": "Someone sent it to me"
+            },
+            {
+              "label": "A Right-to-Know request",
+              "value": "A Right-to-Know request"
+            },
+            {
+              "label": "It is posted publicly somewhere",
+              "value": "It is posted publicly somewhere"
+            },
+            {
+              "label": "I would rather not say",
+              "value": "I would rather not say"
+            }
+          ],
+          "default": ""
+        },
+        {
+          "key": "what",
+          "kind": "textarea",
+          "label": "What is it, and what does it show?",
+          "default": "",
+          "rows": 3
+        },
+        {
+          "key": "link",
+          "kind": "url",
+          "label": "Or a link to a file stored somewhere else: Proton Drive, Google Drive, Dropbox, iCloud",
+          "default": ""
+        },
+        {
+          "key": "where",
+          "kind": "textarea",
+          "label": "Can't send it? Tell us exactly where it is: office, file or folder name, date, who holds it",
+          "default": "",
+          "rows": 3
+        },
+        {
+          "key": "name",
+          "kind": "text",
+          "label": "A name to call you. Leave blank to stay unnamed.",
+          "default": ""
+        },
+        {
+          "key": "email",
+          "kind": "email",
+          "label": "Email. Without it GSR cannot write back.",
+          "default": ""
+        }
+      ]
+    }
+  ]
+}
