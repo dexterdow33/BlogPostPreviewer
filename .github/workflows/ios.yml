@@ -104,6 +104,9 @@ jobs:
           xcrun simctl bootstatus "$UDID" -b
           xcrun simctl status_bar "$UDID" override --time 9:41 --dataNetwork wifi --wifiBars 3 --cellularBars 4 --batteryState charged --batteryLevel 100
           xcrun simctl install "$UDID" "$APP"
+          # A fresh simulator shows system banners (Apple Intelligence, and others) in its
+          # first minute. Let them pass so they do not land in a screenshot.
+          sleep 60
           mkdir -p screenshots
           shot() {
             xcrun simctl terminate "$UDID" com.granitestatereport.app || true
