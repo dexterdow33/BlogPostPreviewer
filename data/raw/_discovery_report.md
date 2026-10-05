@@ -1,6 +1,6 @@
 # NH dynamicdatadump discovery report
 
-Generated 2026-10-04T08:27:20+00:00
+Generated 2026-10-05T09:05:18+00:00
 
 ## LSRs.txt
 
@@ -8,7 +8,7 @@ Generated 2026-10-04T08:27:20+00:00
 
 ## LsrsOnly.txt
 
-**Served empty (3 bytes); reused the previous run's copy.**
+**Served empty (0 bytes); reused the previous run's copy.**
 
 ## Docket.txt
 
@@ -24,7 +24,7 @@ Generated 2026-10-04T08:27:20+00:00
 
 ## RollCallSummary.txt
 
-**Served empty (0 bytes); reused the previous run's copy.**
+**Served empty (3 bytes); reused the previous run's copy.**
 
 ## RollCallHistory.txt
 
