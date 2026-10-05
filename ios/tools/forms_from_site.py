@@ -38,7 +38,8 @@ PAGES = [
 READ_FIRST = {
     "tips": ["What you are agreeing to"],
     "share-your-story": ["What helps"],
-    "inside-the-building": ["Protect yourself first", "What you are agreeing to"],
+    "inside-the-building": ["Protect yourself first", "What the law says about you speaking up",
+                            "What Granite State Report promises, and what it cannot", "What you are agreeing to"],
     "nothing-to-see-here": ["Read this before you send anything", "Send what you have a right to have"],
 }
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -197,7 +198,8 @@ def sections(page_html, headings):
         pat = r'<(p|li)\b[^>]*>(.*?)</\1>|<div class="[^"]*gsr-statute-box[^"]*"[^>]*>(.*?)</div>'
         for b in re.finditer(pat, body, re.S):
             kind, t = (b.group(1), text_of(b.group(2))) if b.group(1) else ("box", text_of(b.group(3)))
-            if t:
+            # The app holds no browser storage; this line describes the website only.
+            if t and not t.startswith("Files you drop on other pages of this site"):
                 blocks.append({"kind": kind, "text": t})
         out.append({"heading": want, "blocks": blocks})
     return out

@@ -11,6 +11,8 @@ final class ShareViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        // A swipe down must not skip the Keep or Delete choice, or cut off a send.
+        isModalInPresentation = true
         view.backgroundColor = UIColor(red: 0xFA / 255, green: 0xF7 / 255, blue: 0xF2 / 255, alpha: 1)
 
         guard let store = try? AppGroup.outbox(),
@@ -48,7 +50,9 @@ final class ShareViewController: UIViewController {
         guard let model else { return finish() }
         if keep {
             Task { @MainActor in
-                await model.saveNow()
+                // Stop any send and let the files still being added land, so the app finds
+                // a clean draft it can pick up.
+                await model.settle()
                 self.finish()
             }
         } else {
@@ -98,28 +102,28 @@ struct ShareRootView: View {
                 ToolbarItem(placement: .cancellationAction) {
                     if model.result == nil {
                         Button("Cancel") {
-                            if model.hasContent { confirmCancel = true } else { close(false) }
+                            if model.isWorthKeeping || model.isImporting { confirmCancel = true } else { close(false) }
                         }
                     }
                 }
                 ToolbarItem(placement: .primaryAction) {
                     if model.result == nil {
                         Button("Finish in app") {
-                            model.pause()
                             close(true)
                         }
-                        .disabled(!model.hasContent)
+                        .disabled(!model.isWorthKeeping && !model.isImporting)
                     }
                 }
             }
             .confirmationDialog("Leave without sending?", isPresented: $confirmCancel, titleVisibility: .visible) {
                 Button("Keep it for the GSR app") {
-                    model.pause()
                     close(true)
                 }
                 Button("Delete it", role: .destructive) { close(false) }
             } message: {
-                Text("Kept items wait under Not sent yet in the GSR app. Deleted items are removed from this phone; nothing is sent.")
+                Text(model.isCommitted
+                     ? "Kept items wait under Not sent yet in the GSR app. Deleting removes them from this phone and your note is not sent, but any file pieces already uploaded stay on the drop box server."
+                     : "Kept items wait under Not sent yet in the GSR app. Deleted items are removed from this phone; nothing is sent.")
             }
             .onChange(of: formName) { _, name in
                 guard let f = DropCatalog.bundled.form(name) else { return }
@@ -138,7 +142,7 @@ struct ShareFailedView: View {
                 .font(GSRTheme.serif(.title3, bold: true))
                 .foregroundStyle(GSRTheme.navy)
                 .multilineTextAlignment(.center)
-            Text("Open the GSR app instead, or email \(GSRContact.email).")
+            Text("Open the GSR app instead, or reach the editor on Signal at \(GSRContact.signalUsername). Signal and the mail are on the app's Contact tab.")
                 .font(.footnote)
                 .multilineTextAlignment(.center)
             Button("Close", action: close).buttonStyle(GSRButtonStyle())

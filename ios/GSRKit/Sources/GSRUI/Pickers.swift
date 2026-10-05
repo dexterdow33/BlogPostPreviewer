@@ -50,13 +50,15 @@ public struct CameraPicker: UIViewControllerRepresentable {
         public func imagePickerController(_ picker: UIImagePickerController,
                                           didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
             if let url = info[.mediaURL] as? URL {
-                // The picker's file lives in a temporary folder; copy it before it goes.
-                let copy = FileManager.default.temporaryDirectory
+                // The camera's file sits in this app's tmp folder, uncleaned. Move it, so no
+                // copy with the camera's details is left behind.
+                let fm = FileManager.default
+                let copy = fm.temporaryDirectory
                     .appendingPathComponent(UUID().uuidString)
                     .appendingPathExtension(url.pathExtension.isEmpty ? "mov" : url.pathExtension)
-                if (try? FileManager.default.copyItem(at: url, to: copy)) != nil {
-                    parent.onVideo(copy)
-                }
+                let ok = (try? fm.moveItem(at: url, to: copy)) != nil || (try? fm.copyItem(at: url, to: copy)) != nil
+                try? fm.removeItem(at: url)
+                if ok { parent.onVideo(copy) }
             } else if let image = info[.originalImage] as? UIImage, let data = image.jpegData(compressionQuality: 0.9) {
                 parent.onPhoto(data)
             }
@@ -153,6 +155,8 @@ public struct PickedMedia: Transferable, Sendable {
 public extension ComposeModel {
     /// Adds the photos and videos picked in the photo picker, in the order picked.
     func addPicked(_ items: [PhotosPickerItem]) async {
+        beginImport()
+        defer { endImport() }
         for item in items {
             do {
                 if let picked = try await item.loadTransferable(type: PickedMedia.self) {
@@ -173,6 +177,8 @@ public extension ComposeModel {
 public enum ItemProviderLoader {
     @MainActor
     public static func load(_ providers: [NSItemProvider], into model: ComposeModel) async {
+        model.beginImport()
+        defer { model.endImport() }
         for p in providers {
             await loadOne(p, into: model)
         }
@@ -380,6 +386,8 @@ public struct VoiceNoteSheet: View {
             .background(GSRTheme.paper2.ignoresSafeArea())
             .navigationTitle("Voice note")
             .navigationBarTitleDisplayMode(.inline)
+            .interactiveDismissDisabled(recorder.isRecording)
+            .onDisappear { if recorder.isRecording { recorder.cancel() } }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {

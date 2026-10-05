@@ -227,6 +227,52 @@ let bundledFormsJSON = #"""
           ]
         },
         {
+          "heading": "What the law says about you speaking up",
+          "blocks": [
+            {
+              "kind": "p",
+              "text": "New Hampshire gives public employees more room to speak than many people realize, and it also sets limits. This is a summary of what the statutes say, not legal advice. If your job is on the line, talk to a lawyer before you act."
+            },
+            {
+              "kind": "box",
+              "text": "RSA 98-E, Public Employee Freedom of Expression. Anyone employed by the state or any subdivision of it, including counties, cities, towns, school districts, and school administrative units, has “a full right to publicly discuss and give opinions as an individual on all matters concerning any government entity and its policies.” The law says no person shall interfere with a public employee’s freedom of speech, full criticism, or disclosure, and it lets an employee go to court for damages and attorney’s fees if someone does. The limit: RSA 98-E:3 says the chapter does not change any law on confidential or privileged records, and it names law-enforcement investigation records and collective bargaining proceedings. Speaking about what your agency is doing is one thing. Handing over records the law makes confidential is another."
+            },
+            {
+              "kind": "box",
+              "text": "RSA 275-E, the Whistleblowers’ Protection Act. It covers government employers. It protects an employee who, in good faith, reports what they reasonably believe is a violation of law, refuses to take part in what they believe is illegal, or takes part in a government investigation or hearing. It does not mention reporters. Before a hearing with the labor commissioner, RSA 275-E:4 expects the employee to have first used any grievance process at work."
+            },
+            {
+              "kind": "box",
+              "text": "Federal employees. Under 5 U.S.C. § 2302(b)(8), a federal agency cannot retaliate against an employee for disclosing what they reasonably believe shows a violation of law, gross mismanagement, gross waste, abuse of authority, or a substantial and specific danger to public health or safety, as long as the disclosure is not specifically prohibited by law and the information is not required by executive order to be kept secret for national defense or foreign affairs. Several intelligence agencies, including the FBI, CIA, and NSA, are outside that section. Classified information has its own channels : the Office of Special Counsel, an agency Inspector General, or Congress. A newsroom is not one of them. Do not send classified material here. It will not be used."
+            }
+          ]
+        },
+        {
+          "heading": "What Granite State Report promises, and what it cannot",
+          "blocks": [
+            {
+              "kind": "li",
+              "text": "Your name stays out. Granite State Report will not publish your name or anything that points to you unless you say in writing that it can."
+            },
+            {
+              "kind": "li",
+              "text": "GSR will refuse any demand to identify you, and will fight it. The New Hampshire Supreme Court recognized a reporter’s privilege to protect confidential sources in State v. Siel , 122 N.H. 254 (1982), under the state constitution and the First Amendment."
+            },
+            {
+              "kind": "li",
+              "text": "No newsroom can promise more than the law allows. That privilege is qualified. A judge can order disclosure when the party asking meets a strict test. The best protection is information GSR never had, so share only what is needed to check the story."
+            },
+            {
+              "kind": "li",
+              "text": "What you send is checked. Nothing is published on one person’s word. Documents are verified, and the agency is asked to respond, as the Code of Ethics requires."
+            },
+            {
+              "kind": "li",
+              "text": "Want terms before you send anything? Call or write first and ask. A promise made to a source is kept."
+            }
+          ]
+        },
+        {
           "heading": "What you are agreeing to",
           "blocks": [
             {
@@ -375,10 +421,6 @@ let bundledFormsJSON = #"""
             {
               "kind": "li",
               "text": "Never use a work computer, a work phone, or a work network. Your employer can see what crosses them. A call or a text from your own phone leaves a record with your carrier."
-            },
-            {
-              "kind": "li",
-              "text": "Files you drop on other pages of this site are held in your own browser only until this page opens, then cleared."
             },
             {
               "kind": "p",

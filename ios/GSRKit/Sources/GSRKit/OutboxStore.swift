@@ -54,7 +54,9 @@ public final class OutboxStore: @unchecked Sendable {
         enc.dateEncodingStrategy = .iso8601
         let data = try enc.encode(s)
         lock.lock(); defer { lock.unlock() }
-        try fm.createDirectory(at: folder(s.id), withIntermediateDirectories: true)
+        // Only create(form:) makes a folder. A late save must never bring a sent or deleted
+        // submission back onto the phone.
+        guard fm.fileExists(atPath: folder(s.id).path) else { throw CocoaError(.fileNoSuchFile) }
         try Self.write(data, to: jsonURL(s.id))
     }
 
@@ -77,8 +79,28 @@ public final class OutboxStore: @unchecked Sendable {
     public func unsent(catalog: DropCatalog = .bundled) -> [Submission] {
         all().filter { s in
             guard s.phase != .sent, let form = catalog.form(s.form) else { return false }
-            return s.hasContent(in: form)
+            return s.isWorthKeeping(in: form)
         }
+    }
+
+    /// After a confirmed send: files the drop box refused (over a limit, say) move to a new
+    /// draft so the sender can send them next, and the sent submission is deleted. Returns
+    /// the new draft, if there is one.
+    @discardableResult
+    public func finishSent(_ sent: Submission, form: DropForm) -> Submission? {
+        defer { delete(sent.id) }
+        let left = sent.items.filter { $0.state == .failed }
+        guard !left.isEmpty, var next = try? create(form: form, origin: sent.origin, scrubMedia: sent.scrubMedia) else {
+            return nil
+        }
+        for it in left {
+            _ = try? addFile(to: &next, from: originalURL(sent, it), displayName: it.originalName, kind: it.kind, move: true)
+        }
+        if next.items.isEmpty {
+            delete(next.id)
+            return nil
+        }
+        return next
     }
 
     /// Deletes a submission and every file in it.
@@ -114,7 +136,7 @@ public final class OutboxStore: @unchecked Sendable {
         let id = UUID()
         let stored = "\(id.uuidString.prefix(8))-\(name)"
         let dest = folder(s.id).appendingPathComponent(stored)
-        try fm.createDirectory(at: folder(s.id), withIntermediateDirectories: true)
+        guard fm.fileExists(atPath: folder(s.id).path) else { throw CocoaError(.fileNoSuchFile) }
         if fm.fileExists(atPath: dest.path) { try fm.removeItem(at: dest) }
         if move {
             do { try fm.moveItem(at: source, to: dest) } catch { try fm.copyItem(at: source, to: dest) }
@@ -136,7 +158,7 @@ public final class OutboxStore: @unchecked Sendable {
     public func addData(to s: inout Submission, _ data: Data, fileName: String,
                         contentType: String? = nil, kind: SubmissionItem.Kind? = nil) throws -> SubmissionItem {
         let tmp = folder(s.id).appendingPathComponent(".incoming-\(UUID().uuidString)")
-        try fm.createDirectory(at: folder(s.id), withIntermediateDirectories: true)
+        guard fm.fileExists(atPath: folder(s.id).path) else { throw CocoaError(.fileNoSuchFile) }
         try Self.write(data, to: tmp)
         return try addFile(to: &s, from: tmp, displayName: fileName, contentType: contentType, kind: kind, move: true)
     }

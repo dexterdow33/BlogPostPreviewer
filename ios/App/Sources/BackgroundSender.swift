@@ -76,8 +76,10 @@ final class BackgroundSender: SendActivity {
             Task { @MainActor in BackgroundSender.attach(task) }
         }
         guard registered else { return }
-        let request = BGContinuedProcessingTaskRequest(identifier: identifier, title: title,
-                                                       subtitle: "Uploading to Granite State Report")
+        // The Lock Screen can be read without unlocking the phone: say nothing about where
+        // the upload is going.
+        let request = BGContinuedProcessingTaskRequest(identifier: identifier, title: "Uploading",
+                                                       subtitle: "Open the app to see progress")
         request.strategy = .fail
         do {
             try BGTaskScheduler.shared.submit(request)

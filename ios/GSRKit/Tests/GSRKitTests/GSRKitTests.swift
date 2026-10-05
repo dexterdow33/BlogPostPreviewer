@@ -80,9 +80,10 @@ final class FormatTests: XCTestCase {
         XCTAssertTrue(OutboxStore.cleanName(long).hasSuffix(".mov"))
     }
 
-    func testStampedName() {
-        let d = Date(timeIntervalSince1970: 1_790_000_000)
-        XCTAssertEqual(FileNaming.stamped("photo", ext: "jpg", now: d), "photo-2026-09-21T14-13-20Z.jpg")
+    func testStampedNameCarriesNoTime() {
+        let name = FileNaming.stamped("photo", ext: "jpg")
+        XCTAssertNotNil(name.range(of: #"^photo-[0-9a-f]{8}\.jpg$"#, options: .regularExpression), name)
+        XCTAssertNotEqual(name, FileNaming.stamped("photo", ext: "jpg"))
     }
 
     func testMIME() {
@@ -479,6 +480,263 @@ final class UploaderTests: XCTestCase {
         let seen = await collector.value
         XCTAssertEqual(seen.last, 100)
         XCTAssertEqual(seen, seen.sorted(), "progress never goes backwards")
+    }
+
+    // MARK: Fixes from review, one test each
+
+    /// Runs `body` inside the preparer, so a test can act while a send is cleaning a file.
+    final class HookPreparer: ItemPreparer, @unchecked Sendable {
+        var body: (@Sendable (SubmissionItem) async throws -> Void)?
+        func prepare(_ item: SubmissionItem, source: URL, folder: URL) async throws -> PreparedFile {
+            try await body?(item)
+            let name = "clean-" + item.storedName
+            try Data("CLEAN".utf8).write(to: folder.appendingPathComponent(name))
+            return PreparedFile(name: name)
+        }
+    }
+
+    func testASentSubmissionIsNeverWrittenBack() async throws {
+        let server = MockDropServer()
+        var s = try store.create(form: form())
+        s.main = "a note with my contact details"
+        s.fields["contact"] = .text("me@example.org")
+        try store.save(s)
+        let up = uploader(s, server)
+        _ = try await up.send()
+        store.delete(s.id)
+        // What closing the screen used to do.
+        await up.update(main: "a note with my contact details", fields: s.fields, scrubMedia: true)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: store.folder(s.id).path), "deleted means deleted")
+        XCTAssertTrue(store.all().isEmpty)
+    }
+
+    func testADeletedDraftIsNeverWrittenBack() async throws {
+        var s = try store.create(form: form())
+        s.main = "draft"
+        try store.save(s)
+        let up = uploader(s, MockDropServer())
+        store.delete(s.id)
+        await up.update(main: "draft, edited", fields: s.fields, scrubMedia: true)
+        XCTAssertTrue(store.all().isEmpty)
+        do { _ = try await up.addData(Data("x".utf8), fileName: "late.txt"); XCTFail("no folder to add to") } catch {}
+        XCTAssertFalse(FileManager.default.fileExists(atPath: store.folder(s.id).path))
+    }
+
+    func testRemovingAFileWhileItIsBeingCleanedKeepsItOut() async throws {
+        let server = MockDropServer()
+        var s = try store.create(form: form())
+        s.main = "note"
+        let item = try store.addFile(to: &s, from: try makeFile("p.jpg", 30), displayName: "p.jpg")
+        try store.save(s)
+        let prep = HookPreparer()
+        let up = uploader(s, server, preparer: prep)
+        prep.body = { _ in await up.remove(itemID: item.id) }
+        let r = try await up.send()
+        XCTAssertEqual(r, .sent(failedFiles: 0))
+        XCTAssertNil(server.receivedFiles()["p.jpg"], "the × wins")
+        let state = await up.submission.items.first?.state
+        XCTAssertEqual(state, .removed)
+    }
+
+    func testRemovingAFileMidUploadKeepsItOutAndTellsTheBox() async throws {
+        let server = MockDropServer()
+        var s = try store.create(form: form())
+        s.main = "note"
+        let item = try store.addFile(to: &s, from: try makeFile("v.mov", 64), displayName: "v.mov")
+        try store.save(s)
+        let up = uploader(s, server)
+        let count = Counter()
+        server.onRequest = { req in
+            if req.url.lastPathComponent == "chunk", count.next() == 2 { await up.remove(itemID: item.id) }
+        }
+        let r = try await up.send()
+        XCTAssertEqual(r, .sent(failedFiles: 0))
+        XCTAssertTrue(server.receivedFiles().isEmpty, "a removed file does not go with finish")
+        XCTAssertGreaterThanOrEqual(server.count("remove"), 1)
+        XCTAssertLessThan(server.count("chunk"), 64 / 8)
+    }
+
+    final class Counter: @unchecked Sendable {
+        private let lock = NSLock()
+        private var n = 0
+        func next() -> Int { lock.withLock { n += 1; return n } }
+    }
+
+    func testFilesAddedDuringASendGoToo() async throws {
+        let server = MockDropServer()
+        var s = try store.create(form: form())
+        try store.addFile(to: &s, from: try makeFile("p.jpg", 20), displayName: "p.jpg")
+        try store.save(s)
+        let prep = HookPreparer()
+        let up = uploader(s, server, preparer: prep)
+        let late = try makeFile("late.pdf", 12)
+        prep.body = { item in
+            if item.displayName == "p.jpg" { _ = try await up.addFile(from: late, displayName: "late.pdf") }
+        }
+        let r = try await up.send()
+        XCTAssertEqual(r, .sent(failedFiles: 0))
+        XCTAssertEqual(server.receivedFiles()["late.pdf"], try Data(contentsOf: late))
+        XCTAssertEqual(server.finishedSessions.count, 1)
+    }
+
+    func testALostFinishAnswerIsNotSentTwice() async throws {
+        let server = MockDropServer()
+        var s = try store.create(form: form())
+        s.main = "only once, please"
+        try store.save(s)
+        server.inject("finish", .answerLost)
+        do { _ = try await uploader(s, server).send(); XCTFail("the app cannot know it arrived") } catch let e as DropError {
+            guard case .rejected(410, "maybe-sent", _) = e else { return XCTFail("\(e)") }
+        }
+        XCTAssertEqual(server.finishedSessions.count, 1, "the editor has it once")
+        XCTAssertEqual(server.count("start"), 1, "no second session behind the sender's back")
+    }
+
+    func testAPausedFinishIsNotRepeatedBlind() async throws {
+        let server = MockDropServer()
+        var s = try store.create(form: form())
+        s.main = "note"
+        // finish went out and was processed, but the app was closed before the answer.
+        s.token = nil
+        try store.save(s)
+        let first = uploader(s, server)
+        server.inject("finish", .answerLost)
+        let sleeper = InstantSleeper()
+        let killed = SubmissionUploader(submission: s, form: form(), store: store, client: DropClient(transport: server),
+                                        sleeper: sleeper, maxTries: 0)
+        _ = first
+        do { _ = try await killed.send() } catch {}
+        // The next launch resumes from what was saved.
+        let saved = try store.load(s.id)
+        let again = SubmissionUploader(submission: saved, form: form(), store: store, client: DropClient(transport: server), sleeper: sleeper)
+        do { _ = try await again.send(); XCTFail() } catch let e as DropError {
+            guard case .rejected(410, "maybe-sent", _) = e else { return XCTFail("\(e)") }
+        }
+        XCTAssertEqual(server.finishedSessions.count, 1)
+    }
+
+    func testAConnectionGiveUpStopsTheSendAndKeepsTheFile() async throws {
+        let server = MockDropServer()
+        var s = try store.create(form: form())
+        s.main = "note"
+        let src = try makeFile("a.bin", 16)
+        try store.addFile(to: &s, from: src, displayName: "a.bin")
+        try store.save(s)
+        server.inject("chunk", .network, .network, .network)
+        let up = SubmissionUploader(submission: s, form: form(), store: store, client: DropClient(transport: server),
+                                    sleeper: InstantSleeper(), maxTries: 2)
+        do { _ = try await up.send(); XCTFail("must not finish without the file") } catch let e as DropError {
+            guard case .network = e else { return XCTFail("\(e)") }
+        }
+        XCTAssertEqual(server.count("finish"), 0)
+        let item = await up.submission.items[0]
+        XCTAssertEqual(item.state, .queued, "ready for the next press")
+        _ = try await up.send()
+        XCTAssertEqual(server.receivedFiles()["a.bin"], try Data(contentsOf: src))
+    }
+
+    func testEveryFileRefusedAndNoNoteSendsNothing() async throws {
+        let server = MockDropServer()
+        server.limits = DropLimits(chunk: 8, maxFile: 4, maxFiles: 50, maxTotal: 100)
+        var s = try store.create(form: form())
+        try store.addFile(to: &s, from: try makeFile("big", 9), displayName: "big")
+        try store.save(s)
+        do { _ = try await uploader(s, server).send(); XCTFail() } catch let e as DropError {
+            guard case .rejected(_, "nothing-left", _) = e else { return XCTFail("\(e)") }
+        }
+        XCTAssertEqual(server.count("finish"), 0, "no empty message")
+        XCTAssertEqual(store.unsent().count, 1, "the refused file is still offered on the phone")
+    }
+
+    func testRefusedFilesMoveToANewDraftAfterTheSend() async throws {
+        let server = MockDropServer()
+        server.limits = DropLimits(chunk: 8, maxFile: 10, maxFiles: 50, maxTotal: 100)
+        var s = try store.create(form: form())
+        try store.addFile(to: &s, from: try makeFile("ok", 9), displayName: "ok.pdf")
+        let bigSrc = try makeFile("big", 12)
+        try store.addFile(to: &s, from: bigSrc, displayName: "big.mov")
+        try store.save(s)
+        let up = uploader(s, server)
+        let r = try await up.send()
+        XCTAssertEqual(r, .sent(failedFiles: 1))
+        let sent = await up.submission
+        let next = try XCTUnwrap(store.finishSent(sent, form: form()))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: store.folder(s.id).path), "the sent one is gone")
+        XCTAssertEqual(next.items.map(\.displayName), ["big.mov"])
+        XCTAssertEqual(next.items.first?.state, .queued)
+        XCTAssertEqual(try Data(contentsOf: store.originalURL(next, next.items[0])), try Data(contentsOf: bigSrc))
+        XCTAssertEqual(store.unsent().map(\.id), [next.id])
+    }
+
+    func testAPauseWhileCleaningIsNotACleaningFailure() async throws {
+        let server = MockDropServer()
+        var s = try store.create(form: form())
+        try store.addFile(to: &s, from: try makeFile("v.mov", 20), displayName: "v.mov")
+        try store.save(s)
+        let prep = HookPreparer()
+        // Media code that wraps cancellation in its own error, as AVFoundation does.
+        prep.body = { _ in
+            do { try await Task.sleep(nanoseconds: 5_000_000_000) } catch { throw CocoaError(.userCancelled) }
+        }
+        let up = uploader(s, server, preparer: prep)
+        let task = Task { try await up.send() }
+        try await Task.sleep(nanoseconds: 50_000_000)
+        task.cancel()
+        _ = try? await task.value
+        let item = await up.submission.items[0]
+        XCTAssertFalse(item.cleaningFailed)
+        XCTAssertEqual(item.state, .queued)
+    }
+
+    func testTurningCleaningOnDropsAPartlyUploadedOriginal() async throws {
+        let server = MockDropServer()
+        var s = try store.create(form: form(), scrubMedia: false)
+        s.main = "note"
+        try store.addFile(to: &s, from: try makeFile("p.jpg", 64), displayName: "p.jpg")
+        try store.save(s)
+        let up = uploader(s, server, preparer: Cleaner(fail: false))
+        let task = Task { try await up.send() }
+        while server.count("chunk") < 2 { try await Task.sleep(nanoseconds: 1_000_000) }
+        task.cancel()
+        _ = try? await task.value
+        await up.update(main: "note", fields: s.fields, scrubMedia: true)
+        _ = try await up.send()
+        XCTAssertEqual(server.receivedFiles()["p.jpg"], Data("CLEAN".utf8), "the clean copy went, not the original")
+        XCTAssertGreaterThanOrEqual(server.count("remove"), 1, "the partial original was dropped")
+    }
+
+    func testSwitchingFormsBeforeAnythingGoes() async throws {
+        let server = MockDropServer()
+        var s = try store.create(form: form("tips"))
+        s.main = "note"
+        try store.save(s)
+        let up = uploader(s, server)
+        let ok = await up.switchForm(to: form("nothing"))
+        XCTAssertTrue(ok)
+        XCTAssertEqual(try store.load(s.id).form, "nothing")
+        XCTAssertEqual(try store.load(s.id).fields["how"], .text(""))
+        _ = try await up.send()
+        XCTAssertEqual(server.finishedSessions.first?.form, "nothing")
+        let late = await up.switchForm(to: form("story"))
+        XCTAssertFalse(late, "too late once sent")
+    }
+
+    func testStaleStatesFromAClosedAppAreCleared() async throws {
+        let server = MockDropServer()
+        var s = try store.create(form: form())
+        s.main = "note"
+        try store.addFile(to: &s, from: try makeFile("a.bin", 10), displayName: "a.bin")
+        s.items[0].state = .preparing
+        s.phase = .sending
+        try store.save(s)
+        let r = try await uploader(try store.load(s.id), server).send()
+        XCTAssertEqual(r, .sent(failedFiles: 0))
+        XCTAssertEqual(server.receivedFiles()["a.bin"]?.count, 10)
+    }
+
+    func testOriginalNameSurvivesCleaningRename() throws {
+        let item = SubmissionItem(displayName: "IMG_1.jpg", storedName: "ABCDEF12-IMG_1.HEIC", contentType: "image/jpeg", kind: .photo, size: 1)
+        XCTAssertEqual(item.originalName, "IMG_1.HEIC")
     }
 }
 

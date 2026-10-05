@@ -16,7 +16,7 @@ struct ContactView: View {
         NavigationStack {
             List {
                 Section {
-                    Text("Signal is the best mix of safe and easy. Mail leaves the least digital trail. The form and email are fine for anything you would not mind your employer seeing.")
+                    Text("Signal is the best mix of safe and easy. Mail leaves the least digital trail. This app, the site's forms, and email are fine for anything you would not mind your employer seeing.")
                         .font(GSRTheme.serif(.subheadline))
                         .foregroundStyle(GSRTheme.ink)
                 }
@@ -35,7 +35,7 @@ struct ContactView: View {
                         Label("Get Signal (free, at signal.org)", systemImage: "arrow.down.circle")
                     }
                 } header: {
-                    Text("Safest and easiest")
+                    Text("Signal: the best mix of safe and easy")
                 }
 
                 Section {
@@ -84,7 +84,7 @@ struct ContactView: View {
                 } header: {
                     Text("On this phone")
                 } footer: {
-                    Text("Drafts you have not sent stay inside the app until you send or delete them, and are left out of iCloud and computer backups. Anything sent is deleted from the phone as soon as the drop box confirms it. The app has no account, no ads, and no tracking.")
+                    Text("Drafts you have not sent stay inside the app until you send or delete them, and are left out of iCloud and computer backups. Anything sent is deleted from the phone as soon as the drop box confirms it. The app has no account and no ads, and runs no analytics of its own. Site pages opened in the app, like stories on the Latest tab, load the site's Google Analytics, as the Privacy Policy describes.")
                 }
 
                 Section {

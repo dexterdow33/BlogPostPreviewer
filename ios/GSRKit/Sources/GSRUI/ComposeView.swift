@@ -134,6 +134,8 @@ public struct ComposeView: View {
         .fileImporter(isPresented: $showFiles, allowedContentTypes: [.item], allowsMultipleSelection: true) { result in
             guard case .success(let urls) = result else { return }
             Task {
+                model.beginImport()
+                defer { model.endImport() }
                 for url in urls { await ItemProviderLoader.copyFileURL(url, into: model) }
             }
         }
@@ -247,6 +249,12 @@ public struct ComposeView: View {
                 set: { model.fields[f.key] = $0 })
     }
 
+    /// Once a file has been cleaned or has started uploading, the choice is fixed, so the
+    /// words under the switch stay true.
+    private var cleaningLocked: Bool {
+        model.isCommitted || model.submission.items.contains { $0.preparedName != nil || $0.serverID != nil }
+    }
+
     @ViewBuilder
     private var cleaning: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -256,16 +264,28 @@ public struct ComposeView: View {
                     .foregroundStyle(GSRTheme.ink)
             }
             .tint(GSRTheme.rust)
-            .disabled(model.isSending)
-            Text(model.scrubMedia
-                 ? "Location, phone model, and the time taken come out before anything uploads. Documents keep their own details (author names, edit history); this app cannot clean those."
-                 : "Photos and videos upload as they are, with whatever location and device details they carry. That can help prove what you saw. It can also point to you.")
+            .disabled(model.isSending || cleaningLocked)
+            Text(cleaningCaption)
                 .font(.footnote)
                 .foregroundStyle(model.scrubMedia ? GSRTheme.ink2 : GSRTheme.rust)
         }
         .padding(14)
         .background(GSRTheme.paper)
         .overlay(RoundedRectangle(cornerRadius: 4).stroke(GSRTheme.rule))
+    }
+
+    private var sendingHint: String {
+        if model.activity == nil {
+            return "Keep this open until it says Sent. To stop and finish later, tap Finish in app; it waits under Not sent yet in the GSR app."
+        }
+        return "You can switch apps; the send keeps going for as long as your phone allows. If it stops, it waits under Not sent yet on the Send tab. Open it and press \(model.form.sendLabel) to pick up where it stopped."
+    }
+
+    private var cleaningCaption: String {
+        let what = model.scrubMedia
+            ? "Location, phone model, and the time taken come out of photos and videos before they upload. Documents keep their own details (author names, edit history); this app cannot clean those."
+            : "Photos and videos upload as they are, with whatever location and device details they carry. That can help prove what you saw. It can also point to you."
+        return cleaningLocked ? what + " This was set when the send started. To change it, delete this and start again." : what
     }
 
     private var readFirst: some View {
@@ -284,9 +304,14 @@ public struct ComposeView: View {
             }
             .padding(.top, 10)
         } label: {
-            Text(model.form.readFirst.map(\.heading).joined(separator: " · "))
-                .font(GSRTheme.serif(.headline, bold: true))
-                .foregroundStyle(GSRTheme.navy)
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Read before you send")
+                    .font(GSRTheme.serif(.headline, bold: true))
+                    .foregroundStyle(GSRTheme.navy)
+                Text("From the \(model.form.title) page, word for word")
+                    .font(.caption)
+                    .foregroundStyle(GSRTheme.ink3)
+            }
         }
         .tint(GSRTheme.rust)
     }
@@ -317,7 +342,7 @@ public struct ComposeView: View {
                     .accessibilityAddTraits(.updatesFrequently)
             }
             if model.isSending {
-                Text("You can switch apps; the send keeps going for as long as your phone allows. If it stops, open GSR and it picks up where it left off.")
+                Text(sendingHint)
                     .font(.caption)
                     .foregroundStyle(GSRTheme.ink3)
             }
@@ -333,7 +358,7 @@ public struct ComposeView: View {
             Text(model.sentMessage)
                 .font(GSRTheme.serif(.body))
                 .foregroundStyle(GSRTheme.ink)
-            Text("The app has deleted its copy. Originals in your Photos or Files stay where they were.")
+            Text("The app has deleted its copy of what was sent. Anything you picked from Photos or Files is still there. Photos, videos, scans, and voice notes made in this app were never saved anywhere else.")
                 .font(.footnote)
                 .foregroundStyle(GSRTheme.ink2)
             if let again = onSendAnother {
@@ -381,7 +406,7 @@ public struct SafetyNote: View {
         "This app is not anonymous. It sends to the same drop box as the website: what you send is stored on the site's server with the host, WordPress.com, and a notice is emailed to the newsroom's Gmail account, with the files attached when they total under 15 MB. The host logs IP addresses.",
         "Never use a work phone, work email, or work Wi-Fi. Your employer can see what crosses them.",
         "Files carry hidden data. This app removes location and device details from photos and videos unless you turn that off. It cannot clean documents: author names and edit history stay in them. A screenshot or a photo of a printout carries less.",
-        "For anything sensitive, use Signal or the mail, not this app. Both are on the Contact tab.",
+        "For anything sensitive, use Signal or the mail, not this app. Both are on the GSR app's Contact tab.",
         "Nothing leaves your phone until you press Send. Once the drop box confirms it, the app deletes its copy.",
     ]
 
@@ -525,10 +550,9 @@ struct AttachmentRow: View {
             }
             if item.state == .failed && !sending {
                 HStack(spacing: 16) {
+                    Button("Try again", action: retry)
                     if item.cleaningFailed {
                         Button("Send as is", action: sendAsIs)
-                    } else if item.serverID != nil || item.error?.contains("connection") == true || item.error?.contains("losing") == true {
-                        Button("Try again", action: retry)
                     }
                 }
                 .font(.caption.weight(.semibold))

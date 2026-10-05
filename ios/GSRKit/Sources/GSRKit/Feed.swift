@@ -141,14 +141,11 @@ public enum ByteFormat {
     }
 }
 
-/// Names for files the app makes itself, in the page's style for pasted files
-/// ("pasted-2026-10-05T14-32-07-000Z.png"): a word, then the UTC time.
+/// Names for files the app makes itself ("photo-3f9a1c2e.jpg"): a word and a short random
+/// tag. Never a date or time: the name goes to the server with the file, and a capture
+/// time in the name would undo removing it from the file.
 public enum FileNaming {
-    public static func stamped(_ prefix: String, ext: String, now: Date = Date()) -> String {
-        let f = DateFormatter()
-        f.locale = Locale(identifier: "en_US_POSIX")
-        f.timeZone = TimeZone(identifier: "UTC")
-        f.dateFormat = "yyyy-MM-dd'T'HH-mm-ss"
-        return "\(prefix)-\(f.string(from: now))Z.\(ext)"
+    public static func stamped(_ prefix: String, ext: String) -> String {
+        "\(prefix)-\(UUID().uuidString.prefix(8).lowercased()).\(ext)"
     }
 }

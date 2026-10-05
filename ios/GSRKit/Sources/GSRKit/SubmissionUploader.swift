@@ -46,10 +46,14 @@ public struct TaskSleeper: Sleeper {
 ///   dead battery picks up where it stopped (the server's 409 reply resyncs the offset).
 /// - If the session expires (410), it starts a new one and uploads the files again
 ///   instead of losing them.
+/// - A file that gives up because the connection kept dropping stops the send rather
+///   than letting it finish without that file.
+/// - `finish` is never repeated blind: if an earlier one went unanswered, a 410 means the
+///   box most likely has the submission, and the sender is told instead of it going twice.
 public actor SubmissionUploader {
     public nonisolated let id: UUID
     public private(set) var submission: Submission
-    private let form: DropForm
+    private var form: DropForm
     private let store: OutboxStore
     private let client: DropClient
     private let preparer: ItemPreparer?
@@ -102,7 +106,7 @@ public actor SubmissionUploader {
 
     /// Replaces the note, fields, and cleaning choice. Ignored while a send is running.
     public func update(main: String, fields: [String: FieldValue], scrubMedia: Bool) {
-        guard !sending else { return }
+        guard !sending, submission.phase != .sent else { return }
         submission.main = main
         submission.fields = fields
         submission.scrubMedia = scrubMedia
@@ -147,13 +151,28 @@ public actor SubmissionUploader {
         }
     }
 
-    /// Puts a file that gave up back in line. It uploads on the next send.
+    /// Puts a file that gave up back in line. It uploads (and, if it could not be cleaned,
+    /// is cleaned again) on the next send.
     public func retry(itemID: UUID) {
         guard let i = submission.items.firstIndex(where: { $0.id == itemID }),
               submission.items[i].state == .failed else { return }
         submission.items[i].state = .queued
         submission.items[i].error = nil
+        submission.items[i].cleaningFailed = false
+        submission.items[i].connectionFailed = false
         publish()
+    }
+
+    /// Moves a draft that has not reached the server to another drop box. The note and files
+    /// stay; the details reset to the new form's. Returns false once anything has gone.
+    @discardableResult
+    public func switchForm(to newForm: DropForm) -> Bool {
+        guard !sending, submission.token == nil, submission.phase == .draft else { return false }
+        form = newForm
+        submission.form = newForm.form
+        submission.fields = newForm.defaultFields
+        publish()
+        return true
     }
 
     /// Lets a file that could not be cleaned upload as it is. The sender has to ask.
@@ -192,26 +211,48 @@ public actor SubmissionUploader {
         defer { sending = false }
         submission.phase = .sending
         submission.lastError = nil
+        // A send cut off by a closed app can leave these behind.
+        for i in submission.items.indices where [.uploading, .retrying, .preparing].contains(submission.items[i].state) {
+            submission.items[i].state = .queued
+        }
         publish()
 
         var restarts = 0
         while true {
             do {
-                try await uploadAll()
+                // Files added while this send ran go too.
+                var rounds = 0
+                repeat {
+                    rounds += 1
+                    try await uploadAll()
+                } while submission.items.contains(where: { $0.state == .queued }) && rounds < 20
+
                 if submission.items.contains(where: { $0.cleaningFailed && $0.state == .failed }) {
                     // Do not close the submission without the sender's say on these files.
                     throw DropError.rejected(status: 0, code: "uncleaned",
-                                             message: "A photo or video could not be cleaned. Remove it or choose Send as is, then press Send again.")
+                                             message: "A photo or video could not be cleaned. Try again, remove it, or choose Send as is, then press Send again.")
                 }
+                if submission.items.contains(where: { $0.connectionFailed && $0.state == .failed }) {
+                    // Never finish without a file only because the connection was bad.
+                    for i in submission.items.indices where submission.items[i].connectionFailed && submission.items[i].state == .failed {
+                        submission.items[i].state = .queued
+                        submission.items[i].connectionFailed = false
+                    }
+                    throw DropError.network("connection kept dropping")
+                }
+                guard submission.hasContent(in: form) else {
+                    // Every file was refused and there is no note: do not send an empty message.
+                    throw DropError.rejected(status: 0, code: "nothing-left",
+                                             message: "None of the files could be sent, so nothing went. Each file says why.")
+                }
+
+                let token = try await sessionToken()
+                // The box must drop every file that will not complete: taken out, or refused.
+                try await dropAbandoned(token: token)
+
                 submission.phase = .finishing
                 publish()
-                let token = try await sessionToken()
-                let client = self.client
-                let main = submission.main
-                let fields = submission.fieldsForSending(in: form)
-                try await withRetries {
-                    try await client.finish(token: token, main: main, fields: fields)
-                }
+                try await finishOnce(token: token)
                 submission.phase = .sent
                 submission.sentAt = Date()
                 publish()
@@ -221,10 +262,7 @@ public actor SubmissionUploader {
                 guard restarts <= maxSessionRestarts else {
                     return try fail(DropError.sessionExpired(message: "The drop box kept closing the upload. Try again in a few minutes."))
                 }
-                submission.token = nil
-                submission.limits = nil
-                for i in submission.items.indices { submission.items[i].resetForNewSession() }
-                publish()
+                startOver()
                 continue
             } catch is CancellationError {
                 submission.phase = .draft
@@ -237,6 +275,64 @@ public actor SubmissionUploader {
             } catch {
                 return try fail(error)
             }
+        }
+    }
+
+    /// Forgets the server session; every file uploads again in a new one.
+    private func startOver() {
+        submission.token = nil
+        submission.limits = nil
+        submission.finishTriedAt = nil
+        for i in submission.items.indices { submission.items[i].resetForNewSession() }
+        publish()
+    }
+
+    /// Sends `finish` once, retrying only while no answer has come back. If an earlier
+    /// `finish` with this token went unanswered and the box now says the session is gone,
+    /// the box most likely closed it on that earlier `finish`: say so rather than send twice.
+    private func finishOnce(token: String) async throws {
+        let client = self.client
+        let main = submission.main
+        let fields = submission.fieldsForSending(in: form)
+        var unanswered = submission.finishTriedAt != nil
+        submission.finishTriedAt = Date()
+        publish()
+        var tries = 0
+        while true {
+            do {
+                try await client.finish(token: token, main: main, fields: fields)
+                submission.finishTriedAt = nil
+                return
+            } catch let e as DropError where e.isRetryable {
+                unanswered = true
+                tries += 1
+                if tries > maxTries { throw e }
+                try await sleeper.sleep(seconds: min(30, pow(2, Double(tries))))
+            } catch let e as DropError where isSessionExpired(e) && unanswered {
+                startOver()
+                throw DropError.rejected(status: 410, code: "maybe-sent",
+                                         message: "Your message most likely reached the editor, but the drop box's answer was lost, so the app cannot be sure. Press the button again only if you want it sent a second time.")
+            }
+        }
+    }
+
+    /// Tells the box to drop files that will not complete, before `finish`.
+    private func dropAbandoned(token: String) async throws {
+        let client = self.client
+        for it in submission.items where it.serverID != nil && (it.state == .removed || it.state == .failed) {
+            guard let fid = it.serverID else { continue }
+            do {
+                try await withRetries { try await client.remove(token: token, file: fid) }
+            } catch let e as DropError where isSessionExpired(e) || e.isRetryable {
+                throw e
+            } catch {
+                // A 4xx: the box does not have the file. Nothing to drop.
+            }
+            if let i = submission.items.firstIndex(where: { $0.id == it.id }) {
+                submission.items[i].serverID = nil
+                submission.items[i].sent = 0
+            }
+            publish()
         }
     }
 
@@ -312,10 +408,20 @@ public actor SubmissionUploader {
 
     private func prepareAll() async throws {
         guard submission.scrubMedia, let preparer else { return }
-        for item in submission.items where item.canBeCleaned && !item.cleaned && item.preparedName == nil
-            && item.state != .removed && item.state != .failed && item.state != .done
-            && item.serverID == nil && !item.sendAsIs {
+        for snapshot in submission.items where snapshot.canBeCleaned && !snapshot.cleaned && snapshot.preparedName == nil
+            && !snapshot.sendAsIs && [.queued, .uploading, .retrying, .preparing].contains(snapshot.state) {
             try Task.checkCancellation()
+            guard let item = self.item(snapshot.id), item.state != .removed else { continue }
+            if let fid = item.serverID, let token = submission.token {
+                // Part of the original went up while cleaning was off. Drop it; a clean copy goes instead.
+                let client = self.client
+                do {
+                    try await withRetries { try await client.remove(token: token, file: fid) }
+                } catch let e as DropError where isSessionExpired(e) || e.isRetryable {
+                    throw e
+                } catch {}
+                setItem(item.id) { $0.serverID = nil; $0.sent = 0 }
+            }
             setItem(item.id) { $0.state = .preparing; $0.error = nil }
             publish(save: false)
             do {
@@ -330,14 +436,14 @@ public actor SubmissionUploader {
                     if let t = p.contentType { $0.contentType = t }
                     if let n = p.displayName { $0.displayName = n }
                 }
-            } catch is CancellationError {
-                throw CancellationError()
             } catch {
+                // A pause is not a failed clean, even if the media code wrapped the cancellation.
+                if error is CancellationError || Task.isCancelled { throw CancellationError() }
                 // Never send a file with its location when the sender asked for it gone.
                 setItem(item.id) {
                     $0.state = .failed
                     $0.cleaningFailed = true
-                    $0.error = "Could not remove the location and device details from this file, so it was held back. Remove it, or choose Send as is."
+                    $0.error = "Could not remove the location and device details from this file, so it was held back. Try again, remove it, or choose Send as is."
                 }
             }
             publish()
@@ -363,7 +469,7 @@ public actor SubmissionUploader {
                 }
             } catch let e as DropError where !isSessionExpired(e) {
                 if case .storageFull = e { throw e }
-                setItem(itemID) { $0.state = .failed; $0.error = e.userMessage }
+                setItem(itemID) { $0.state = .failed; $0.error = e.userMessage; $0.connectionFailed = e.isRetryable }
                 publish()
                 return
             }
@@ -421,7 +527,7 @@ public actor SubmissionUploader {
             } catch DropError.offsetMismatch(let received) {
                 tries += 1
                 if tries > maxTries {
-                    setItem(itemID) { $0.state = .failed; $0.error = "The upload kept losing its place. Try again." }
+                    setItem(itemID) { $0.state = .failed; $0.error = "The upload kept losing its place."; $0.connectionFailed = true }
                     publish()
                     return
                 }
@@ -430,7 +536,7 @@ public actor SubmissionUploader {
             } catch let e as DropError where e.isRetryable {
                 tries += 1
                 if tries > maxTries {
-                    setItem(itemID) { $0.state = .failed; $0.error = "The connection kept dropping. Try again, or use a share link." }
+                    setItem(itemID) { $0.state = .failed; $0.error = "The connection kept dropping."; $0.connectionFailed = true }
                     publish()
                     return
                 }
@@ -472,8 +578,11 @@ public actor SubmissionUploader {
         submission.items.first { $0.id == id }
     }
 
+    /// Changes an item, unless the sender removed it: the × always wins over a reply that
+    /// arrives afterwards.
     private func setItem(_ id: UUID, _ change: (inout SubmissionItem) -> Void) {
-        guard let i = submission.items.firstIndex(where: { $0.id == id }) else { return }
+        guard let i = submission.items.firstIndex(where: { $0.id == id }),
+              submission.items[i].state != .removed else { return }
         change(&submission.items[i])
     }
 }

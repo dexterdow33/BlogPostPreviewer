@@ -24,6 +24,7 @@ final class MockDropServer: HTTPTransport, @unchecked Sendable {
         case network                    // throw as a dropped connection would
         case wrongOffset(Int64)         // reply 409 with this received count
         case expire                     // mark the session gone and reply 410
+        case answerLost                 // do the work, then drop the connection before replying
     }
 
     private let lock = NSLock()
@@ -51,8 +52,12 @@ final class MockDropServer: HTTPTransport, @unchecked Sendable {
         return requests.filter { $0.url.path.hasSuffix("/" + endpoint) }.count
     }
 
+    /// Called (outside the lock) before each request is handled; tests use it to act mid-send.
+    var onRequest: (@Sendable (HTTPRequest) async -> Void)?
+
     func send(_ request: HTTPRequest) async throws -> HTTPResponse {
         try await Task.sleep(nanoseconds: 1_000) // let other tasks interleave
+        if let hook = onRequest { await hook(request) }
         return try lock.withLock { try handle(request) }
     }
 
@@ -63,6 +68,9 @@ final class MockDropServer: HTTPTransport, @unchecked Sendable {
             let f = list.removeFirst()
             faults[endpoint] = list
             switch f {
+            case .answerLost:
+                _ = try route(request, endpoint: endpoint)
+                throw URLError(.networkConnectionLost)
             case .status(let s, let m): return json(s, ["code": "mock", "message": m as Any? ?? NSNull()])
             case .network: throw URLError(.networkConnectionLost)
             case .wrongOffset(let r): return json(409, ["received": r])
@@ -71,6 +79,10 @@ final class MockDropServer: HTTPTransport, @unchecked Sendable {
                 return json(410, ["code": "gsrdb_gone", "message": "That upload session has ended."])
             }
         }
+        return try route(request, endpoint: endpoint)
+    }
+
+    private func route(_ request: HTTPRequest, endpoint: String) throws -> HTTPResponse {
         guard request.method == "POST" else { return json(405, ["message": "POST only"]) }
         switch endpoint {
         case "start":
@@ -113,7 +125,7 @@ final class MockDropServer: HTTPTransport, @unchecked Sendable {
             return json(200, ["ok": true])
         case "finish":
             let body = obj(request)
-            guard let t = body["token"] as? String, let s = sessions[t], !s.expired else { return gone() }
+            guard let t = body["token"] as? String, let s = sessions[t], !s.expired, s.finished == nil else { return gone() }
             for (_, f) in s.files where !f.removed && Int64(f.data.count) != f.size {
                 return json(400, ["message": "A file is incomplete."])
             }

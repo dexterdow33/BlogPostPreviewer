@@ -45,7 +45,7 @@ struct SendHomeView: View {
                         }
                     }
 
-                    Text("Signal and the mail are safer than any app or form. Both are on the Contact tab.")
+                    Text("For anything sensitive, use Signal or the mail, not this app. Both are on the Contact tab.")
                         .font(GSRTheme.serif(.footnote, italic: true))
                         .foregroundStyle(GSRTheme.ink2)
                 }
@@ -119,7 +119,11 @@ struct SendHomeView: View {
         if files > 0 { parts.append("\(files) file\(files == 1 ? "" : "s")") }
         if !s.main.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { parts.append("a note") }
         if s.origin == .shareExtension { parts.append("from the share sheet") }
-        if s.phase != .draft || s.token != nil { parts.append("partly uploaded") }
+        if s.phase == .sending || s.phase == .finishing {
+            parts.append("stopped while sending")
+        } else if s.token != nil {
+            parts.append("partly uploaded")
+        }
         let what = parts.isEmpty ? "Started" : parts.joined(separator: ", ")
         return what + " · " + s.updatedAt.formatted(date: .abbreviated, time: .shortened)
     }
@@ -227,6 +231,12 @@ struct ComposeContainer: View {
     @EnvironmentObject private var router: AppRouter
     @State private var confirmDelete = false
 
+    private var deleteQuestion: String {
+        model.isCommitted
+            ? "Delete this? The files and note are removed from this phone and your note is not sent. Any file pieces already uploaded stay on the drop box server."
+            : "Delete this? The files and note are removed from this phone. Nothing is sent."
+    }
+
     var body: some View {
         ComposeView(model: model,
                     pendingAction: $router.pendingAction,
@@ -247,8 +257,7 @@ struct ComposeContainer: View {
                     }
                 }
             }
-            .confirmationDialog("Delete this? The files and note are removed from this phone. Nothing is sent.",
-                                isPresented: $confirmDelete, titleVisibility: .visible) {
+            .confirmationDialog(deleteQuestion, isPresented: $confirmDelete, titleVisibility: .visible) {
                 Button("Delete", role: .destructive) {
                     app.discard(model)
                     router.path = []

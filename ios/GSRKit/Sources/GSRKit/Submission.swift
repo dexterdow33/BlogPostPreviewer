@@ -40,6 +40,9 @@ public struct Submission: Codable, Hashable, Identifiable, Sendable {
     /// Why the last send stopped, in words for the sender.
     public var lastError: String?
     public var sentAt: Date?
+    /// Set when `finish` goes out with the current token and cleared when it is answered.
+    /// If it is still set at the next try, the box may already have the submission.
+    public var finishTriedAt: Date?
 
     public init(id: UUID = UUID(), form: DropForm, origin: Origin = .app, scrubMedia: Bool = true, now: Date = Date()) {
         self.id = id
@@ -65,6 +68,12 @@ public struct Submission: Codable, Hashable, Identifiable, Sendable {
         if !liveItems.isEmpty { return true }
         if !main.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { return true }
         return form.fields.contains { f in fields[f.key]?.isTyped(for: f.kind) ?? false }
+    }
+
+    /// Worth keeping on the phone: something to send, or a file held back that the sender
+    /// still has to decide about.
+    public func isWorthKeeping(in form: DropForm) -> Bool {
+        hasContent(in: form) || items.contains { $0.state == .failed }
     }
 
     /// Bytes uploaded and bytes to upload, across live items.
@@ -142,6 +151,9 @@ public struct SubmissionItem: Codable, Hashable, Identifiable, Sendable {
     public var cleaningFailed: Bool
     /// The sender chose to send this file without cleaning it.
     public var sendAsIs: Bool
+    /// The upload gave up because the connection kept dropping. The send stops instead of
+    /// finishing without it, and the next send tries again.
+    public var connectionFailed: Bool
 
     public init(id: UUID = UUID(), displayName: String, storedName: String, contentType: String, kind: Kind, size: Int64) {
         self.id = id
@@ -155,6 +167,14 @@ public struct SubmissionItem: Codable, Hashable, Identifiable, Sendable {
         self.cleaned = false
         self.cleaningFailed = false
         self.sendAsIs = false
+        self.connectionFailed = false
+    }
+
+    /// The name the file had when it was added, before any cleaning changed its extension.
+    public var originalName: String {
+        // storedName is "<8 characters of the id>-<name>"
+        let parts = storedName.split(separator: "-", maxSplits: 1)
+        return parts.count == 2 ? String(parts[1]) : displayName
     }
 
     /// Photos and videos can carry location and device details worth removing.

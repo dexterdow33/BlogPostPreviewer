@@ -80,7 +80,7 @@ final class AppModel: ObservableObject {
             storeError = nil
         } catch {
             store = nil
-            storeError = "The app could not open its storage on this phone. Use Signal, email, or the mail instead."
+            storeError = "The app could not open its storage on this phone. Use Signal or the mail instead. Both are on the Contact tab."
         }
         sweepEmptyDrafts()
         refreshUnsent()
@@ -90,11 +90,16 @@ final class AppModel: ObservableObject {
         unsent = store?.unsent(catalog: catalog) ?? []
     }
 
-    /// Empty drafts left by screens opened and closed without anything in them.
+    /// Empty drafts left by screens opened and closed without anything in them, and anything
+    /// already sent (left only if the app was closed between the confirmation and the delete).
     private func sweepEmptyDrafts() {
         guard let store else { return }
-        for s in store.all() where s.phase == .draft && s.token == nil {
-            if let form = catalog.form(s.form), !s.hasContent(in: form) { store.delete(s.id) }
+        for s in store.all() {
+            if s.phase == .sent {
+                store.delete(s.id)
+            } else if s.phase == .draft, s.token == nil, let form = catalog.form(s.form), !s.isWorthKeeping(in: form) {
+                store.delete(s.id)
+            }
         }
     }
 
@@ -149,10 +154,16 @@ final class AppModel: ObservableObject {
 
     /// Deletes everything the app holds on this phone. Stops any send in progress.
     func wipe() {
+        AppRouter.shared.path = []
         for m in models.values { m.discard() }
         models.removeAll()
         draftByForm.removeAll()
         store?.wipe()
+        // Picker and recorder copies waiting in the app's temporary folder go too.
+        let fm = FileManager.default
+        for name in (try? fm.contentsOfDirectory(atPath: fm.temporaryDirectory.path)) ?? [] {
+            try? fm.removeItem(at: fm.temporaryDirectory.appendingPathComponent(name))
+        }
         refreshUnsent()
     }
 
