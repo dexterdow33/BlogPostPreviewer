@@ -1,0 +1,227 @@
+name: iOS app
+
+# Builds and tests the Granite State Report iPhone app in ios/.
+#
+#   core       GSRKit's tests on Linux: the drop box protocol, uploads, outbox, feed.
+#   app        On macOS: generate the Xcode project, run every package test (photo and
+#              video cleaning included), build the app and share extension for the
+#              simulator, and take App Store screenshots of the real build.
+#   forms      Checks that the four drop box forms on granitestatereport.com still match
+#              the app's copy. Runs weekly; a failure means the site changed and the app
+#              needs an update. Never blocks a pull request.
+#   testflight Manual only (Actions tab > iOS app > Run workflow, testflight: true):
+#              archives, signs, and uploads a build to App Store Connect. Needs the
+#              repository secrets listed in docs/GSR_iOS_App_Launch_Checklist_v1_2026-10-05.md.
+
+on:
+  pull_request:
+    paths: ["ios/**", ".github/workflows/ios.yml"]
+  push:
+    branches: ["master"]
+    paths: ["ios/**", ".github/workflows/ios.yml"]
+  schedule:
+    - cron: "41 13 * * 1"   # Mondays, 9:41 a.m. EDT: the forms check
+  workflow_dispatch:
+    inputs:
+      testflight:
+        description: "Archive and upload a build to TestFlight (needs the App Store Connect secrets)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+# Pull-request runs replace each other. A TestFlight upload, a push build, and the weekly
+# check never cancel one another.
+concurrency:
+  group: ios-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  core:
+    name: Core tests (Linux)
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    container: swift:6.2
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: swift test, with a local stand-in for the drop box so the real HTTP code runs too
+        env:
+          GSR_MOCK_DROP_URL: http://127.0.0.1:8787/wp-json/gsr-drop/v1/
+        run: |
+          command -v python3 || (apt-get update -qq && apt-get install -y -qq python3 >/dev/null)
+          python3 ios/tools/mock_drop_server.py --port 8787 &
+          sleep 2
+          cd ios/GSRKit && swift test --parallel
+
+  app:
+    name: Build and test (macOS)
+    if: github.event_name != 'schedule'
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tools
+        run: |
+          # Xcode 26.6 (iOS 26.5 SDK) is the image default today; pin it while it is there.
+          if [ -d /Applications/Xcode_26.6.app ]; then sudo xcode-select -s /Applications/Xcode_26.6.app; fi
+          xcodebuild -version
+          brew install xcodegen
+          xcodegen --version
+      - name: Generate the Xcode project
+        working-directory: ios
+        run: xcodegen generate
+      - name: Package tests on macOS (drop box, outbox, photo and video cleaning)
+        working-directory: ios/GSRKit
+        run: swift test
+      - name: Build the app and share extension for the simulator
+        if: success() || failure()
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -project ios/GSR.xcodeproj -scheme GSR -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath ios/build \
+            CODE_SIGNING_ALLOWED=NO | xcbeautify --renderer github-actions
+      - name: Build for a device (unsigned) to catch device-only errors
+        if: success() || failure()
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -project ios/GSR.xcodeproj -scheme GSR -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath ios/build-device \
+            CODE_SIGNING_ALLOWED=NO | xcbeautify --renderer github-actions
+      - name: App Store screenshots (iPhone 17 Pro Max, 6.9-inch)
+        if: success() || failure()
+        continue-on-error: true
+        run: |
+          set -x
+          APP=ios/build/Build/Products/Debug-iphonesimulator/GSR.app
+          UDID=$(xcrun simctl create gsr-shots "iPhone 17 Pro Max")
+          xcrun simctl boot "$UDID"
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl status_bar "$UDID" override --time 9:41 --dataNetwork wifi --wifiBars 3 --cellularBars 4 --batteryState charged --batteryLevel 100
+          xcrun simctl install "$UDID" "$APP"
+          # A fresh simulator shows system banners (Apple Intelligence, and others) in its
+          # first minute. Let them pass so they do not land in a screenshot.
+          sleep 60
+          mkdir -p screenshots
+          shot() {
+            xcrun simctl terminate "$UDID" com.granitestatereport.app || true
+            xcrun simctl launch "$UDID" com.granitestatereport.app "$@"
+            sleep 8
+            xcrun simctl io "$UDID" screenshot "screenshots/$NAME.png"
+          }
+          NAME=1-send shot
+          NAME=2-quick-tip shot -GSRScreenshotForm tips
+          NAME=3-documents shot -GSRScreenshotForm nothing
+          NAME=4-latest shot -GSRScreenshotTab latest
+          NAME=5-contact shot -GSRScreenshotTab contact
+          # App Store Connect refuses screenshots with an alpha channel: save JPEGs.
+          for f in screenshots/*.png; do
+            sips -s format jpeg -s formatOptions 92 "$f" --out "${f%.png}.jpg" >/dev/null && rm "$f"
+          done
+          sips -g pixelWidth -g pixelHeight -g hasAlpha screenshots/*.jpg
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-screenshots-${{ github.run_number }}
+          path: screenshots
+          if-no-files-found: ignore
+          retention-days: 30
+
+  forms:
+    name: Drop box forms still match the site
+    if: github.event_name != 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    continue-on-error: ${{ github.event_name == 'pull_request' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compare forms.json with the live pages
+        run: python3 ios/tools/forms_from_site.py --check
+
+  testflight:
+    name: Upload to TestFlight
+    if: github.event_name == 'workflow_dispatch' && inputs.testflight
+    needs: app
+    runs-on: macos-26
+    timeout-minutes: 60
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      # Unique and rising for every upload: this workflow's run number, then the attempt.
+      BUILD_NUMBER: ${{ github.run_number }}.${{ github.run_attempt }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check the secrets are set
+        run: |
+          missing=""
+          for v in ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_P8 APPLE_TEAM_ID; do
+            [ -n "${!v}" ] || missing="$missing $v"
+          done
+          if [ -n "$missing" ]; then
+            echo "::error::Missing repository secrets:$missing. Add them under Settings > Secrets and variables > Actions: ASC_KEY_ID and ASC_ISSUER_ID (an Admin-role team key from App Store Connect > Users and Access > Integrations), ASC_KEY_P8 (the AuthKey .p8 contents, raw or base64), APPLE_TEAM_ID. The app record for com.granitestatereport.app must exist in App Store Connect before the first upload. Full steps: docs/GSR_iOS_App_Launch_Checklist_v1_2026-10-05.md."
+            exit 1
+          fi
+      - name: Tools and project
+        run: |
+          if [ -d /Applications/Xcode_26.6.app ]; then sudo xcode-select -s /Applications/Xcode_26.6.app; fi
+          brew install xcodegen
+          cd ios && xcodegen generate
+      - name: App Store Connect key
+        run: |
+          mkdir -p "$HOME/private_keys"
+          KEY="$HOME/private_keys/AuthKey_${ASC_KEY_ID}.p8"
+          if printf '%s' "$ASC_KEY_P8" | grep -q "BEGIN PRIVATE KEY"; then
+            printf '%s\n' "$ASC_KEY_P8" > "$KEY"
+          else
+            printf '%s' "$ASC_KEY_P8" | base64 --decode > "$KEY"
+          fi
+          chmod 600 "$KEY"
+          echo "ASC_KEY_PATH=$KEY" >> "$GITHUB_ENV"
+      - name: Archive
+        run: |
+          set -o pipefail
+          xcodebuild archive \
+            -project ios/GSR.xcodeproj -scheme GSR -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/GSR.xcarchive" \
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID" CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$ASC_KEY_PATH" \
+            -authenticationKeyID "$ASC_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID" | xcbeautify --renderer github-actions
+      - name: Sign and upload to App Store Connect
+        run: |
+          set -o pipefail
+          cat > "$RUNNER_TEMP/ExportOptions.plist" <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>upload</string>
+            <key>teamID</key><string>${APPLE_TEAM_ID}</string>
+            <key>signingStyle</key><string>automatic</string>
+            <key>manageAppVersionAndBuildNumber</key><false/>
+            <key>uploadSymbols</key><true/>
+          </dict>
+          </plist>
+          EOF
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/GSR.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
+            -exportPath "$RUNNER_TEMP/export" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$ASC_KEY_PATH" \
+            -authenticationKeyID "$ASC_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID" | xcbeautify --renderer github-actions
+          echo "Uploaded build $BUILD_NUMBER. It appears in App Store Connect > TestFlight after Apple processes it." >> "$GITHUB_STEP_SUMMARY"
+      - name: Remove the key
+        if: always()
+        run: rm -rf "$HOME/private_keys"
