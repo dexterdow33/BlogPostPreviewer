@@ -25396,3 +25396,12 @@
 2026|3100|10/5/2026 12:43:18 PM|HB1652|H| Interim Study Report: Recommended for Future Legislation  10/01/2026 (Vote 8-1; )|10/5/2026 12:43:18 PM
 2026|1006|10/5/2026 12:44:51 PM|SB84|H| Interim Study Report: Recommended for Future Legislation  10/01/2026 (Vote 9-0; )|10/5/2026 12:44:51 PM
 2026|2829|10/5/2026 12:46:38 PM|HB1517|H| Interim Study Report: Not Recommended for Future Legislation  10/01/2026 (Vote 8-1; )|10/5/2026 12:46:38 PM
+2026|0598|10/6/2026 1:01:35 PM|HB293|H| Interim Study Report: Not Recommended for Future Legislation  10/05/2026 (Vote 13-0; )|10/6/2026 1:01:35 PM
+2026|0214|10/6/2026 1:02:12 PM|HB580|H| Interim Study Report: Not Recommended for Future Legislation  10/05/2026 (Vote 13-0; )|10/6/2026 1:02:12 PM
+2026|2819|10/6/2026 1:35:27 PM|HB1292|H| Interim Study Report: Recommended for Future Legislation  10/05/2026 (Vote 7-6; )|10/6/2026 1:35:27 PM
+2026|2793|10/6/2026 1:36:14 PM|HB1547|H| Interim Study Report: Not Recommended for Future Legislation  10/05/2026 (Vote 12-1; )|10/6/2026 1:36:14 PM
+2026|2422|10/6/2026 1:37:04 PM|HB1608|H| Interim Study Report: Not Recommended for Future Legislation  10/05/2026 (Vote 11-2; )|10/6/2026 1:37:04 PM
+2026|3041|10/6/2026 1:37:45 PM|HB1639|H| Interim Study Report: Not Recommended for Future Legislation  10/05/2026 (Vote 13-0; )|10/6/2026 1:37:45 PM
+2026|3016|10/6/2026 1:38:53 PM|HB1746|H| Interim Study Report: Not Recommended for Future Legislation  10/05/2026 (Vote 12-1; )|10/6/2026 1:38:53 PM
+2026|2075|10/6/2026 1:39:30 PM|SB519|H| Interim Study Report: Not Recommended for Future Legislation  10/05/2026 (Vote 10-3; )|10/6/2026 1:39:30 PM
+2026|2632|10/6/2026 1:40:07 PM|HB1671|H| Interim Study Report: Recommended for Future Legislation  10/05/2026 (Vote 7-6; )|10/6/2026 1:40:07 PM
