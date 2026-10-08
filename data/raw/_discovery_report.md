@@ -1,6 +1,6 @@
 # NH dynamicdatadump discovery report
 
-Generated 2026-10-07T08:39:43+00:00
+Generated 2026-10-08T08:58:33+00:00
 
 ## Directory index
 
@@ -9,11 +9,7 @@ Generated 2026-10-07T08:39:43+00:00
 - /misc/General%20Court%20Harassment%20Policy%20and%20Addendum-1%202020.pdf
 - /misc/State House Complex Public Conduct Policy 2023.pdf
 
-## legislators.txt
-
-**Served empty (3 bytes); reused the previous run's copy.**
-
-_Files last pulled from the General Court: 2026-10-06T08:59:08+00:00._
+_Files last pulled from the General Court: 2026-10-08T08:58:33+00:00._
 
 ## LSRs.txt
 
@@ -141,8 +137,8 @@ sponsor rows with bill-page document id and title
 
 docket actions (one row per action)
 
-- bytes: 3,232,536; rows: 25,407; sha256: f270552f3ff54779
-- field-count histogram: 7: 25407
+- bytes: 3,235,494; rows: 25,433; sha256: c9e6d6dce5b6afe4
+- field-count histogram: 7: 25433
 
 
 ```
@@ -193,7 +189,7 @@ sponsors in sequence, with prime flag
 
 legislator roster
 
-- bytes: 42,959; rows: 406; sha256: 4e60e5be8c425e91
+- bytes: 43,365; rows: 406; sha256: 9e46896e084f45ae
 - field-count histogram: 15: 406
 
 
@@ -347,15 +343,15 @@ Session years: {'2026': 1387}
 
 ## Parse: Docket.txt
 
-{"lines": 25407, "records": 25407, "expected_fields": 7, "joined": 0, "irregular": 0}
+{"lines": 25433, "records": 25433, "expected_fields": 7, "joined": 0, "irregular": 0}
 
-Session years: {'2025': 9812, '2026': 15595}
+Session years: {'2025': 9812, '2026': 15621}
 
 
 ### Most common docket action patterns
 
 ```
-   914  Executive Session: <date> <n>:<n> am GP <n>
+   928  Executive Session: <date> <n>:<n> am GP <n>
    682  Enrolled Adopted, VV, (In recess <date>); SJ <n>
    658  Enrolled (in recess of) <date> HJ <n> P. <n>
    632  Public Hearing: <date> <n>:<n> am GP <n>
@@ -378,7 +374,7 @@ Session years: {'2025': 9812, '2026': 15595}
    353  Public Hearing: <date> <n>:<n> pm LOB <n>-<n>
    310  Hearing: <date>, Room <n>, SH, <n>:<n> pm; SC <n>
    257  Executive Session: <date> <n>:<n> pm LOB <n>-<n>
-   242  Full Committee Work Session: <date> <n>:<n> am GP <n>
+   254  Full Committee Work Session: <date> <n>:<n> am GP <n>
    236  Committee Report: Ought to Pass <date> (Vote <n>-<n>; CC) HC <n> P. <n>
    236  Majority Committee Report: Inexpedient to Legislate <date> (Vote <n>-<n>; RC) HC <n> P. <n>
    214  Minority Committee Report: Ought to Pass
