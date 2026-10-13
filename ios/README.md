@@ -1,10 +1,10 @@
 # Granite State Report for iPhone
 
-A native iPhone client for the GSR Drop Box, the upload endpoint behind the seven drop box pages on granitestatereport.com, with the site's audio articles and podcast. A source picks a drop box, adds a note, files, photos, video, a scan or a voice note, and presses Send. The app speaks the same protocol as the site's own page script, so the editor sees app submissions in the same Drop Box and the same Gmail notices as web ones.
+A native iPhone client for the GSR Drop Box, the upload endpoint behind the eight drop box pages on granitestatereport.com, with the site's audio articles and podcast. A source picks a drop box, adds a note, files, photos, video, a scan or a voice note, and presses Send. The app speaks the same protocol as the site's own page script, so the editor sees app submissions in the same Drop Box and the same Gmail notices as web ones.
 
 What it does:
 
-- **Send tab.** Seven drop boxes: quick tip (`tips`), then the site's Send menu order: Send Research Files (`research`), Tell Us Your Story (`story`), Something You Can't Explain (`unexplained`), Wild New Hampshire (`wildlife`), Inside the Building (`inside`), Nothing to See Here (`nothing`). A card for the Granite State Archive opens that page, because its form is not a GSR Drop Box. Quick capture for photo or video, document scan (one PDF), and voice note. A "Not sent yet" list of drafts and interrupted sends.
+- **Send tab.** Eight drop boxes: quick tip (`tips`), then the site's Send menu order: Granite State Archive (`archive`, records meant for publication), Send Research Files (`research`), Tell Us Your Story (`story`), Something You Can't Explain (`unexplained`), Wild New Hampshire (`wildlife`), Inside the Building (`inside`), Nothing to See Here (`nothing`). Quick capture for photo or video, document scan (one PDF), and voice note. A "Not sent yet" list of drafts and interrupted sends.
 - **Sighting pages.** Wild New Hampshire and Something You Can't Explain carry the Send a Tip box, so the server files them as `tips`. The site's script (`#gsr-sight-js`) adds a Quick details panel and writes a label and the details at the top of the note on Send (`[Wildlife]`, `When: ...`, `Sent from: /wildlife/`). The app writes the same lines, with `(iPhone app)` on the Sent from line. Both pages ask for the original file, so drafts there start with photo and video cleaning off; the sender can turn it on. Wild New Hampshire's emergency numbers sit at the top of the screen and dial on tap.
 - **Latest tab.** The 20 newest posts from the site's public WordPress REST API, opened in `SFSafariViewController`. Stories with a narration on the Audio Articles page get a Listen button. The site's GSR tools are listed under the stories.
 - **Listen tab.** The Audio Articles page (`/audio-library/`) and the Podcast page (`/podcast/`), read from the pages themselves, each under its own note on how the recordings are made, word for word. Podcast episodes show the listener's note, the articles discussed, and the transcript. Playback keeps going with the screen locked, shows on the Lock Screen with skip and scrub, plays at 1, 1.25, 1.5 or 2 times speed, and remembers where each recording was left (in the app's own settings on the phone). If a page's markup changes so the app cannot find its note, the app shows nothing from it and links to the page instead.
@@ -30,7 +30,7 @@ ios/
     Sources/GSRMedia/      photo and video cleaning (ImageIO, AVFoundation; empty off Apple platforms)
     Sources/GSRUI/         compose screen, pickers, theme, AppGroup (iOS only)
     Tests/                 GSRKitTests (Linux and Mac), GSRMediaTests (Mac)
-    forms.json             the seven drop box pages as read off the live site
+    forms.json             the eight drop box pages as read off the live site
   tools/forms_from_site.py rebuilds or checks forms.json against the site
   tools/mock_drop_server.py local stand-in for the drop box API, used by tests
   reference/gsr-dropbox-1.0.0.js  the site's own drop box script: the protocol reference
@@ -79,7 +79,7 @@ open GSR.xcodeproj
 
 Pick a team under Signing & Capabilities, or set `DEVELOPMENT_TEAM` in `project.yml`, or pass `DEVELOPMENT_TEAM=<team id>` to `xcodebuild`. Simulator builds run unsigned. Without a signed App Group, `AppGroup.outbox()` falls back to the process's own Application Support folder: the app works, but the app and the share extension stop seeing each other's drafts.
 
-Launch arguments used for App Store screenshots: `-GSRScreenshotTab latest|listen|contact`, `-GSRScreenshotForm <door id>` (`tips`, `story`, `inside`, `nothing`, `research`, `wildlife`, `unexplained`).
+Launch arguments used for App Store screenshots: `-GSRScreenshotTab latest|listen|contact`, `-GSRScreenshotForm <door id>` (`tips`, `story`, `inside`, `nothing`, `research`, `wildlife`, `unexplained`, `archive`).
 
 Apple's submission page says that from April 2027, uploads must be built with the iOS 27 SDK. Move the workflow to Xcode 27 before then.
 
@@ -110,7 +110,7 @@ On Linux, GSRMedia and GSRUI compile empty, so the photo and video cleaning test
 
 The server files each submission under its form name and stores whatever field keys the page sends. The app has to send the same form names, `data-k` keys and option values as the pages, so nothing in `forms.json` is typed by hand.
 
-`tools/forms_from_site.py` reads the `.gsrdb` box on `/tips/`, `/share-your-story/`, `/inside-the-building/`, `/nothing-to-see-here/`, `/research-files/`, `/wildlife/` and `/unexplained/`: form name, field keys, kinds, labels, options and defaults, the Send button's words, the consent line, the "read first" sections the app shows word for word above Send (with their links), the sections it shows at the top, the page's entry in the site's Send menu, and on the sighting pages the settings of the site's Quick details script. If that script stops writing its "Sent from" line the same way, the tool fails rather than guess. It writes `GSRKit/forms.json` and `GSRKit/Sources/GSRKit/FormsJSON.generated.swift` (the same JSON compiled in, so no resource bundle is needed).
+`tools/forms_from_site.py` reads the `.gsrdb` box on `/tips/`, `/share-your-story/`, `/inside-the-building/`, `/nothing-to-see-here/`, `/research-files/`, `/wildlife/`, `/unexplained/` and `/archive/`: form name, field keys, kinds, labels, options and defaults, the Send button's words, the consent line, the "read first" sections the app shows word for word above Send (with their links), the sections it shows at the top, the page's entry in the site's Send menu, and on the sighting pages the settings of the site's Quick details script. If that script stops writing its "Sent from" line the same way, the tool fails rather than guess. It writes `GSRKit/forms.json` and `GSRKit/Sources/GSRKit/FormsJSON.generated.swift` (the same JSON compiled in, so no resource bundle is needed).
 
 ```
 python3 ios/tools/forms_from_site.py --write                 # rebuild from the live pages

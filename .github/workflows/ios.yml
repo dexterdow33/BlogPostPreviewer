@@ -6,7 +6,7 @@ name: iOS app
 #   app        On macOS: generate the Xcode project, run every package test (photo and
 #              video cleaning included), build the app and share extension for the
 #              simulator, and take App Store screenshots of the real build.
-#   forms      Checks that the seven drop box pages on granitestatereport.com still match
+#   forms      Checks that the eight drop box pages on granitestatereport.com still match
 #              the app's copy, and that the Audio Articles and Podcast pages still read.
 #              Runs weekly; a failure means the site changed and the app needs an update.
 #              Never blocks a pull request.

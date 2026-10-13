@@ -91,7 +91,7 @@ struct ListenView: View {
                 case .podcast: episodes
                 }
 
-                Text("Audio articles play from ElevenLabs’ servers and podcast episodes from granitestatereport.com, as they do on the site. Those servers see your IP address. Where you stopped in each recording is kept on this phone only.")
+                Text("Most audio articles play from ElevenLabs’ servers; the rest, and the podcast, play from granitestatereport.com, as they do on the site. Those servers see your IP address. Where you stopped in each recording is kept on this phone only.")
                     .font(.caption)
                     .foregroundStyle(GSRTheme.ink3)
                     .listRowBackground(GSRTheme.paper2)

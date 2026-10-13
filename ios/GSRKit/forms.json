@@ -1319,6 +1319,174 @@
         ],
         "sentFrom": "/unexplained/"
       }
+    },
+    {
+      "id": "archive",
+      "form": "archive",
+      "slug": "archive",
+      "pageURL": "https://granitestatereport.com/archive/",
+      "title": "Granite State Archive",
+      "dek": null,
+      "pageVersion": null,
+      "mainLabel": "What is it, and why does it matter? Type it, paste it, or skip it.",
+      "sendLabel": "Send it to Granite State Report",
+      "consent": "Not sure it is redacted? Send it anyway. GSR removes private information before anything is published.",
+      "topSections": [],
+      "readFirst": [
+        {
+          "heading": "Submit a record",
+          "blocks": [
+            {
+              "kind": "p",
+              "text": "New Hampshire keeps its records in ten thousand filing cabinets, and most of them never see daylight. If you have one, this is where it can live: a police report, a town or city record, a state agency letter, a court filing, correspondence with a public office, a response to your own Right-to-Know request. Anything a government body produced or sent you."
+            },
+            {
+              "kind": "p",
+              "text": "Drop the document in the box below, or paste it. Any file type, up to 2 GB each and 50 at a time. Nothing has to be typed, though a line on where it came from helps."
+            }
+          ]
+        },
+        {
+          "heading": "What happens next",
+          "blocks": [
+            {
+              "kind": "li",
+              "text": "It gets read. Every submission is opened and read by the editor. Nothing is posted automatically."
+            },
+            {
+              "kind": "li",
+              "text": "Provenance gets checked. A record goes into the index only once it is clear what it is, which office produced it, and how it reached you. If that cannot be established, it stays out."
+            },
+            {
+              "kind": "li",
+              "text": "Private information comes out. Names of minors, Social Security and account numbers, dates of birth, home addresses of private people, and medical details are removed before anything is published, whether or not you removed them first."
+            },
+            {
+              "kind": "li",
+              "text": "Then it is public, free, on the same terms as every other item on this page. If it becomes part of a Granite State Report article, the entry above will say so and link to the piece."
+            },
+            {
+              "kind": "p",
+              "text": "Anything you send is treated as on the record unless you say otherwise in the message. This form is not anonymous. What you send is stored on this site’s server with the host, WordPress.com, and a notice is emailed to the newsroom’s Gmail account and to the editor’s personal Gmail account. Files are encrypted as they arrive, and the notice gives counts and sizes only: no files, no file names, nothing you typed. If you need to talk before you send, write to granitestatereport@gmail.com or call (603) 931-9264.",
+              "links": [
+                {
+                  "text": "granitestatereport@gmail.com",
+                  "url": "mailto:granitestatereport@gmail.com"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "key": "name",
+          "kind": "text",
+          "label": "Your name",
+          "default": ""
+        },
+        {
+          "key": "email",
+          "kind": "email",
+          "label": "Email, so GSR can reply",
+          "default": ""
+        },
+        {
+          "key": "source",
+          "kind": "text",
+          "label": "Town, city, court, or agency the record came from",
+          "default": ""
+        },
+        {
+          "key": "type",
+          "kind": "select",
+          "label": "What kind of record is it?",
+          "options": [
+            {
+              "label": "Not sure, the editor will decide",
+              "value": "Not sure, the editor will decide"
+            },
+            {
+              "label": "Police report or police records",
+              "value": "Police report or police records"
+            },
+            {
+              "label": "Town or city record",
+              "value": "Town or city record"
+            },
+            {
+              "label": "State agency record",
+              "value": "State agency record"
+            },
+            {
+              "label": "Court record",
+              "value": "Court record"
+            },
+            {
+              "label": "Correspondence with a public office",
+              "value": "Correspondence with a public office"
+            },
+            {
+              "label": "Photo or image",
+              "value": "Photo or image"
+            },
+            {
+              "label": "Report, study or data",
+              "value": "Report, study or data"
+            },
+            {
+              "label": "Something else",
+              "value": "Something else"
+            }
+          ],
+          "default": "Not sure, the editor will decide"
+        },
+        {
+          "key": "how",
+          "kind": "select",
+          "label": "How did it reach you?",
+          "options": [
+            {
+              "label": "Skip this",
+              "value": ""
+            },
+            {
+              "label": "A Right-to-Know (RSA 91-A) request",
+              "value": "A Right-to-Know (RSA 91-A) request"
+            },
+            {
+              "label": "It was sent to me",
+              "value": "It was sent to me"
+            },
+            {
+              "label": "I found it on a public website",
+              "value": "I found it on a public website"
+            },
+            {
+              "label": "Other",
+              "value": "Other"
+            }
+          ],
+          "default": ""
+        },
+        {
+          "key": "redacted",
+          "kind": "checkbox",
+          "label": "I have blacked out private information already.",
+          "default": false
+        },
+        {
+          "key": "maycontact",
+          "kind": "checkbox",
+          "label": "GSR may contact me about this record.",
+          "default": false
+        }
+      ],
+      "asksForOriginals": false,
+      "menu": {
+        "label": "Docs",
+        "blurb": "A government record"
+      }
     }
   ]
 }

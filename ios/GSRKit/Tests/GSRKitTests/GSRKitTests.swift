@@ -2,12 +2,14 @@ import XCTest
 @testable import GSRKit
 
 final class CatalogTests: XCTestCase {
-    func testBundledCatalogHasTheSevenDropBoxes() throws {
+    func testBundledCatalogHasTheEightDropBoxes() throws {
         let c = DropCatalog.bundled
         XCTAssertEqual(c.api.absoluteString, "https://granitestatereport.com/wp-json/gsr-drop/v1/")
-        XCTAssertEqual(c.forms.map(\.id), ["tips", "story", "inside", "nothing", "research", "wildlife", "unexplained"])
-        // The last three pages carry the Send a Tip box, so the server files them as tips.
-        XCTAssertEqual(c.forms.map(\.form), ["tips", "story", "inside", "nothing", "tips", "tips", "tips"])
+        XCTAssertEqual(c.forms.map(\.id), ["tips", "story", "inside", "nothing", "research", "wildlife", "unexplained", "archive"])
+        // Research, wildlife and unexplained carry the Send a Tip box, so the server files them as tips.
+        XCTAssertEqual(c.forms.map(\.form), ["tips", "story", "inside", "nothing", "tips", "tips", "tips", "archive"])
+        XCTAssertFalse(c.forms.flatMap(\.readFirst).flatMap(\.blocks).contains { $0.text.hasPrefix("Version log.") },
+                       "a page's history is not read-first text")
         XCTAssertEqual(Set(c.forms.map(\.id)).count, c.forms.count, "door ids are unique")
         for f in c.forms {
             XCTAssertFalse(f.mainLabel.isEmpty, f.form)

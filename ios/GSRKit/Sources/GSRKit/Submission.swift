@@ -22,7 +22,7 @@ public struct Submission: Codable, Hashable, Identifiable, Sendable {
 
     public var id: UUID
     /// The door's id in the catalog (`DropForm.id`): "tips", "story", "inside", "nothing",
-    /// "research", "wildlife", "unexplained". The server form name comes from the catalog.
+    /// "research", "wildlife", "unexplained", "archive". The server form name comes from the catalog.
     public var form: String
     public var origin: Origin
     public var createdAt: Date

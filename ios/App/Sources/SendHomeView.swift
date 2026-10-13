@@ -7,10 +7,9 @@ import SwiftUI
 struct SendHomeView: View {
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject private var app: AppModel
-    @State private var archive: WebPage?
 
     /// Quick tip first, then the doors in the order the site's Send menu lists them.
-    private let order = ["research", "story", "unexplained", "wildlife", "inside", "nothing"]
+    private let order = ["archive", "research", "story", "unexplained", "wildlife", "inside", "nothing"]
 
     var body: some View {
         NavigationStack(path: $router.path) {
@@ -47,7 +46,6 @@ struct SendHomeView: View {
                                 DoorCard(form: form) { router.openCompose(form: name) }
                             }
                         }
-                        ArchiveCard { archive = WebPage(GSRContact.archive) }
                     }
 
                     Text("For anything sensitive, use Signal or the mail, not this app. Both are on the Contact tab.")
@@ -64,7 +62,7 @@ struct SendHomeView: View {
             .navigationDestination(for: AppRouter.Route.self) { route in
                 ComposeScreen(route: route)
             }
-            .sheet(item: $archive) { p in SafariView(url: p.url).ignoresSafeArea() }
+
         }
     }
 
@@ -181,41 +179,6 @@ struct DoorCard: View {
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
         .accessibilityHint("Opens the \(form.title) drop box")
-    }
-}
-
-/// The site's Send menu also lists "Docs: A government record", which goes to the Granite
-/// State Archive's own form. The app cannot send to that form, so this opens the page.
-struct ArchiveCard: View {
-    let open: () -> Void
-
-    var body: some View {
-        Button(action: open) {
-            HStack(alignment: .top, spacing: 14) {
-                Image(systemName: "archivebox")
-                    .font(.title2)
-                    .foregroundStyle(GSRTheme.rust)
-                    .frame(width: 30)
-                VStack(alignment: .leading, spacing: 5) {
-                    Kicker("Docs")
-                    Text("Granite State Archive")
-                        .font(GSRTheme.serif(.title3, bold: true))
-                        .foregroundStyle(GSRTheme.navy)
-                    Text("A government record for the public archive. It is sent on the Archive page itself, which opens here.")
-                        .font(GSRTheme.serif(.subheadline))
-                        .foregroundStyle(GSRTheme.ink)
-                        .multilineTextAlignment(.leading)
-                }
-                Spacer(minLength: 0)
-                Image(systemName: "safari").foregroundStyle(GSRTheme.ink3).padding(.top, 4)
-            }
-            .padding(16)
-            .background(GSRTheme.paper)
-            .overlay(RoundedRectangle(cornerRadius: 6).stroke(GSRTheme.rule2))
-        }
-        .buttonStyle(.plain)
-        .accessibilityElement(children: .combine)
-        .accessibilityHint("Opens the Granite State Archive page")
     }
 }
 

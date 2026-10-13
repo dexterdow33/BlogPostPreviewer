@@ -26,9 +26,10 @@ from html.parser import HTMLParser
 SITE = "https://granitestatereport.com"
 API = SITE + "/wp-json/gsr-drop/v1/"
 # (app id, page slug, path). "tips" is the quick tip box on the Send a Tip hub page; the
-# next three are the hub's "doors". The last three pages carry the same "tips" box as the
-# hub, so the server files them as tips; the app tells them apart by id, and the two
-# sighting pages label every note the way the site's own script does (see sight_config).
+# next three are the hub's "doors". Research Files, Wild New Hampshire and Something You
+# Can't Explain carry the same "tips" box as the hub, so the server files them as tips;
+# the app tells them apart by id, and the two sighting pages label every note the way the
+# site's own script does (see sight_config). The Granite State Archive has its own box.
 PAGES = [
     ("tips", "tips", "/tips/"),
     ("story", "share-your-story", "/share-your-story/"),
@@ -37,6 +38,7 @@ PAGES = [
     ("research", "research-files", "/research-files/"),
     ("wildlife", "wildlife", "/wildlife/"),
     ("unexplained", "unexplained", "/unexplained/"),
+    ("archive", "archive", "/archive/"),
 ]
 # The sections of each page a sender is asked to read or accept before pressing Send.
 # The app shows them word for word above its Send button and links to the full page.
@@ -51,6 +53,7 @@ READ_FIRST = {
                  "Other places to report"],
     "unexplained": ["What to send", "Check it yourself first, if you like", "What you are agreeing to",
                     "Before you film", "How GSR checks it", "Other places to report"],
+    "archive": ["Submit a record", "What happens next"],
 }
 # Sections the app shows at the top of the screen, before anything else: who to call first.
 TOP = {
@@ -230,7 +233,8 @@ def sections(page_html, headings):
         if not m:
             raise SystemExit(f"section not found: {want!r}")
         rest = page_html[m.end():]
-        stop = min([i for i in (rest.find("<h2"), rest.find('<div class="gsrdb"'), rest.find("</article>")) if i >= 0]
+        box = re.search(r'<div class="gsrdb[ "]', rest)
+        stop = min([i for i in (rest.find("<h2"), box.start() if box else -1, rest.find("</article>")) if i >= 0]
                    or [len(rest)])
         body = rest[:stop]
         blocks = []
@@ -239,8 +243,9 @@ def sections(page_html, headings):
         for b in re.finditer(pat, body, re.S):
             kind, raw = (b.group(1), b.group(2)) if b.group(1) else ("box", b.group(3))
             t = inline_text(raw)
-            # The app holds no browser storage; this line describes the website only.
-            if t and not t.startswith("Files you drop on other pages of this site"):
+            # The app holds no browser storage; that line describes the website only. A page's
+            # version log is its history, not something to read before sending.
+            if t and not t.startswith(("Files you drop on other pages of this site", "Version log.")):
                 block = {"kind": kind, "text": t}
                 links = links_of(raw)
                 if links:

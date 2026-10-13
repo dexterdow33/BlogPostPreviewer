@@ -87,7 +87,7 @@ final class MockDropServer: HTTPTransport, @unchecked Sendable {
         switch endpoint {
         case "start":
             let body = obj(request)
-            guard let form = body["form"] as? String, ["tips", "story", "inside", "nothing"].contains(form) else {
+            guard let form = body["form"] as? String, ["tips", "story", "inside", "nothing", "archive"].contains(form) else {
                 return json(400, ["code": "gsrdb_form", "message": "Unknown form."])
             }
             guard (body["website"] as? String ?? "x").isEmpty else { return json(400, ["message": "spam"]) }

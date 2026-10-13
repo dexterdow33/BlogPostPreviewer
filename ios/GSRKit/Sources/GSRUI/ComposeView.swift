@@ -22,8 +22,9 @@ public enum Doors {
 
     public static func door(_ form: DropForm) -> Door {
         switch form.id {
-        case "research", "wildlife", "unexplained":
-            let symbol = form.id == "research" ? "tablecells" : form.id == "wildlife" ? "pawprint" : "moon.stars"
+        case "archive", "research", "wildlife", "unexplained":
+            let symbols = ["archive": "archivebox", "research": "tablecells", "wildlife": "pawprint", "unexplained": "moon.stars"]
+            let symbol = symbols[form.id] ?? "tray.and.arrow.up"
             return Door(label: form.menu?.label ?? form.title, blurb: form.menu?.blurb ?? form.dek ?? "", symbol: symbol)
         case "story":
             return Door(label: "For anyone", blurb: "Something a town, agency, court, school, or police department did to you or in front of you.", symbol: "person.wave.2")

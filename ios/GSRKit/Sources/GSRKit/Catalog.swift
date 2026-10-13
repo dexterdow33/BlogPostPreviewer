@@ -22,7 +22,7 @@ public struct DropCatalog: Codable, Hashable, Sendable {
     }()
 
     /// The door with this id ("tips", "story", "inside", "nothing", "research", "wildlife",
-    /// "unexplained").
+    /// "unexplained", "archive").
     public func form(_ id: String) -> DropForm? {
         forms.first { $0.id == id }
     }
@@ -34,7 +34,7 @@ public struct DropForm: Codable, Hashable, Identifiable, Sendable {
     /// Research Files, Wild New Hampshire, and Something You Can't Explain carry the Send a
     /// Tip box, so the server files them as "tips" and only the app tells them apart.
     public var id: String
-    /// The server's name for the form ("tips", "story", "inside", "nothing").
+    /// The server's name for the form ("tips", "story", "inside", "nothing", "archive").
     public var form: String
     public var slug: String
     public var pageURL: URL

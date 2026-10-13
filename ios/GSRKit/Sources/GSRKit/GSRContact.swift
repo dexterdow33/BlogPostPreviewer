@@ -18,9 +18,6 @@ public enum GSRContact {
     public static let termsOfUse = URL(string: "https://granitestatereport.com/terms-of-use/")!
     public static let codeOfEthics = URL(string: "https://granitestatereport.com/code-of-ethics/")!
     public static let billTracker = URL(string: "https://granitestatereport.com/nh-bill-tracker/")!
-    /// Government records for the public archive go through the form on this page, which the
-    /// app cannot send to (it is not a GSR Drop Box).
-    public static let archive = URL(string: "https://granitestatereport.com/archive/")!
 
     public static var emailURL: URL { URL(string: "mailto:\(email)")! }
 }

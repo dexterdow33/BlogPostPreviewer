@@ -19,7 +19,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
 
 PREFIX = "/wp-json/gsr-drop/v1/"
-FORMS = {"tips", "story", "inside", "nothing"}
+FORMS = {"tips", "story", "inside", "nothing", "archive"}
 LIMITS = {"chunk": 65536, "maxFile": 10 * 1024 * 1024, "maxFiles": 50, "maxTotal": 50 * 1024 * 1024}
 
 lock = threading.Lock()
