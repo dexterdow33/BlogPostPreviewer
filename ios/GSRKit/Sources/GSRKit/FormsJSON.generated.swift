@@ -7,18 +7,20 @@ let bundledFormsJSON = #"""
   "source": "Read from the live pages by ios/tools/forms_from_site.py",
   "forms": [
     {
+      "id": "tips",
       "form": "tips",
       "slug": "tips",
       "pageURL": "https://granitestatereport.com/tips/",
       "title": "Send a Tip",
       "dek": "Something wrong in a New Hampshire public body? Here is how to tell Granite State Report, and what happens to what you send.",
       "pageVersion": {
-        "number": "1.3",
-        "date": "October 2, 2026"
+        "number": "1.5",
+        "date": "October 11, 2026"
       },
       "mainLabel": "What should GSR look into? Who, what, where, and when. Type it, paste it, or skip it if your files say it.",
       "sendLabel": "Send the tip",
       "consent": "By sending, you confirm you have read this page and accept the terms above.",
+      "topSections": [],
       "readFirst": [
         {
           "heading": "What you are agreeing to",
@@ -41,7 +43,13 @@ let bundledFormsJSON = #"""
             },
             {
               "kind": "li",
-              "text": "Granite State Report does not pay for tips, is not your lawyer, and gives no legal advice. If your job or safety is at stake, talk to a lawyer first. For free civil legal help, call 603 Legal Aid at 1-800-639-5290 or apply at 603legalaid.org ."
+              "text": "Granite State Report does not pay for tips, is not your lawyer, and gives no legal advice. If your job or safety is at stake, talk to a lawyer first. For free civil legal help, call 603 Legal Aid at 1-800-639-5290 or apply at 603legalaid.org.",
+              "links": [
+                {
+                  "text": "603legalaid.org",
+                  "url": "https://www.603legalaid.org/"
+                }
+              ]
             }
           ]
         }
@@ -80,21 +88,28 @@ let bundledFormsJSON = #"""
           "default": "",
           "rows": 3
         }
-      ]
+      ],
+      "asksForOriginals": false,
+      "menu": {
+        "label": "Tip",
+        "blurb": "A tip or a lead"
+      }
     },
     {
+      "id": "story",
       "form": "story",
       "slug": "share-your-story",
       "pageURL": "https://granitestatereport.com/share-your-story/",
       "title": "Tell Us Your Story",
       "dek": "What happened to you, what you saw, or what this newsroom should be looking at. Start here.",
       "pageVersion": {
-        "number": "1.3",
-        "date": "October 2, 2026"
+        "number": "1.5",
+        "date": "October 11, 2026"
       },
       "mainLabel": "Tell it. What happened, when, and who was involved? Type it, paste it, or skip it if your files say it.",
       "sendLabel": "Send your story",
       "consent": null,
+      "topSections": [],
       "readFirst": [
         {
           "heading": "What helps",
@@ -113,7 +128,13 @@ let bundledFormsJSON = #"""
             },
             {
               "kind": "box",
-              "text": "What GSR can and cannot do. Granite State Report reports on public institutions: agencies, towns, courts, schools, police, and the officials who run them. It cannot investigate a private dispute, find a person, give legal advice, or act for you in court. If you need a lawyer, call 603 Legal Aid at 1-800-639-5290 or apply at 603legalaid.org for free civil legal help. If you are in danger, call 911."
+              "text": "What GSR can and cannot do. Granite State Report reports on public institutions: agencies, towns, courts, schools, police, and the officials who run them. It cannot investigate a private dispute, find a person, give legal advice, or act for you in court. If you need a lawyer, call 603 Legal Aid at 1-800-639-5290 or apply at 603legalaid.org for free civil legal help. If you are in danger, call 911.",
+              "links": [
+                {
+                  "text": "603legalaid.org",
+                  "url": "https://www.603legalaid.org/"
+                }
+              ]
             }
           ]
         }
@@ -177,21 +198,28 @@ let bundledFormsJSON = #"""
           "label": "GSR may contact me about this.",
           "default": false
         }
-      ]
+      ],
+      "asksForOriginals": false,
+      "menu": {
+        "label": "Your own story",
+        "blurb": "What happened to you, with whatever proof you have"
+      }
     },
     {
+      "id": "inside",
       "form": "inside",
       "slug": "inside-the-building",
       "pageURL": "https://granitestatereport.com/inside-the-building/",
       "title": "Inside the Building",
       "dek": "For the people who work in New Hampshire government and have seen something the public should know.",
       "pageVersion": {
-        "number": "1.3",
-        "date": "October 2, 2026"
+        "number": "1.5",
+        "date": "October 11, 2026"
       },
       "mainLabel": "What happened, and what should the public know? Type it, paste it, or skip it if your files say it.",
       "sendLabel": "Send it to the editor",
       "consent": "By sending, you confirm you have read this page, accept the terms above, and are not sending classified information.",
+      "topSections": [],
       "readFirst": [
         {
           "heading": "Protect yourself first",
@@ -243,7 +271,7 @@ let bundledFormsJSON = #"""
             },
             {
               "kind": "box",
-              "text": "Federal employees. Under 5 U.S.C. § 2302(b)(8), a federal agency cannot retaliate against an employee for disclosing what they reasonably believe shows a violation of law, gross mismanagement, gross waste, abuse of authority, or a substantial and specific danger to public health or safety, as long as the disclosure is not specifically prohibited by law and the information is not required by executive order to be kept secret for national defense or foreign affairs. Several intelligence agencies, including the FBI, CIA, and NSA, are outside that section. Classified information has its own channels : the Office of Special Counsel, an agency Inspector General, or Congress. A newsroom is not one of them. Do not send classified material here. It will not be used."
+              "text": "Federal employees. Under 5 U.S.C. § 2302(b)(8), a federal agency cannot retaliate against an employee for disclosing what they reasonably believe shows a violation of law, gross mismanagement, gross waste, abuse of authority, or a substantial and specific danger to public health or safety, as long as the disclosure is not specifically prohibited by law and the information is not required by executive order to be kept secret for national defense or foreign affairs. Several intelligence agencies, including the FBI, CIA, and NSA, are outside that section. Classified information has its own channels: the Office of Special Counsel, an agency Inspector General, or Congress. A newsroom is not one of them. Do not send classified material here. It will not be used."
             }
           ]
         },
@@ -256,7 +284,7 @@ let bundledFormsJSON = #"""
             },
             {
               "kind": "li",
-              "text": "GSR will refuse any demand to identify you, and will fight it. The New Hampshire Supreme Court recognized a reporter’s privilege to protect confidential sources in State v. Siel , 122 N.H. 254 (1982), under the state constitution and the First Amendment."
+              "text": "GSR will refuse any demand to identify you, and will fight it. The New Hampshire Supreme Court recognized a reporter’s privilege to protect confidential sources in State v. Siel, 122 N.H. 254 (1982), under the state constitution and the First Amendment."
             },
             {
               "kind": "li",
@@ -264,7 +292,13 @@ let bundledFormsJSON = #"""
             },
             {
               "kind": "li",
-              "text": "What you send is checked. Nothing is published on one person’s word. Documents are verified, and the agency is asked to respond, as the Code of Ethics requires."
+              "text": "What you send is checked. Nothing is published on one person’s word. Documents are verified, and the agency is asked to respond, as the Code of Ethics requires.",
+              "links": [
+                {
+                  "text": "Code of Ethics",
+                  "url": "https://granitestatereport.com/code-of-ethics/"
+                }
+              ]
             },
             {
               "kind": "li",
@@ -383,21 +417,28 @@ let bundledFormsJSON = #"""
           "default": "",
           "rows": 3
         }
-      ]
+      ],
+      "asksForOriginals": false,
+      "menu": {
+        "label": "From inside an agency",
+        "blurb": "For people who work in the building"
+      }
     },
     {
+      "id": "nothing",
       "form": "nothing",
       "slug": "nothing-to-see-here",
       "pageURL": "https://granitestatereport.com/nothing-to-see-here/",
       "title": "Nothing to See Here",
       "dek": "A drop box for the documents New Hampshire’s public bodies would rather keep in the drawer. The record belongs to the people who paid for it.",
       "pageVersion": {
-        "number": "2.1",
-        "date": "October 2, 2026"
+        "number": "2.3",
+        "date": "October 11, 2026"
       },
       "mainLabel": "Paste text here: an email, a memo, a chat, meeting notes, anything you would rather paste than attach. Or say what the files are. Or leave it blank.",
       "sendLabel": "Drop it in the box",
       "consent": "By sending, you confirm you have read the warning at the top of this page.",
+      "topSections": [],
       "readFirst": [
         {
           "heading": "Read this before you send anything",
@@ -408,11 +449,17 @@ let bundledFormsJSON = #"""
             },
             {
               "kind": "li",
-              "text": "The site is hosted by WordPress.com (Automattic). Files you send are stored on this site’s server there, the entry is kept in the site’s private Drop Box, and a notice is emailed to the newsroom’s Gmail account, with the files attached when they total under 15 MB."
+              "text": "The site is hosted by WordPress.com (Automattic). Files you send are stored on this site’s server there, the entry is kept in the site’s private Drop Box, and a notice is emailed to the newsroom’s Gmail account and to the editor’s personal Gmail account. Files are encrypted as they arrive, and the notice gives counts and sizes only: no files, no file names, nothing you typed."
             },
             {
               "kind": "li",
-              "text": "Like every page load, sending this form leaves your IP address, browser, and the time with the hosting platform, as the Privacy Policy describes."
+              "text": "Like every page load, sending this form leaves your IP address, browser, and the time with the hosting platform, as the Privacy Policy describes.",
+              "links": [
+                {
+                  "text": "Privacy Policy",
+                  "url": "https://granitestatereport.com/privacy-policy/"
+                }
+              ]
             },
             {
               "kind": "li",
@@ -437,7 +484,13 @@ let bundledFormsJSON = #"""
             },
             {
               "kind": "box",
-              "text": "If your job is on the line, talk to a lawyer first. New Hampshire’s Whistleblowers’ Protection Act, RSA 275-E:2 , is written around reporting a violation of law and taking part in a government investigation. It says nothing about talking to a reporter. Granite State Report is a newsroom, not a law firm, and nothing on this page is legal advice."
+              "text": "If your job is on the line, talk to a lawyer first. New Hampshire’s Whistleblowers’ Protection Act, RSA 275-E:2, is written around reporting a violation of law and taking part in a government investigation. It says nothing about talking to a reporter. Granite State Report is a newsroom, not a law firm, and nothing on this page is legal advice.",
+              "links": [
+                {
+                  "text": "RSA 275-E:2",
+                  "url": "https://gc.nh.gov/rsa/html/XXIII/275-E/275-E-2.htm"
+                }
+              ]
             }
           ]
         }
@@ -513,7 +566,763 @@ let bundledFormsJSON = #"""
           "label": "Email. Without it GSR cannot write back.",
           "default": ""
         }
-      ]
+      ],
+      "asksForOriginals": false,
+      "menu": {
+        "label": "No names attached",
+        "blurb": "Leave everything blank and send"
+      }
+    },
+    {
+      "id": "research",
+      "form": "tips",
+      "slug": "research-files",
+      "pageURL": "https://granitestatereport.com/research-files/",
+      "title": "Send Research Files",
+      "dek": "Data, spreadsheets, studies, and the digging you have already done. Drop it here.",
+      "pageVersion": {
+        "number": "1.0.1",
+        "date": "October 4, 2026"
+      },
+      "mainLabel": "What should GSR look into? Who, what, where, and when. Type it, paste it, or skip it if your files say it.",
+      "sendLabel": "Send the tip",
+      "consent": "By sending, you confirm you have read this page and accept the terms above.",
+      "topSections": [],
+      "readFirst": [
+        {
+          "heading": "What fits here",
+          "blocks": [
+            {
+              "kind": "li",
+              "text": "Data sets and spreadsheets, in any format"
+            },
+            {
+              "kind": "li",
+              "text": "Studies, audits, and reports, published or not"
+            },
+            {
+              "kind": "li",
+              "text": "Your own analysis, notes, timelines, or maps"
+            },
+            {
+              "kind": "li",
+              "text": "Collections of records you already gathered, with where each came from"
+            },
+            {
+              "kind": "p",
+              "text": "A line on where the material came from and what it shows saves time, but nothing has to be typed. If it names people who did not agree to be named, black those names out first with the Redact tool, which is free and opens with a free email subscription. A tip about something that has not been researched yet belongs on Send a Tip, and government records you received belong in the Archive drop box.",
+              "links": [
+                {
+                  "text": "Redact",
+                  "url": "https://granitestatereport.com/2026/09/19/redact/"
+                },
+                {
+                  "text": "Send a Tip",
+                  "url": "https://granitestatereport.com/tips/"
+                },
+                {
+                  "text": "Archive drop box",
+                  "url": "https://granitestatereport.com/archive/#gsrdb-archive"
+                }
+              ]
+            },
+            {
+              "kind": "p",
+              "text": "The editor reads every submission. How your information is handled, and the limits of what any newsroom can promise a source, are on the Send a Tip page.",
+              "links": [
+                {
+                  "text": "Send a Tip",
+                  "url": "https://granitestatereport.com/tips/"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "key": "where",
+          "kind": "text",
+          "label": "Town, agency, or office involved",
+          "default": ""
+        },
+        {
+          "key": "identity",
+          "kind": "select",
+          "label": "How should GSR treat your identity?",
+          "options": [
+            {
+              "label": "Do not use my name or anything that identifies me",
+              "value": "Do not use my name or anything that identifies me"
+            },
+            {
+              "label": "Contact me before using anything I sent",
+              "value": "Contact me before using anything I sent"
+            },
+            {
+              "label": "You may name me",
+              "value": "You may name me"
+            }
+          ],
+          "default": "Do not use my name or anything that identifies me"
+        },
+        {
+          "key": "contact",
+          "kind": "textarea",
+          "label": "A way to reach you: personal email, Signal, or phone, never a work account. Leave blank to stay unnamed.",
+          "default": "",
+          "rows": 3
+        }
+      ],
+      "asksForOriginals": false,
+      "menu": {
+        "label": "Research",
+        "blurb": "Data, a study, a report"
+      }
+    },
+    {
+      "id": "wildlife",
+      "form": "tips",
+      "slug": "wildlife",
+      "pageURL": "https://granitestatereport.com/wildlife/",
+      "title": "Wild New Hampshire",
+      "dek": "A bear on the deck, a moose in the road, a cat that might not be a bobcat. Send the photo or the video, and tell GSR when and where.",
+      "pageVersion": {
+        "number": "1.1",
+        "date": "October 5, 2026"
+      },
+      "mainLabel": "What did you see? Type it, or skip it if the photo or video says it.",
+      "sendLabel": "Send it to GSR",
+      "consent": "By sending, you confirm you have read this page and accept the terms above.",
+      "topSections": [
+        {
+          "heading": "Animal hurt, someone in danger, or a crime?",
+          "blocks": [
+            {
+              "kind": "li",
+              "text": "People in danger: call 911."
+            },
+            {
+              "kind": "li",
+              "text": "A wildlife emergency or a wildlife crime in progress: New Hampshire Fish and Game dispatch, (603) 271-3361, 24 hours a day.",
+              "links": [
+                {
+                  "text": "(603) 271-3361",
+                  "url": "tel:+16032713361"
+                }
+              ]
+            },
+            {
+              "kind": "li",
+              "text": "Poaching or another wildlife law violation: Operation Game Thief, 1-800-344-4262, 24 hours a day.",
+              "links": [
+                {
+                  "text": "1-800-344-4262",
+                  "url": "tel:+18003444262"
+                }
+              ]
+            },
+            {
+              "kind": "li",
+              "text": "An orphaned deer, moose, or bear: Fish and Game, (603) 271-3361. For other young animals that look orphaned, and for bear questions, the Wildlife Division: (603) 271-2461 or wildlife@wildlife.nh.gov.",
+              "links": [
+                {
+                  "text": "(603) 271-3361",
+                  "url": "tel:+16032713361"
+                },
+                {
+                  "text": "(603) 271-2461",
+                  "url": "tel:+16032712461"
+                }
+              ]
+            },
+            {
+              "kind": "li",
+              "text": "An injured animal: only people with a rehabilitator permit from Fish and Game may take in and care for injured or orphaned wildlife. The department keeps a list of licensed rehabilitators.",
+              "links": [
+                {
+                  "text": "list of licensed rehabilitators",
+                  "url": "https://www.wildlife.nh.gov/wildlife-and-habitat/rehabilitators"
+                }
+              ]
+            },
+            {
+              "kind": "li",
+              "text": "A bear in the birdfeeder or the chickens: USDA Wildlife Services, (603) 223-6832, the number Fish and Game lists for wildlife conflicts.",
+              "links": [
+                {
+                  "text": "(603) 223-6832",
+                  "url": "tel:+16032236832"
+                }
+              ]
+            },
+            {
+              "kind": "p",
+              "text": "Then send GSR the footage."
+            },
+            {
+              "kind": "p",
+              "text": "New Hampshire Fish and Game says it has never received verifiable evidence, photographic or DNA, of mountain lions living in the state. Reports that came with photographs, it says, have been misidentified bobcats or house cats, or mountain lion pictures taken from the internet. That is the kind of question a good photo settles. Granite State Report wants the bear in the yard, the moose in the road, the animal acting strangely, and the one nobody can name, and it checks each one before it runs."
+            }
+          ]
+        }
+      ],
+      "readFirst": [
+        {
+          "heading": "What to send",
+          "blocks": [
+            {
+              "kind": "li",
+              "text": "The original file, straight from your phone, camera, or trail camera. Not a screenshot or a copy saved from social media. The original can carry the date, the time, and the place."
+            },
+            {
+              "kind": "li",
+              "text": "When and where: the date, the time, the town, and the spot."
+            },
+            {
+              "kind": "li",
+              "text": "What you think it is, and about how far away it was."
+            },
+            {
+              "kind": "li",
+              "text": "Anything unusual: an animal that looked sick, hurt, tagged, collared, or out of place."
+            },
+            {
+              "kind": "p",
+              "text": "If the species is on its list, report it to NH Wildlife Sightings too; the list centers on the species the state’s Wildlife Action Plan names as in greatest conservation need. That project is a joint effort of Fish and Game, the University of New Hampshire, the NH Natural Heritage Bureau, and NH Audubon, and it uses photos so wildlife professionals can confirm what the animal is.",
+              "links": [
+                {
+                  "text": "NH Wildlife Sightings",
+                  "url": "https://nhwildlifesightings.unh.edu/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "What you are agreeing to",
+          "blocks": [
+            {
+              "kind": "p",
+              "text": "By sending, you confirm and accept the following."
+            },
+            {
+              "kind": "li",
+              "text": "You took the photo or video yourself, or you have the right to send it."
+            },
+            {
+              "kind": "li",
+              "text": "You keep your copyright. Granite State Report may review what you send, show it to experts asked to help check it, and, if it becomes part of a story, publish it with the credit you choose under “Add details” in the box below: your name, or no name at all."
+            },
+            {
+              "kind": "li",
+              "text": "Granite State Report decides whether and how to publish, publishes nothing on one person’s word, and does not pay for footage."
+            },
+            {
+              "kind": "li",
+              "text": "Faces of people who did not agree to be shown, and anything that identifies a child, are blurred or cut before anything runs. If the exact spot you filmed from is private, say so in your note and it stays out."
+            },
+            {
+              "kind": "p",
+              "text": "How your name and contact details are handled, and the legal limits of what any newsroom can promise, are on Send a Tip.",
+              "links": [
+                {
+                  "text": "Send a Tip",
+                  "url": "https://granitestatereport.com/tips/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Keep your distance",
+          "blocks": [
+            {
+              "kind": "li",
+              "text": "Moose. Fish and Game’s warning: “Moose are bigger and faster than any person and give little warning before attacking a perceived threat.” The department says no one should ever approach them, however calm they seem."
+            },
+            {
+              "kind": "li",
+              "text": "Bears. “If you see a bear, keep your distance,” the department says. New Hampshire sets no distance in feet. Yellowstone National Park, for comparison, requires visitors to stay at least 100 yards from bears. A long lens beats a short walk."
+            },
+            {
+              "kind": "li",
+              "text": "Never feed or bait an animal for a picture. Fish and Game says it is illegal to intentionally feed bears in New Hampshire. Under its rule, Fis 310.01, a person told by the department to stop putting out what draws bears can be fined for not doing it.",
+              "links": [
+                {
+                  "text": "Fis 310.01",
+                  "url": "https://gc.nh.gov/rules/state_agencies/fis300.html"
+                }
+              ]
+            },
+            {
+              "kind": "li",
+              "text": "Stay where you are allowed to be. Under New Hampshire’s criminal trespass law, a person is guilty if, “knowing that he is not licensed or privileged to do so, he enters or remains in any place” (RSA 635:2, I). No clip is worth a charge.",
+              "links": [
+                {
+                  "text": "RSA 635:2, I",
+                  "url": "https://gc.nh.gov/rsa/html/LXII/635/635-2.htm"
+                }
+              ]
+            },
+            {
+              "kind": "li",
+              "text": "Drones. Recreational flyers must pass the FAA’s free online safety test, known as TRUST, and carry proof of it. They must stay at or below 400 feet in uncontrolled airspace and need FAA authorization, through LAANC or DroneZone, to fly in controlled airspace near airports (FAA, Recreational Flyers).",
+              "links": [
+                {
+                  "text": "FAA, Recreational Flyers",
+                  "url": "https://www.faa.gov/uas/recreational_flyers"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "How GSR checks it",
+          "blocks": [
+            {
+              "kind": "li",
+              "text": "Time and place, from the original file and your note."
+            },
+            {
+              "kind": "li",
+              "text": "The animal: what it is, checked with wildlife biologists and, where it matters, Fish and Game."
+            },
+            {
+              "kind": "li",
+              "text": "The picture: a reverse image search, because a photo that has run somewhere before is not a new sighting."
+            },
+            {
+              "kind": "li",
+              "text": "People: neighbors, other witnesses, other cameras on the same road."
+            },
+            {
+              "kind": "p",
+              "text": "Every submission ends one of three ways. Confirmed, and GSR says what it shows. Not what it looked like, and GSR says what it was. Not enough to go on, and nothing runs."
+            },
+            {
+              "kind": "p",
+              "text": "More from GSR on wildlife: Coyotes in NH: A Guide to Understanding Our Wild Neighbors.",
+              "links": [
+                {
+                  "text": "Coyotes in NH: A Guide to Understanding Our Wild Neighbors",
+                  "url": "https://granitestatereport.com/2025/10/09/coyotes-in-nh/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Other places to report",
+          "blocks": [
+            {
+              "kind": "li",
+              "text": "A mountain lion: Fish and Game’s Wildlife Division, (603) 271-2461 or wildlife@wildlife.nh.gov, for an observation report form.",
+              "links": [
+                {
+                  "text": "(603) 271-2461",
+                  "url": "tel:+16032712461"
+                }
+              ]
+            },
+            {
+              "kind": "li",
+              "text": "Species on its reporting list: NH Wildlife Sightings. Not every species can be reported there.",
+              "links": [
+                {
+                  "text": "NH Wildlife Sightings",
+                  "url": "https://nhwildlifesightings.unh.edu/"
+                }
+              ]
+            },
+            {
+              "kind": "li",
+              "text": "Emergencies, crimes, and injured animals: the numbers at the top of this page."
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "key": "where",
+          "kind": "text",
+          "label": "Town, agency, or office involved",
+          "default": ""
+        },
+        {
+          "key": "identity",
+          "kind": "select",
+          "label": "How should GSR treat your identity?",
+          "options": [
+            {
+              "label": "Do not use my name or anything that identifies me",
+              "value": "Do not use my name or anything that identifies me"
+            },
+            {
+              "label": "Contact me before using anything I sent",
+              "value": "Contact me before using anything I sent"
+            },
+            {
+              "label": "You may name me",
+              "value": "You may name me"
+            }
+          ],
+          "default": "Do not use my name or anything that identifies me"
+        },
+        {
+          "key": "contact",
+          "kind": "textarea",
+          "label": "A way to reach you: personal email, Signal, or phone, never a work account. Leave blank to stay unnamed.",
+          "default": "",
+          "rows": 3
+        }
+      ],
+      "asksForOriginals": true,
+      "menu": {
+        "label": "Wildlife",
+        "blurb": "Bears, moose, bobcats, the animal you could not name"
+      },
+      "quick": {
+        "heading": "Quick details",
+        "note": "All optional. The time and the place are what let GSR check it.",
+        "tag": "Wildlife",
+        "chipsLabel": null,
+        "chips": [],
+        "fields": [
+          {
+            "key": "When",
+            "label": "When",
+            "placeholder": "e.g. Oct. 4, 6:15 a.m."
+          },
+          {
+            "key": "Where",
+            "label": "Where",
+            "placeholder": "Town, road, trail, yard"
+          },
+          {
+            "key": "Animal",
+            "label": "What you think it is",
+            "placeholder": "e.g. black bear, bobcat, not sure"
+          },
+          {
+            "key": "Distance",
+            "label": "About how far away",
+            "placeholder": "e.g. 50 yards, across the field"
+          }
+        ],
+        "hiddenFields": [
+          "where"
+        ],
+        "sentFrom": "/wildlife/"
+      }
+    },
+    {
+      "id": "unexplained",
+      "form": "tips",
+      "slug": "unexplained",
+      "pageURL": "https://granitestatereport.com/unexplained/",
+      "title": "Something You Can’t Explain",
+      "dek": "Lights that moved wrong, an object nobody could name, a camera that caught what no one in the room can account for. Send the footage. Granite State Report checks it before anyone calls it anything.",
+      "pageVersion": {
+        "number": "1.1",
+        "date": "October 5, 2026"
+      },
+      "mainLabel": "What did you see or hear? Type it, or skip it if the footage says it.",
+      "sendLabel": "Send it to GSR",
+      "consent": "By sending, you confirm you have read this page and accept the terms above.",
+      "topSections": [],
+      "readFirst": [
+        {
+          "heading": "What to send",
+          "blocks": [
+            {
+              "kind": "li",
+              "text": "The original file, straight from your phone or camera. Not a screenshot, a screen recording, or a copy saved from social media. The original can carry the date, the time, and the place your device recorded."
+            },
+            {
+              "kind": "li",
+              "text": "When: the date and the clock time."
+            },
+            {
+              "kind": "li",
+              "text": "Where: the town, the spot, and which way you were facing."
+            },
+            {
+              "kind": "li",
+              "text": "What it did: how long it lasted, how it moved, and whether it made a sound."
+            },
+            {
+              "kind": "li",
+              "text": "Who else saw it. A second witness or a second camera angle is worth more than a sharper picture."
+            },
+            {
+              "kind": "p",
+              "text": "Paranormal footage gets the same treatment: the original file, the place, the time, and anyone else who was there."
+            }
+          ]
+        },
+        {
+          "heading": "Check it yourself first, if you like",
+          "blocks": [
+            {
+              "kind": "li",
+              "text": "A line of lights moving together is probably a train of Starlink satellites, and the National UFO Reporting Center asks people not to report those. Heavens-Above predicts satellite passes, Starlink included, for any location, and can run the predictions for past dates.",
+              "links": [
+                {
+                  "text": "Heavens-Above",
+                  "url": "https://www.heavens-above.com/"
+                }
+              ]
+            },
+            {
+              "kind": "li",
+              "text": "A very bright, silver-white light that sits still near the horizon is likely Venus, the reporting center says. Stellarium is free, open-source planetarium software that shows the sky for any date, time, and place.",
+              "links": [
+                {
+                  "text": "Stellarium",
+                  "url": "https://stellarium.org/"
+                }
+              ]
+            },
+            {
+              "kind": "li",
+              "text": "Aircraft that broadcast their position show up on ADS-B Exchange, which does not filter out military flights that are broadcasting and has a replay feature for past times.",
+              "links": [
+                {
+                  "text": "ADS-B Exchange",
+                  "url": "https://globe.adsbexchange.com/"
+                }
+              ]
+            },
+            {
+              "kind": "li",
+              "text": "Something in the video that you did not see with your own eyes is probably the camera, the reporting center says."
+            },
+            {
+              "kind": "p",
+              "text": "Still doesn’t fit? Send it anyway. A list of what you ruled out helps."
+            }
+          ]
+        },
+        {
+          "heading": "What you are agreeing to",
+          "blocks": [
+            {
+              "kind": "p",
+              "text": "By sending, you confirm and accept the following."
+            },
+            {
+              "kind": "li",
+              "text": "You took the photo or video yourself, or you have the right to send it."
+            },
+            {
+              "kind": "li",
+              "text": "You keep your copyright. Granite State Report may review what you send, show it to experts asked to help check it, and, if it becomes part of a story, publish it with the credit you choose under “Add details” in the box below: your name, or no name at all."
+            },
+            {
+              "kind": "li",
+              "text": "Granite State Report decides whether and how to publish, publishes nothing on one person’s word, and does not pay for footage."
+            },
+            {
+              "kind": "li",
+              "text": "Faces of people who did not agree to be shown, and anything that identifies a child, are blurred or cut before anything runs. If the exact spot you filmed from is private, say so in your note and it stays out."
+            },
+            {
+              "kind": "p",
+              "text": "How your name and contact details are handled, and the legal limits of what any newsroom can promise, are on Send a Tip.",
+              "links": [
+                {
+                  "text": "Send a Tip",
+                  "url": "https://granitestatereport.com/tips/"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "heading": "Before you film",
+          "blocks": [
+            {
+              "kind": "li",
+              "text": "Stay where you are allowed to be. Under New Hampshire’s criminal trespass law, a person is guilty if, “knowing that he is not licensed or privileged to do so, he enters or remains in any place” (RSA 635:2, I). No clip is worth a charge.",
+              "links": [
+                {
+                  "text": "RSA 635:2, I",
+                  "url": "https://gc.nh.gov/rsa/html/LXII/635/635-2.htm"
+                }
+              ]
+            },
+            {
+              "kind": "li",
+              "text": "Drones. Recreational flyers must pass the FAA’s free online safety test, known as TRUST, and carry proof of it. They must stay at or below 400 feet in uncontrolled airspace and need FAA authorization, through LAANC or DroneZone, to fly in controlled airspace near airports (FAA, Recreational Flyers).",
+              "links": [
+                {
+                  "text": "FAA, Recreational Flyers",
+                  "url": "https://www.faa.gov/uas/recreational_flyers"
+                }
+              ]
+            },
+            {
+              "kind": "li",
+              "text": "Voices on the recording. New Hampshire’s wiretap law, RSA 570-A, makes it a crime, with exceptions, to record a conversation without the consent of everyone in it when the speakers reasonably expect it is not being recorded. Sky footage rarely raises that. A camera indoors can. GSR’s guide: The Law That Decides When You Can Press Record in New Hampshire.",
+              "links": [
+                {
+                  "text": "RSA 570-A",
+                  "url": "https://gc.nh.gov/rsa/html/LVIII/570-A/570-A-2.htm"
+                },
+                {
+                  "text": "The Law That Decides When You Can Press Record in New Hampshire",
+                  "url": "https://granitestatereport.com/2026/08/31/rsa-570-a-new-hampshire-wiretapping-recording-law-explained/"
+                }
+              ]
+            },
+            {
+              "kind": "li",
+              "text": "Never film while driving. Pull over first, or let a passenger do it."
+            }
+          ]
+        },
+        {
+          "heading": "How GSR checks it",
+          "blocks": [
+            {
+              "kind": "li",
+              "text": "Time and place, from the original file and your note."
+            },
+            {
+              "kind": "li",
+              "text": "The sky that night: aircraft broadcasts, satellite passes, planets and bright stars, and weather balloons, which the National Weather Service sends up from 92 stations, normally twice a day."
+            },
+            {
+              "kind": "li",
+              "text": "People: other witnesses, police logs, nearby airports."
+            },
+            {
+              "kind": "li",
+              "text": "The camera: zoom, focus, reflections in glass, lens flare, compression, and edits."
+            },
+            {
+              "kind": "li",
+              "text": "Experts: astronomers and pilots, and for anything on the ground, people who know the place."
+            },
+            {
+              "kind": "p",
+              "text": "Every report ends one of three ways. Explained, and GSR says what it was. Unexplained after checking, and GSR publishes what was ruled out. Not enough to go on, and nothing runs."
+            }
+          ]
+        },
+        {
+          "heading": "Other places to report",
+          "blocks": [
+            {
+              "kind": "li",
+              "text": "The National UFO Reporting Center takes reports from the public through its online form. Its hotline, 206-722-3000, is for recent sightings only.",
+              "links": [
+                {
+                  "text": "online form",
+                  "url": "https://nuforc.org/report-a-ufo/"
+                }
+              ]
+            },
+            {
+              "kind": "li",
+              "text": "The Pentagon’s All-domain Anomaly Resolution Office takes reports only from current or former federal employees, service members, and contractors with direct knowledge of government programs. It says it will announce when the public can report (AARO, Submit a Report).",
+              "links": [
+                {
+                  "text": "AARO, Submit a Report",
+                  "url": "https://www.aaro.mil/Submit-A-Report/"
+                }
+              ]
+            },
+            {
+              "kind": "li",
+              "text": "Pilots: the office encourages civilian pilots to report sightings promptly to air traffic control."
+            },
+            {
+              "kind": "li",
+              "text": "Anyone in danger: call 911."
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "key": "where",
+          "kind": "text",
+          "label": "Town, agency, or office involved",
+          "default": ""
+        },
+        {
+          "key": "identity",
+          "kind": "select",
+          "label": "How should GSR treat your identity?",
+          "options": [
+            {
+              "label": "Do not use my name or anything that identifies me",
+              "value": "Do not use my name or anything that identifies me"
+            },
+            {
+              "label": "Contact me before using anything I sent",
+              "value": "Contact me before using anything I sent"
+            },
+            {
+              "label": "You may name me",
+              "value": "You may name me"
+            }
+          ],
+          "default": "Do not use my name or anything that identifies me"
+        },
+        {
+          "key": "contact",
+          "kind": "textarea",
+          "label": "A way to reach you: personal email, Signal, or phone, never a work account. Leave blank to stay unnamed.",
+          "default": "",
+          "rows": 3
+        }
+      ],
+      "asksForOriginals": true,
+      "menu": {
+        "label": "Something in the sky, or unexplained",
+        "blurb": "UFO and UAP footage, the paranormal, anything you cannot explain"
+      },
+      "quick": {
+        "heading": "Quick details",
+        "note": "All optional. The time and the place are what let GSR check it.",
+        "tag": "Unexplained",
+        "chipsLabel": "What is it?",
+        "chips": [
+          "In the sky",
+          "On the ground",
+          "Indoors",
+          "Not sure"
+        ],
+        "fields": [
+          {
+            "key": "When",
+            "label": "When",
+            "placeholder": "e.g. Oct. 4, 9:40 p.m."
+          },
+          {
+            "key": "Where",
+            "label": "Where",
+            "placeholder": "Town, road, trail, landmark"
+          },
+          {
+            "key": "Facing",
+            "label": "Which way you were facing",
+            "placeholder": "e.g. northwest, toward the lake"
+          },
+          {
+            "key": "How long",
+            "label": "How long it lasted",
+            "placeholder": "e.g. about two minutes"
+          }
+        ],
+        "hiddenFields": [
+          "where"
+        ],
+        "sentFrom": "/unexplained/"
+      }
     }
   ]
 }

@@ -11,7 +11,8 @@ public enum AttachSource: String, CaseIterable, Identifiable, Hashable, Sendable
     public var id: String { rawValue }
 }
 
-/// How the site's Send a Tip hub labels each door (granitestatereport.com/tips/, v1.3).
+/// How the site labels each door: the Send a Tip hub's words for its three doors
+/// (granitestatereport.com/tips/, v1.5), and the site's Send menu for the pages added since.
 public enum Doors {
     public struct Door {
         public let label: String
@@ -19,8 +20,11 @@ public enum Doors {
         public let symbol: String
     }
 
-    public static func door(_ form: String) -> Door {
-        switch form {
+    public static func door(_ form: DropForm) -> Door {
+        switch form.id {
+        case "research", "wildlife", "unexplained":
+            let symbol = form.id == "research" ? "tablecells" : form.id == "wildlife" ? "pawprint" : "moon.stars"
+            return Door(label: form.menu?.label ?? form.title, blurb: form.menu?.blurb ?? form.dek ?? "", symbol: symbol)
         case "story":
             return Door(label: "For anyone", blurb: "Something a town, agency, court, school, or police department did to you or in front of you.", symbol: "person.wave.2")
         case "nothing":
@@ -89,8 +93,12 @@ public struct ComposeView: View {
                 if model.result != nil {
                     sentPanel
                 } else {
-                    SafetyNote(pageURL: model.form.pageURL) { sheet = .page($0) }
+                    ForEach(model.form.topSections, id: \.heading) { section in
+                        ReadFirstSectionView(section: section, callout: true)
+                    }
+                    SafetyNote(pageURL: model.form.pageURL, cleansByDefault: !model.form.asksForOriginals) { sheet = .page($0) }
                     attachments
+                    if let q = model.form.quick { quickDetails(q) }
                     note
                     details
                     cleaning
@@ -149,6 +157,14 @@ public struct ComposeView: View {
         }
         .onAppear(perform: runPendingAction)
         .onChange(of: pendingAction) { _, _ in runPendingAction() }
+        // Links in the page's own words: web pages open here, phone numbers and mail go to the system.
+        .environment(\.openURL, OpenURLAction { url in
+            if url.scheme == "http" || url.scheme == "https" {
+                sheet = .page(url)
+                return .handled
+            }
+            return .systemAction
+        })
     }
 
     private func runPendingAction() {
@@ -172,7 +188,7 @@ public struct ComposeView: View {
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Kicker(Doors.door(model.form.form).label)
+            Kicker(Doors.door(model.form).label)
             Text(model.form.title)
                 .font(GSRTheme.serif(.largeTitle, bold: true))
                 .foregroundStyle(GSRTheme.navy)
@@ -209,6 +225,43 @@ public struct ComposeView: View {
         }
     }
 
+    /// The sighting pages' Quick details panel, as the site's script builds it.
+    private func quickDetails(_ q: QuickDetails) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            SectionTitle(q.heading)
+            Text(q.note)
+                .font(.footnote)
+                .foregroundStyle(GSRTheme.ink2)
+            if !q.chips.isEmpty {
+                VStack(alignment: .leading, spacing: 6) {
+                    if let label = q.chipsLabel {
+                        Text(label).font(.footnote).foregroundStyle(GSRTheme.ink2)
+                    }
+                    ChipRow(chips: q.chips, selection: $model.quick.chip)
+                        .disabled(model.isSending)
+                        .accessibilityLabel(q.chipsLabel ?? "Type")
+                }
+            }
+            ForEach(q.fields, id: \.key) { f in
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(f.label).font(.footnote).foregroundStyle(GSRTheme.ink2)
+                    TextField(f.placeholder, text: quickBinding(f.key))
+                        .textInputAutocapitalization(.sentences)
+                        .padding(8)
+                        .background(GSRTheme.paper)
+                        .overlay(RoundedRectangle(cornerRadius: 4).stroke(GSRTheme.rule2))
+                        .disabled(model.isSending)
+                        .accessibilityLabel(f.label)
+                }
+            }
+        }
+    }
+
+    private func quickBinding(_ key: String) -> Binding<String> {
+        Binding(get: { model.quick.values[key] ?? "" },
+                set: { model.quick.values[key] = $0 })
+    }
+
     private var note: some View {
         VStack(alignment: .leading, spacing: 10) {
             SectionTitle("Your note")
@@ -230,7 +283,7 @@ public struct ComposeView: View {
     private var details: some View {
         DisclosureGroup(isExpanded: $showDetails) {
             VStack(alignment: .leading, spacing: 18) {
-                ForEach(model.form.fields) { field in
+                ForEach(model.form.visibleFields) { field in
                     FieldEditor(field: field, value: binding(field))
                         .disabled(model.isSending)
                 }
@@ -282,9 +335,12 @@ public struct ComposeView: View {
     }
 
     private var cleaningCaption: String {
-        let what = model.scrubMedia
+        var what = model.scrubMedia
             ? "Location, phone model, and the time taken come out of photos and videos before they upload. Documents keep their own details (author names, edit history); this app cannot clean those."
             : "Photos and videos upload as they are, with whatever location and device details they carry. That can help prove what you saw. It can also point to you."
+        if model.form.asksForOriginals {
+            what += " The \(model.form.title) page asks for the original file because it can carry the date, the time, and the place; cleaning removes them. If the spot you filmed from is private, say so in your note."
+        }
         return cleaningLocked ? what + " This was set when the send started. To change it, delete this and start again." : what
     }
 
@@ -394,21 +450,30 @@ struct SectionTitle: View {
 /// send anything" on granitestatereport.com/tips/ for what the app does.
 public struct SafetyNote: View {
     let pageURL: URL
+    let points: [String]
     let openPage: (URL) -> Void
     @State private var expanded = false
 
-    public init(pageURL: URL, openPage: @escaping (URL) -> Void) {
+    /// `cleansByDefault` is false on pages that ask for the original file.
+    public init(pageURL: URL, cleansByDefault: Bool = true, openPage: @escaping (URL) -> Void) {
         self.pageURL = pageURL
+        self.points = Self.safetyPoints(cleansByDefault: cleansByDefault)
         self.openPage = openPage
     }
 
-    public static let points: [String] = [
-        "This app is not anonymous. It sends to the same drop box as the website: what you send is stored on the site's server with the host, WordPress.com, and a notice is emailed to the newsroom's Gmail account, with the files attached when they total under 15 MB. The host logs IP addresses.",
-        "Never use a work phone, work email, or work Wi-Fi. Your employer can see what crosses them.",
-        "Files carry hidden data. This app removes location and device details from photos and videos unless you turn that off. It cannot clean documents: author names and edit history stay in them. A screenshot or a photo of a printout carries less.",
-        "For anything sensitive, use Signal or the mail, not this app. Both are on the GSR app's Contact tab.",
-        "Nothing leaves your phone until you press Send. Once the drop box confirms it, the app deletes its copy.",
-    ]
+    /// The first point follows "Read this before you send anything" on
+    /// granitestatereport.com/nothing-to-see-here/ (v2.3, October 11, 2026).
+    public static func safetyPoints(cleansByDefault: Bool) -> [String] {
+        [
+            "This app is not anonymous. It sends to the same drop box as the website: what you send is stored on the site's server with the host, WordPress.com, and a notice is emailed to the newsroom's Gmail account and to the editor's personal Gmail account. Files are encrypted as they arrive, and the notice gives counts and sizes only: no files, no file names, nothing you typed. The host logs IP addresses.",
+            "Never use a work phone, work email, or work Wi-Fi. Your employer can see what crosses them.",
+            cleansByDefault
+                ? "Files carry hidden data. This app removes location and device details from photos and videos unless you turn that off. It cannot clean documents: author names and edit history stay in them. A screenshot or a photo of a printout carries less."
+                : "Files carry hidden data. This page asks for the original file, so photos and videos go as they are, with their location and device details, unless you turn on cleaning below. Documents keep their author names and edit history either way.",
+            "For anything sensitive, use Signal or the mail, not this app. Both are on the GSR app's Contact tab.",
+            "Nothing leaves your phone until you press Send. Once the drop box confirms it, the app deletes its copy.",
+        ]
+    }
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -425,11 +490,11 @@ public struct SafetyNote: View {
                 .foregroundStyle(GSRTheme.ink)
             }
             .accessibilityHint(expanded ? "Hides the safety notes" : "Shows the safety notes")
-            Text(Self.points[0])
+            Text(points[0])
                 .font(.footnote)
                 .foregroundStyle(GSRTheme.ink)
             if expanded {
-                ForEach(Self.points.dropFirst(), id: \.self) { p in
+                ForEach(points.dropFirst(), id: \.self) { p in
                     HStack(alignment: .firstTextBaseline, spacing: 8) {
                         Text("•")
                         Text(p)
@@ -661,27 +726,30 @@ struct FieldEditor: View {
     }
 }
 
-/// One of the page's read-first sections, word for word.
+/// One of the page's read-first sections, word for word, with the page's links. As a
+/// callout it sits at the top of the screen in the warning colors.
 struct ReadFirstSectionView: View {
     let section: ReadFirstSection
+    var callout = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(section.heading)
                 .font(GSRTheme.serif(.headline, bold: true))
                 .foregroundStyle(GSRTheme.navy)
+                .accessibilityAddTraits(.isHeader)
             ForEach(Array(section.blocks.enumerated()), id: \.offset) { _, block in
                 switch block.kind {
                 case .listItem:
                     HStack(alignment: .firstTextBaseline, spacing: 8) {
                         Text("•").foregroundStyle(GSRTheme.rust)
-                        Text(block.text)
+                        Text(Self.linked(block))
                     }
                     .font(GSRTheme.serif(.subheadline))
                 case .paragraph:
-                    Text(block.text).font(GSRTheme.serif(.subheadline))
+                    Text(Self.linked(block)).font(GSRTheme.serif(.subheadline))
                 case .box:
-                    Text(block.text)
+                    Text(Self.linked(block))
                         .font(.footnote)
                         .padding(10)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -691,6 +759,58 @@ struct ReadFirstSectionView: View {
             }
         }
         .foregroundStyle(GSRTheme.ink)
+        .tint(GSRTheme.rust)
+        .padding(callout ? 14 : 0)
+        .background(callout ? GSRTheme.rustSoft : Color.clear)
+        .overlay(alignment: .leading) {
+            if callout { Rectangle().fill(GSRTheme.rust).frame(width: 4) }
+        }
+    }
+
+    /// The block's text with its links made tappable, each at its own place in the text.
+    static func linked(_ block: ReadFirstSection.Block) -> AttributedString {
+        var out = AttributedString(block.text)
+        var from = out.startIndex
+        for link in block.links ?? [] {
+            guard let r = out[from...].range(of: link.text) else { continue }
+            out[r].link = link.url
+            out[r].underlineStyle = .single
+            from = r.upperBound
+        }
+        return out
+    }
+}
+
+/// Pick one or none, as the page's chips work: tapping the picked one again clears it.
+struct ChipRow: View {
+    let chips: [String]
+    @Binding var selection: String?
+
+    var body: some View {
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 8) { buttons }
+            VStack(alignment: .leading, spacing: 8) { buttons }
+        }
+    }
+
+    @ViewBuilder
+    private var buttons: some View {
+        ForEach(chips, id: \.self) { name in
+            let on = selection == name
+            Button {
+                selection = on ? nil : name
+            } label: {
+                Text(name)
+                    .font(.subheadline.weight(.semibold))
+                    .padding(.vertical, 7)
+                    .padding(.horizontal, 12)
+                    .foregroundStyle(on ? Color.white : GSRTheme.navy)
+                    .background(Capsule().fill(on ? GSRTheme.navy : GSRTheme.paper))
+                    .overlay(Capsule().stroke(on ? GSRTheme.navy : GSRTheme.rule2))
+            }
+            .buttonStyle(.plain)
+            .accessibilityAddTraits(on ? [.isSelected] : [])
+        }
     }
 }
 #endif

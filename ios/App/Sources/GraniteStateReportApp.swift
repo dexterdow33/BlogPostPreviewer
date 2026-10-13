@@ -8,12 +8,16 @@ struct GraniteStateReportApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @StateObject private var router = AppRouter.shared
     @StateObject private var app = AppModel.shared
+    @StateObject private var listen = ListenModel.shared
+    @StateObject private var player = AudioPlayer.shared
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environmentObject(router)
                 .environmentObject(app)
+                .environmentObject(listen)
+                .environmentObject(player)
                 .preferredColorScheme(.light)
                 .tint(GSRTheme.rust)
         }

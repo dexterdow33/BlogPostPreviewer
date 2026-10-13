@@ -2,10 +2,13 @@ import XCTest
 @testable import GSRKit
 
 final class CatalogTests: XCTestCase {
-    func testBundledCatalogHasTheFourDropBoxes() throws {
+    func testBundledCatalogHasTheSevenDropBoxes() throws {
         let c = DropCatalog.bundled
         XCTAssertEqual(c.api.absoluteString, "https://granitestatereport.com/wp-json/gsr-drop/v1/")
-        XCTAssertEqual(c.forms.map(\.form), ["tips", "story", "inside", "nothing"])
+        XCTAssertEqual(c.forms.map(\.id), ["tips", "story", "inside", "nothing", "research", "wildlife", "unexplained"])
+        // The last three pages carry the Send a Tip box, so the server files them as tips.
+        XCTAssertEqual(c.forms.map(\.form), ["tips", "story", "inside", "nothing", "tips", "tips", "tips"])
+        XCTAssertEqual(Set(c.forms.map(\.id)).count, c.forms.count, "door ids are unique")
         for f in c.forms {
             XCTAssertFalse(f.mainLabel.isEmpty, f.form)
             XCTAssertFalse(f.sendLabel.isEmpty, f.form)
@@ -41,6 +44,71 @@ final class CatalogTests: XCTestCase {
         XCTAssertFalse(s.hasContent(in: story))
         s.fields["town"] = .text("Concord")
         XCTAssertTrue(s.hasContent(in: story))
+    }
+
+    func testSightingPagesLabelTheNoteLikeTheSite() throws {
+        let unexplained = try XCTUnwrap(DropCatalog.bundled.form("unexplained"))
+        let q = try XCTUnwrap(unexplained.quick)
+        XCTAssertEqual(q.tag, "Unexplained")
+        XCTAssertEqual(q.chips, ["In the sky", "On the ground", "Indoors", "Not sure"])
+        XCTAssertEqual(q.sentFrom, "/unexplained/")
+        XCTAssertEqual(unexplained.sendLabel, "Send it to GSR", "the site's script renames the button")
+        XCTAssertFalse(unexplained.visibleFields.contains { $0.key == "where" }, "the panel asks Where instead")
+        XCTAssertTrue(unexplained.fields.contains { $0.key == "where" }, "but the field still goes out")
+
+        var s = Submission(form: unexplained)
+        s.main = "It hovered, then dropped behind the ridge."
+        s.quick = QuickValues(values: ["When": " Oct. 4, 9:40 p.m. ", "Where": "Gilford", "Facing": "", "Nope": "x"], chip: "In the sky")
+        XCTAssertEqual(s.mainForSending(in: unexplained), """
+            [Unexplained · In the sky]
+            When: Oct. 4, 9:40 p.m.
+            Where: Gilford
+            Sent from: /unexplained/ (iPhone app)
+
+            It hovered, then dropped behind the ridge.
+            """)
+        s.main = ""
+        s.quick?.chip = "Not a chip on this page"
+        XCTAssertEqual(s.mainForSending(in: unexplained), "[Unexplained]\nWhen: Oct. 4, 9:40 p.m.\nWhere: Gilford\nSent from: /unexplained/ (iPhone app)")
+
+        let tips = try XCTUnwrap(DropCatalog.bundled.form("tips"))
+        var t = Submission(form: tips)
+        t.main = "plain"
+        t.quick = QuickValues(values: ["When": "today"])
+        XCTAssertEqual(t.mainForSending(in: tips), "plain", "other pages send the note as typed")
+    }
+
+    func testQuickDetailsAloneCanBeSent() throws {
+        let wildlife = try XCTUnwrap(DropCatalog.bundled.form("wildlife"))
+        var s = Submission(form: wildlife)
+        XCTAssertFalse(s.hasContent(in: wildlife))
+        s.quick = QuickValues(values: ["Where": "   "])
+        XCTAssertFalse(s.hasContent(in: wildlife))
+        s.quick = QuickValues(chip: "anything")
+        XCTAssertFalse(s.hasContent(in: wildlife), "a chip alone does not count, as on the page")
+        s.quick = QuickValues(values: ["Animal": "bobcat"])
+        XCTAssertTrue(s.hasContent(in: wildlife))
+    }
+
+    func testPagesThatAskForOriginalsStartWithCleaningOff() throws {
+        let c = DropCatalog.bundled
+        XCTAssertFalse(Submission(form: c.form("wildlife")!).scrubMedia)
+        XCTAssertFalse(Submission(form: c.form("unexplained")!).scrubMedia)
+        XCTAssertTrue(Submission(form: c.form("tips")!).scrubMedia)
+        XCTAssertTrue(Submission(form: c.form("research")!).scrubMedia)
+        XCTAssertTrue(Submission(form: c.form("wildlife")!, scrubMedia: true).scrubMedia)
+    }
+
+    func testPageLinksAreKeptAndPointIntoTheText() throws {
+        let wildlife = try XCTUnwrap(DropCatalog.bundled.form("wildlife"))
+        let top = try XCTUnwrap(wildlife.topSections.first)
+        XCTAssertEqual(top.heading, "Animal hurt, someone in danger, or a crime?")
+        let links = top.blocks.flatMap { $0.links ?? [] }
+        XCTAssertTrue(links.contains { $0.url.absoluteString == "tel:+16032713361" })
+        for b in wildlife.readFirst.flatMap(\.blocks) + top.blocks {
+            for l in b.links ?? [] { XCTAssertTrue(b.text.contains(l.text), "\(l.text) is in \(b.text)") }
+            XCTAssertFalse(b.text.contains(" ,"), "inline links leave no stray space: \(b.text)")
+        }
     }
 
     func testFieldsForSendingCoversEveryKey() throws {
@@ -719,6 +787,29 @@ final class UploaderTests: XCTestCase {
         XCTAssertEqual(server.finishedSessions.first?.form, "nothing")
         let late = await up.switchForm(to: form("story"))
         XCTAssertFalse(late, "too late once sent")
+    }
+
+    func testASightingGoesOutAsATipWithItsLabel() async throws {
+        let server = MockDropServer()
+        var s = try store.create(form: form("wildlife"))
+        s.quick = QuickValues(values: ["When": "Oct. 4, 6:15 a.m.", "Animal": "black bear"])
+        s.fields["where"] = .text("")
+        try store.save(s)
+        _ = try await uploader(s, server).send()
+        XCTAssertEqual(server.finishedSessions.first?.form, "tips")
+        let fin = try XCTUnwrap(server.finishedSessions.first?.finished)
+        XCTAssertEqual(fin.main, "[Wildlife]\nWhen: Oct. 4, 6:15 a.m.\nAnimal: black bear\nSent from: /wildlife/ (iPhone app)")
+        XCTAssertEqual(fin.fields["where"] as? String, "", "the hidden field still goes, empty, as on the page")
+    }
+
+    func testQuickDetailsAreSavedWithTheDraft() async throws {
+        let server = MockDropServer()
+        let s = try store.create(form: form("unexplained"))
+        let up = uploader(s, server)
+        await up.update(main: "", fields: s.fields, scrubMedia: false, quick: QuickValues(values: ["When": "now"], chip: "Indoors"))
+        XCTAssertEqual(try store.load(s.id).quick, QuickValues(values: ["When": "now"], chip: "Indoors"))
+        await up.update(main: "more", fields: s.fields, scrubMedia: false)
+        XCTAssertEqual(try store.load(s.id).quick?.chip, "Indoors", "nil leaves them as they were")
     }
 
     func testStaleStatesFromAClosedAppAreCleared() async throws {

@@ -28,6 +28,8 @@ public final class ComposeModel: ObservableObject, Identifiable {
     @Published public var main: String { didSet { draftChanged() } }
     @Published public var fields: [String: FieldValue] { didSet { draftChanged() } }
     @Published public var scrubMedia: Bool { didSet { draftChanged() } }
+    /// The Quick details on the sighting pages.
+    @Published public var quick: QuickValues { didSet { draftChanged() } }
     @Published public private(set) var isSending = false
     @Published public private(set) var isImporting = false
     /// The line under the Send button, as on the page.
@@ -60,6 +62,7 @@ public final class ComposeModel: ObservableObject, Identifiable {
         self.main = submission.main
         self.fields = submission.fields
         self.scrubMedia = submission.scrubMedia
+        self.quick = submission.quick ?? QuickValues()
         self.uploader = SubmissionUploader(submission: submission, form: form, store: store, client: client, preparer: preparer)
         if submission.phase == .sent { result = .sent(failedFiles: submission.items.filter { $0.state == .failed }.count) }
         status = submission.lastError
@@ -102,6 +105,7 @@ public final class ComposeModel: ObservableObject, Identifiable {
         var probe = submission
         probe.main = main
         probe.fields = fields
+        probe.quick = quick
         return probe.hasContent(in: form)
     }
 
@@ -128,11 +132,11 @@ public final class ComposeModel: ObservableObject, Identifiable {
     private func draftChanged() {
         guard !isSending, !closed, result == nil else { return }
         saveTask?.cancel()
-        let up = uploader, m = main, f = fields, scrub = scrubMedia
+        let up = uploader, m = main, f = fields, scrub = scrubMedia, q = quick
         saveTask = Task {
             try? await Task.sleep(nanoseconds: 400_000_000)
             guard !Task.isCancelled else { return }
-            await up.update(main: m, fields: f, scrubMedia: scrub)
+            await up.update(main: m, fields: f, scrubMedia: scrub, quick: q)
         }
     }
 
@@ -140,20 +144,24 @@ public final class ComposeModel: ObservableObject, Identifiable {
     public func saveNow() async {
         saveTask?.cancel()
         guard !isSending, !closed, result == nil else { return }
-        await uploader.update(main: main, fields: fields, scrubMedia: scrubMedia)
+        await uploader.update(main: main, fields: fields, scrubMedia: scrubMedia, quick: quick)
     }
 
     /// Moves an unsent, never-started submission to another drop box. Files and the note
     /// stay; the details reset to the new form's.
     public func switchForm(to newForm: DropForm) async {
-        guard !isCommitted, !isSending, newForm.form != form.form else { return }
+        guard !isCommitted, !isSending, newForm.id != form.id else { return }
         saveTask?.cancel()
         let up = uploader
-        await up.update(main: main, fields: fields, scrubMedia: scrubMedia)
+        await up.update(main: main, fields: fields, scrubMedia: scrubMedia, quick: quick)
         guard await up.switchForm(to: newForm) else { return }
+        let oldForm = form
         form = newForm
         // Its debounced save goes to the same uploader, which already has the new form.
         fields = newForm.defaultFields
+        // A page that asks for original files starts with cleaning off, the others with it
+        // on. Follow the new page unless the sender already changed the switch.
+        if scrubMedia == !oldForm.asksForOriginals { scrubMedia = !newForm.asksForOriginals }
     }
 
     // MARK: Files
@@ -244,10 +252,10 @@ public final class ComposeModel: ObservableObject, Identifiable {
         say("Starting…", bad: false)
         let activity = self.activity
         activity?.sendBegan(title: form.sendLabel, stop: { [weak self] in self?.pause() })
-        let up = uploader, m = main, f = fields, scrub = scrubMedia
+        let up = uploader, m = main, f = fields, scrub = scrubMedia, q = quick
         let store = self.store, id = self.id, sendLabel = form.sendLabel, sentForm = self.form
         sendTask = Task { [weak self] in
-            await up.update(main: m, fields: f, scrubMedia: scrub)
+            await up.update(main: m, fields: f, scrubMedia: scrub, quick: q)
             var ok = false
             do {
                 let r = try await up.send()

@@ -39,7 +39,7 @@ public final class OutboxStore: @unchecked Sendable {
 
     /// Starts a new submission for a form and saves it.
     @discardableResult
-    public func create(form: DropForm, origin: Submission.Origin = .app, scrubMedia: Bool = true) throws -> Submission {
+    public func create(form: DropForm, origin: Submission.Origin = .app, scrubMedia: Bool? = nil) throws -> Submission {
         let s = Submission(form: form, origin: origin, scrubMedia: scrubMedia)
         try fm.createDirectory(at: folder(s.id), withIntermediateDirectories: true)
         try save(s)

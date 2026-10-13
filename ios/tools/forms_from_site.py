@@ -25,13 +25,18 @@ from html.parser import HTMLParser
 
 SITE = "https://granitestatereport.com"
 API = SITE + "/wp-json/gsr-drop/v1/"
-# Page slug -> the order the app lists them in. "tips" is the quick tip box on the
-# Send a Tip hub page; the other three are the hub's "doors".
+# (app id, page slug, path). "tips" is the quick tip box on the Send a Tip hub page; the
+# next three are the hub's "doors". The last three pages carry the same "tips" box as the
+# hub, so the server files them as tips; the app tells them apart by id, and the two
+# sighting pages label every note the way the site's own script does (see sight_config).
 PAGES = [
-    ("tips", "/tips/"),
-    ("share-your-story", "/share-your-story/"),
-    ("inside-the-building", "/inside-the-building/"),
-    ("nothing-to-see-here", "/nothing-to-see-here/"),
+    ("tips", "tips", "/tips/"),
+    ("story", "share-your-story", "/share-your-story/"),
+    ("inside", "inside-the-building", "/inside-the-building/"),
+    ("nothing", "nothing-to-see-here", "/nothing-to-see-here/"),
+    ("research", "research-files", "/research-files/"),
+    ("wildlife", "wildlife", "/wildlife/"),
+    ("unexplained", "unexplained", "/unexplained/"),
 ]
 # The sections of each page a sender is asked to read or accept before pressing Send.
 # The app shows them word for word above its Send button and links to the full page.
@@ -41,7 +46,18 @@ READ_FIRST = {
     "inside-the-building": ["Protect yourself first", "What the law says about you speaking up",
                             "What Granite State Report promises, and what it cannot", "What you are agreeing to"],
     "nothing-to-see-here": ["Read this before you send anything", "Send what you have a right to have"],
+    "research-files": ["What fits here"],
+    "wildlife": ["What to send", "What you are agreeing to", "Keep your distance", "How GSR checks it",
+                 "Other places to report"],
+    "unexplained": ["What to send", "Check it yourself first, if you like", "What you are agreeing to",
+                    "Before you film", "How GSR checks it", "Other places to report"],
 }
+# Sections the app shows at the top of the screen, before anything else: who to call first.
+TOP = {
+    "wildlife": ["Animal hurt, someone in danger, or a crime?"],
+}
+# Inline tags whose text runs on into the words around them. Every other tag is a break.
+INLINE = r"a|abbr|b|cite|code|em|i|mark|q|s|small|span|strong|sub|sup|u"
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.normpath(os.path.join(HERE, "..", "GSRKit", "forms.json"))
 # The same JSON, compiled into GSRKit as a string so the app and the share extension
@@ -179,8 +195,31 @@ class BoxParser(HTMLParser):
             self.capture[1].append(data)
 
 
+def inline_text(fragment):
+    """Visible text of a block: inline tags join their neighbors, so "RSA 275-E:2</a>," stays "RSA 275-E:2,"."""
+    t = re.sub(r"</?(?:%s)\b[^>]*>" % INLINE, "", fragment)
+    t = re.sub(r"<[^>]+>", " ", t)
+    return re.sub(r"\s+", " ", html.unescape(t)).strip()
+
+
+def links_of(fragment):
+    """The block's links, as {text, url}, in order. Only web, phone and mail links; page anchors are dropped."""
+    out = []
+    for m in re.finditer(r'<a\b[^>]*href="([^"]+)"[^>]*>(.*?)</a>', fragment, re.S):
+        url = html.unescape(m.group(1))
+        if url.startswith("/"):
+            url = SITE + url
+        if not re.match(r"(https?:|tel:|mailto:)", url):
+            continue
+        text = inline_text(m.group(2))
+        if text:
+            out.append({"text": text, "url": url})
+    return out
+
+
 def sections(page_html, headings):
-    """Each named <h2> section as {heading, blocks:[{kind: p|li|box, text}]}, up to the next <h2> or the drop box."""
+    """Each named <h2> section as {heading, blocks:[{kind: p|li|box, text, links?}]}, up to the next
+    <h2>, the drop box, or the end of the article."""
     out = []
     for want in headings:
         m = None
@@ -191,17 +230,57 @@ def sections(page_html, headings):
         if not m:
             raise SystemExit(f"section not found: {want!r}")
         rest = page_html[m.end():]
-        stop = min([i for i in (rest.find("<h2"), rest.find('<div class="gsrdb"')) if i >= 0] or [len(rest)])
+        stop = min([i for i in (rest.find("<h2"), rest.find('<div class="gsrdb"'), rest.find("</article>")) if i >= 0]
+                   or [len(rest)])
         body = rest[:stop]
         blocks = []
         # Paragraphs, list items, and the boxed callouts (div.gsr-statute-box), in page order.
         pat = r'<(p|li)\b[^>]*>(.*?)</\1>|<div class="[^"]*gsr-statute-box[^"]*"[^>]*>(.*?)</div>'
         for b in re.finditer(pat, body, re.S):
-            kind, t = (b.group(1), text_of(b.group(2))) if b.group(1) else ("box", text_of(b.group(3)))
+            kind, raw = (b.group(1), b.group(2)) if b.group(1) else ("box", b.group(3))
+            t = inline_text(raw)
             # The app holds no browser storage; this line describes the website only.
             if t and not t.startswith("Files you drop on other pages of this site"):
-                blocks.append({"kind": kind, "text": t})
+                block = {"kind": kind, "text": t}
+                links = links_of(raw)
+                if links:
+                    block["links"] = links
+                blocks.append(block)
         out.append({"heading": want, "blocks": blocks})
+    return out
+
+
+def sight_config(page_html):
+    """The site's sighting script (#gsr-sight-js): its page settings, the Send menu's entries for the
+    sighting pages, and its own wording for the Quick details panel. None for pages without it."""
+    m = re.search(r"window\.GSR_SIGHT\s*=\s*", page_html)
+    if not m:
+        return None
+    conf, _ = json.JSONDecoder().raw_decode(page_html, m.end())
+    script = page_html[m.end():page_html.find("</script>", m.end())]
+    words = {}
+    for name, cls in (("heading", "gsrq-h"), ("note", "gsrq-sub")):
+        w = re.search(r"el\('p', '%s', '([^']*)'\)" % cls, script)
+        if not w:
+            raise SystemExit(f"sighting script: {cls} text not found")
+        words[name] = w.group(1)
+    if not re.search(r"lines\.push\('Sent from: ' \+ location\.pathname\)", script):
+        raise SystemExit("sighting script: the note label changed; read #gsr-sight-js and update the app")
+    return conf, words
+
+
+def menu_entries(page_html):
+    """The site's Send menu: page path -> {label, blurb}, from the Send Bar and the sighting script."""
+    out = {}
+    pop = page_html.find('id="gsr-sb-pop-upload"')
+    if pop >= 0:
+        end = page_html.find("</div>", pop)
+        for a in re.finditer(r'<a href="([^"#]+)[^"]*">.*?<b>(.*?)</b><span>(.*?)</span></a>', page_html[pop:end], re.S):
+            out[a.group(1).replace(SITE, "")] = {"label": text_of(a.group(2)), "blurb": text_of(a.group(3))}
+    sight = sight_config(page_html)
+    if sight:
+        for e in sight[0].get("menu") or []:
+            out[e["url"].split("#")[0].replace(SITE, "")] = {"label": e["b"], "blurb": e["s"]}
     return out
 
 
@@ -223,7 +302,7 @@ def page_meta(page_html):
     }
 
 
-def parse_page(slug, path, page_html):
+def parse_page(door, slug, path, page_html):
     p = BoxParser()
     p.feed(page_html)
     if not p.form:
@@ -242,7 +321,8 @@ def parse_page(slug, path, page_html):
                 out["rows"] = f["rows"]
         fields.append(out)
     meta = page_meta(page_html)
-    return {
+    entry = {
+        "id": door,
         "form": p.form,
         "slug": slug,
         "pageURL": SITE + path,
@@ -252,9 +332,39 @@ def parse_page(slug, path, page_html):
         "mainLabel": p.labels.get(p.main_id, ""),
         "sendLabel": p.send or "Send",
         "consent": p.consent,
+        "topSections": sections(page_html, TOP.get(slug, [])),
         "readFirst": sections(page_html, READ_FIRST[slug]),
         "fields": fields,
     }
+    # Pages whose "What to send" asks for the original file ("The original can carry the date,
+    # the time, and the place"). The app starts their drafts with photo and video cleaning off.
+    entry["asksForOriginals"] = any(b["text"].startswith("The original file")
+                                    for sec in entry["readFirst"] for b in sec["blocks"])
+    menu = menu_entries(page_html).get(path)
+    if menu:
+        entry["menu"] = menu
+    sight = sight_config(page_html)
+    page = sight[0].get("page") if sight else None
+    if page:
+        # What the site's script does to this page's box: new prompt and button words, the
+        # tips box's own "where" field hidden (the panel asks "Where"), and a label plus the
+        # quick details written at the top of the note on Send.
+        if page.get("main"):
+            entry["mainLabel"] = page["main"]
+        if page.get("send"):
+            entry["sendLabel"] = page["send"]
+        entry["quick"] = {
+            "heading": sight[1]["heading"],
+            "note": sight[1]["note"],
+            "tag": page["tag"],
+            "chipsLabel": page.get("chipsLbl") or None,
+            "chips": page.get("chips") or [],
+            "fields": [{"key": f["k"], "label": f["label"], "placeholder": f.get("ph") or ""}
+                       for f in page.get("fields") or []],
+            "hiddenFields": [f["key"] for f in fields if f["key"] == "where"],
+            "sentFrom": path,
+        }
+    return entry
 
 
 def fetch(path):
@@ -265,20 +375,21 @@ def fetch(path):
 
 def build(html_dir=None):
     forms = []
-    for slug, path in PAGES:
+    for door, slug, path in PAGES:
         if html_dir:
             with open(os.path.join(html_dir, slug + ".html"), encoding="utf-8") as fh:
                 page = fh.read()
         else:
             page = fetch(path)
-        forms.append(parse_page(slug, path, page))
+        forms.append(parse_page(door, slug, path, page))
     return {"api": API, "source": "Read from the live pages by ios/tools/forms_from_site.py", "forms": forms}
 
 
 def comparable(doc):
     """What must match between the app and the site: everything the server or the reader sees."""
     return [
-        {k: f[k] for k in ("form", "pageURL", "mainLabel", "sendLabel", "consent", "readFirst", "fields")}
+        {k: f.get(k) for k in ("id", "form", "pageURL", "mainLabel", "sendLabel", "consent", "topSections",
+                               "readFirst", "fields", "quick", "menu", "asksForOriginals")}
         for f in doc["forms"]
     ]
 
@@ -307,15 +418,18 @@ def main():
         text = json.dumps(live, indent=2, ensure_ascii=False) + "\n"
         with open(args.out, "w", encoding="utf-8") as fh:
             fh.write(text)
-        with open(SWIFT_OUT, "w", encoding="utf-8") as fh:
-            fh.write(swift_source(text))
-        print(f"Wrote {args.out} and {SWIFT_OUT}: " + ", ".join(f"{f['form']} ({len(f['fields'])} fields)" for f in live["forms"]))
+        wrote = [args.out]
+        if os.path.abspath(args.out) == OUT:  # the Swift copy only ever mirrors the app's own forms.json
+            with open(SWIFT_OUT, "w", encoding="utf-8") as fh:
+                fh.write(swift_source(text))
+            wrote.append(SWIFT_OUT)
+        print(f"Wrote {' and '.join(wrote)}: " + ", ".join(f"{f['id']} ({len(f['fields'])} fields)" for f in live["forms"]))
         return 0
     with open(args.out, encoding="utf-8") as fh:
         raw = fh.read()
         saved = json.loads(raw)
     with open(SWIFT_OUT, encoding="utf-8") as fh:
-        if fh.read() != swift_source(raw):
+        if os.path.abspath(args.out) == OUT and fh.read() != swift_source(raw):
             print(f"{SWIFT_OUT} is out of step with {args.out}. Run --write.")
             return 1
     live = build(args.html_dir)
@@ -326,8 +440,8 @@ def main():
     print("forms.json no longer matches the live pages. Run --write, review the diff, and ship an app update.")
     for x, y in zip(a, b):
         if x != y:
-            print(f"--- app  {x['form']}\n{json.dumps(x, indent=1, ensure_ascii=False)}")
-            print(f"+++ site {y['form']}\n{json.dumps(y, indent=1, ensure_ascii=False)}")
+            print(f"--- app  {x['id']}\n{json.dumps(x, indent=1, ensure_ascii=False)}")
+            print(f"+++ site {y['id']}\n{json.dumps(y, indent=1, ensure_ascii=False)}")
     if len(a) != len(b):
         print(f"Form count differs: app {len(a)}, site {len(b)}")
     return 1

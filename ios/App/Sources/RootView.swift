@@ -10,12 +10,19 @@ struct RootView: View {
     var body: some View {
         TabView(selection: $router.tab) {
             SendHomeView()
+                .safeAreaInset(edge: .bottom) { MiniPlayer() }
                 .tabItem { Label("Send", systemImage: "paperplane") }
                 .tag(AppRouter.Tab.send)
             LatestView()
+                .safeAreaInset(edge: .bottom) { MiniPlayer() }
                 .tabItem { Label("Latest", systemImage: "newspaper") }
                 .tag(AppRouter.Tab.latest)
+            ListenView()
+                .safeAreaInset(edge: .bottom) { MiniPlayer() }
+                .tabItem { Label("Listen", systemImage: "headphones") }
+                .tag(AppRouter.Tab.listen)
             ContactView()
+                .safeAreaInset(edge: .bottom) { MiniPlayer() }
                 .tabItem { Label("Contact", systemImage: "lock.shield") }
                 .tag(AppRouter.Tab.contact)
         }

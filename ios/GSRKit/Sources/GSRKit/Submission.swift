@@ -21,7 +21,8 @@ public struct Submission: Codable, Hashable, Identifiable, Sendable {
     }
 
     public var id: UUID
-    /// The drop box's form name ("tips", "story", "inside", "nothing").
+    /// The door's id in the catalog (`DropForm.id`): "tips", "story", "inside", "nothing",
+    /// "research", "wildlife", "unexplained". The server form name comes from the catalog.
     public var form: String
     public var origin: Origin
     public var createdAt: Date
@@ -30,6 +31,8 @@ public struct Submission: Codable, Hashable, Identifiable, Sendable {
     public var main: String
     /// The "Add details" fields, keyed as the page keys them.
     public var fields: [String: FieldValue]
+    /// The Quick details on the sighting pages. They go out as lines at the top of the note.
+    public var quick: QuickValues?
     public var items: [SubmissionItem]
     /// Remove location and device details from photos and videos before they upload.
     public var scrubMedia: Bool
@@ -44,16 +47,17 @@ public struct Submission: Codable, Hashable, Identifiable, Sendable {
     /// If it is still set at the next try, the box may already have the submission.
     public var finishTriedAt: Date?
 
-    public init(id: UUID = UUID(), form: DropForm, origin: Origin = .app, scrubMedia: Bool = true, now: Date = Date()) {
+    /// `scrubMedia` defaults to on, except for pages that ask for the original file.
+    public init(id: UUID = UUID(), form: DropForm, origin: Origin = .app, scrubMedia: Bool? = nil, now: Date = Date()) {
         self.id = id
-        self.form = form.form
+        self.form = form.id
         self.origin = origin
         self.createdAt = now
         self.updatedAt = now
         self.main = ""
         self.fields = form.defaultFields
         self.items = []
-        self.scrubMedia = scrubMedia
+        self.scrubMedia = scrubMedia ?? !form.asksForOriginals
         self.phase = .draft
     }
 
@@ -67,7 +71,27 @@ public struct Submission: Codable, Hashable, Identifiable, Sendable {
     public func hasContent(in form: DropForm) -> Bool {
         if !liveItems.isEmpty { return true }
         if !main.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { return true }
+        if let q = form.quick, let values = quick?.values,
+           q.fields.contains(where: { !(values[$0.key] ?? "").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }) {
+            return true
+        }
         return form.fields.contains { f in fields[f.key]?.isTyped(for: f.kind) ?? false }
+    }
+
+    /// The note exactly as the page would post it. On the sighting pages the site's script
+    /// puts a label and the Quick details at the top; the app writes the same lines, and says
+    /// on the "Sent from" line that it came from the app.
+    public func mainForSending(in form: DropForm) -> String {
+        guard let q = form.quick else { return main }
+        let chip = quick?.chip.flatMap { q.chips.contains($0) ? $0 : nil }
+        var lines = ["[" + q.tag + (chip.map { " · " + $0 } ?? "") + "]"]
+        for f in q.fields {
+            let v = (quick?.values[f.key] ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+            if !v.isEmpty { lines.append(f.key + ": " + v) }
+        }
+        lines.append("Sent from: " + q.sentFrom + " (iPhone app)")
+        let head = lines.joined(separator: "\n")
+        return main.isEmpty ? head : head + "\n\n" + main
     }
 
     /// Worth keeping on the phone: something to send, or a file held back that the sender
@@ -104,6 +128,19 @@ public struct Submission: Codable, Hashable, Identifiable, Sendable {
             }
         }
         return out
+    }
+}
+
+/// What the sender filled in on a Quick details panel.
+public struct QuickValues: Codable, Hashable, Sendable {
+    /// Keyed by `QuickDetails.Field.key`.
+    public var values: [String: String]
+    /// The chip picked, if the page has chips and one is picked.
+    public var chip: String?
+
+    public init(values: [String: String] = [:], chip: String? = nil) {
+        self.values = values
+        self.chip = chip
     }
 }
 

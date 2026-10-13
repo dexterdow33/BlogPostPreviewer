@@ -82,7 +82,7 @@ struct ShareRootView: View {
                             .foregroundStyle(GSRTheme.ink2)
                         Picker("Drop box", selection: $formName) {
                             ForEach(DropCatalog.bundled.forms) { f in
-                                Text(f.title).tag(f.form)
+                                Text(f.title).tag(f.id)
                             }
                         }
                         .pickerStyle(.menu)

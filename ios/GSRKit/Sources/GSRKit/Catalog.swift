@@ -21,13 +21,19 @@ public struct DropCatalog: Codable, Hashable, Sendable {
         }
     }()
 
-    public func form(_ name: String) -> DropForm? {
-        forms.first { $0.form == name }
+    /// The door with this id ("tips", "story", "inside", "nothing", "research", "wildlife",
+    /// "unexplained").
+    public func form(_ id: String) -> DropForm? {
+        forms.first { $0.id == id }
     }
 }
 
 /// One drop box: a page on the site and the form at the bottom of it.
 public struct DropForm: Codable, Hashable, Identifiable, Sendable {
+    /// The app's name for this door. For the first four pages it is the server's form name;
+    /// Research Files, Wild New Hampshire, and Something You Can't Explain carry the Send a
+    /// Tip box, so the server files them as "tips" and only the app tells them apart.
+    public var id: String
     /// The server's name for the form ("tips", "story", "inside", "nothing").
     public var form: String
     public var slug: String
@@ -41,12 +47,26 @@ public struct DropForm: Codable, Hashable, Identifiable, Sendable {
     public var sendLabel: String
     /// The notice above the Send button, word for word. `nil` when the page has none.
     public var consent: String?
+    /// Sections the app shows first, before anything else (who to call in an emergency).
+    public var topSections: [ReadFirstSection]
     /// The page sections a sender is asked to read or accept, word for word.
     public var readFirst: [ReadFirstSection]
     /// The optional fields under "Add details", in page order.
     public var fields: [DropField]
+    /// The site's Send menu entry for this page, when it has one.
+    public var menu: MenuEntry?
+    /// The page's Quick details panel, on the sighting pages.
+    public var quick: QuickDetails?
+    /// The page asks for the original file because it "can carry the date, the time, and the
+    /// place". Drafts for it start with photo and video cleaning off.
+    public var asksForOriginals: Bool
 
-    public var id: String { form }
+    /// The "Add details" fields the sender sees. The sighting pages hide the Send a Tip box's
+    /// own "where" field because their Quick details ask for it; it still goes out, empty.
+    public var visibleFields: [DropField] {
+        let hidden = Set(quick?.hiddenFields ?? [])
+        return fields.filter { !hidden.contains($0.key) }
+    }
 
     /// The value every field starts with, as the page's controls start.
     public var defaultFields: [String: FieldValue] {
@@ -54,6 +74,39 @@ public struct DropForm: Codable, Hashable, Identifiable, Sendable {
         for f in fields { out[f.key] = f.defaultValue }
         return out
     }
+}
+
+public struct MenuEntry: Codable, Hashable, Sendable {
+    public var label: String
+    public var blurb: String
+}
+
+/// The Quick details panel the site's script adds to the sighting pages (#gsr-sight-js).
+/// On Send it writes a label and the filled-in details at the top of the note:
+///
+///     [Unexplained · In the sky]
+///     When: Oct. 4, 9:40 p.m.
+///     Where: Gilford, Route 11
+///     Sent from: /unexplained/
+///
+/// so the editor can tell these from ordinary tips. The app writes the same lines.
+public struct QuickDetails: Codable, Hashable, Sendable {
+    public struct Field: Codable, Hashable, Sendable {
+        /// The name written in the note ("When").
+        public var key: String
+        public var label: String
+        public var placeholder: String
+    }
+    public var heading: String
+    public var note: String
+    public var tag: String
+    public var chipsLabel: String?
+    public var chips: [String]
+    public var fields: [Field]
+    /// Keys of the box's own fields the panel replaces.
+    public var hiddenFields: [String]
+    /// The page path the site writes on the "Sent from" line.
+    public var sentFrom: String
 }
 
 public struct PageVersion: Codable, Hashable, Sendable {
@@ -74,6 +127,14 @@ public struct ReadFirstSection: Codable, Hashable, Sendable {
         }
         public var kind: Kind
         public var text: String
+        /// Links inside the text, in order: phone numbers, pages, statutes.
+        public var links: [Link]?
+    }
+
+    public struct Link: Codable, Hashable, Sendable {
+        /// The linked words, exactly as they appear in `text`.
+        public var text: String
+        public var url: URL
     }
 }
 

@@ -1,0 +1,111 @@
+import XCTest
+@testable import GSRKit
+
+final class ListenTests: XCTestCase {
+    func testReadsTheAudioArticlesPage() throws {
+        let lib = try ListenClient.parseLibrary(audioLibraryFixture)
+        XCTAssertTrue(lib.disclosure.hasPrefix("Most articles here are read in Dexter Dow’s voice, produced by a voice clone"), lib.disclosure)
+        XCTAssertTrue(lib.disclosure.hasSuffix("The article is the record; the audio is a reading of it."), lib.disclosure)
+        XCTAssertEqual(lib.articles.count, 4)
+        let first = lib.articles[0]
+        XCTAssertEqual(first.title, "He Taped Over “Live Free or Die” and Went to Jail. His Case Still Shapes Who Can Be Forced to Speak.")
+        XCTAssertEqual(first.date, "October 5, 2026")
+        XCTAssertEqual(first.voice, "Dexter Dow’s voice")
+        XCTAssertEqual(first.duration, "11:07")
+        XCTAssertFalse(first.isSynthetic)
+        XCTAssertNil(first.note)
+        XCTAssertEqual(first.articleURL.absoluteString, "https://granitestatereport.com/2026/10/05/wooley-v-maynard-live-free-or-die-license-plate-case/")
+        XCTAssertTrue(first.audioURL.absoluteString.hasSuffix("/XMmwe3ORzYEGKjLKUoVj.mp3"))
+        let synthetic = lib.articles.filter(\.isSynthetic)
+        XCTAssertEqual(synthetic.count, 2)
+        XCTAssertTrue(synthetic.allSatisfy { $0.voice == "Synthetic voice" })
+        XCTAssertTrue(synthetic.contains { $0.note?.hasPrefix("Evidence track") == true })
+    }
+
+    func testFindsAnArticlesNarrationByAddress() throws {
+        let lib = try ListenClient.parseLibrary(audioLibraryFixture)
+        let url = URL(string: "http://granitestatereport.com/2026/10/05/wooley-v-maynard-live-free-or-die-license-plate-case?utm_source=x#top")!
+        XCTAssertEqual(lib.narration(for: url)?.duration, "11:07")
+        XCTAssertNil(lib.narration(for: URL(string: "https://granitestatereport.com/2026/01/01/nothing/")!))
+
+        let article = URL(string: "https://granitestatereport.com/a/")!
+        let audio = { (n: String) in URL(string: "https://example.com/\(n).mp3")! }
+        let both = AudioLibrary(disclosure: "x", articles: [
+            AudioArticle(title: "t", articleURL: article, date: "", voice: "", isSynthetic: true, duration: "1:00", audioURL: audio("evidence"), note: "Evidence track"),
+            AudioArticle(title: "t", articleURL: article, date: "", voice: "", isSynthetic: false, duration: "9:00", audioURL: audio("full")),
+        ])
+        XCTAssertEqual(both.narration(for: article)?.duration, "9:00", "the full narration, not the extra track")
+    }
+
+    func testReadsThePodcastPage() throws {
+        let pod = try ListenClient.parsePodcast(podcastFixture)
+        XCTAssertTrue(pod.disclosure.hasPrefix("Made by AI, checked by the newsroom."), pod.disclosure)
+        XCTAssertTrue(pod.disclosure.hasSuffix("The episode is a conversation about them."), pod.disclosure)
+        XCTAssertEqual(pod.episodes.count, 2)
+        let ep = pod.episodes[0]
+        XCTAssertEqual(ep.title, "New Hampshire By The Numbers")
+        XCTAssertEqual(ep.made, "Made October 11, 2026")
+        XCTAssertEqual(ep.hosts, "AI hosts")
+        XCTAssertEqual(ep.duration, "13:25")
+        XCTAssertTrue(ep.summary.hasPrefix("A tour of more than twenty GSR explainers"), ep.summary)
+        XCTAssertTrue(ep.audioURL.absoluteString.hasSuffix(".wav"))
+        XCTAssertEqual(ep.articles.first?.text, "GSR Tools")
+        XCTAssertEqual(ep.articles.first?.url.absoluteString, "https://granitestatereport.com/2026/09/29/gsr-tools/")
+        XCTAssertTrue(ep.note.first?.hasPrefix("The hosts open with") == true, "\(ep.note)")
+        XCTAssertFalse(ep.note.contains { $0.hasPrefix("Listener") }, "the heading is not a note")
+        XCTAssertEqual(ep.transcript.count, 3)
+        XCTAssertEqual(ep.transcript.first?.speaker, "Pip")
+        XCTAssertTrue(ep.transcript.first?.text.hasPrefix("Granite State Report covers") == true)
+        let oldest = pod.episodes[1]
+        XCTAssertEqual(oldest.made, "Made September 17, 2026")
+        XCTAssertTrue(oldest.note.isEmpty, "this episode has no listener's note")
+    }
+
+    func testAChangedPageIsAnErrorNotAnEmptyList() {
+        XCTAssertThrowsError(try ListenClient.parseLibrary("<html><p>Hello</p></html>")) { e in
+            XCTAssertEqual(e as? ListenError, .pageChanged("the note about the voices"))
+        }
+        XCTAssertThrowsError(try ListenClient.parsePodcast("<h2>Episodes</h2>"))
+        // The note is there but the list's markup changed: still an error, never a bare list.
+        let noItems = audioLibraryFixture.replacingOccurrences(of: "gsra-item", with: "gsra-entry")
+        XCTAssertThrowsError(try ListenClient.parseLibrary(noItems))
+    }
+
+    func testClock() {
+        XCTAssertEqual(Clock.seconds("11:07"), 667)
+        XCTAssertEqual(Clock.seconds("1:02:03"), 3723)
+        XCTAssertNil(Clock.seconds("soon"))
+        XCTAssertEqual(Clock.text(65), "1:05")
+        XCTAssertEqual(Clock.text(3725), "1:02:05")
+        XCTAssertEqual(Clock.text(.nan), "0:00")
+    }
+}
+
+/// Reads the live pages. Runs only with GSR_LIVE_SITE=1 (the weekly CI check), so pull
+/// requests never depend on the site being up.
+final class LiveSiteTests: XCTestCase {
+    override func setUpWithError() throws {
+        try XCTSkipUnless(ProcessInfo.processInfo.environment["GSR_LIVE_SITE"] == "1", "set GSR_LIVE_SITE=1 to read the live pages")
+    }
+
+    func testTheAudioArticlesPageStillReads() async throws {
+        let lib = try await ListenClient().audioLibrary()
+        XCTAssertGreaterThan(lib.articles.count, 0)
+        XCTAssertTrue(lib.disclosure.contains("voice"))
+        for a in lib.articles {
+            XCTAssertEqual(a.articleURL.host, "granitestatereport.com", a.title)
+            XCTAssertNotNil(Clock.seconds(a.duration), "\(a.title): \(a.duration)")
+            XCTAssertFalse(a.voice.isEmpty, a.title)
+        }
+    }
+
+    func testThePodcastPageStillReads() async throws {
+        let pod = try await ListenClient().podcast()
+        XCTAssertGreaterThan(pod.episodes.count, 0)
+        for e in pod.episodes {
+            XCTAssertFalse(e.title.isEmpty)
+            XCTAssertNotNil(Clock.seconds(e.duration), "\(e.title): \(e.duration)")
+            XCTAssertFalse(e.hosts.isEmpty, e.title)
+        }
+    }
+}

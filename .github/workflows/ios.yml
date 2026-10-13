@@ -6,12 +6,13 @@ name: iOS app
 #   app        On macOS: generate the Xcode project, run every package test (photo and
 #              video cleaning included), build the app and share extension for the
 #              simulator, and take App Store screenshots of the real build.
-#   forms      Checks that the four drop box forms on granitestatereport.com still match
-#              the app's copy. Runs weekly; a failure means the site changed and the app
-#              needs an update. Never blocks a pull request.
+#   forms      Checks that the seven drop box pages on granitestatereport.com still match
+#              the app's copy, and that the Audio Articles and Podcast pages still read.
+#              Runs weekly; a failure means the site changed and the app needs an update.
+#              Never blocks a pull request.
 #   testflight Manual only (Actions tab > iOS app > Run workflow, testflight: true):
 #              archives, signs, and uploads a build to App Store Connect. Needs the
-#              repository secrets listed in docs/GSR_iOS_App_Launch_Checklist_v1_2026-10-05.md.
+#              repository secrets listed in docs/GSR_iOS_App_Launch_Checklist_v2_2026-10-13.md.
 
 on:
   pull_request:
@@ -116,9 +117,11 @@ jobs:
           }
           NAME=1-send shot
           NAME=2-quick-tip shot -GSRScreenshotForm tips
-          NAME=3-documents shot -GSRScreenshotForm nothing
-          NAME=4-latest shot -GSRScreenshotTab latest
-          NAME=5-contact shot -GSRScreenshotTab contact
+          NAME=3-wildlife shot -GSRScreenshotForm wildlife
+          NAME=4-documents shot -GSRScreenshotForm nothing
+          NAME=5-latest shot -GSRScreenshotTab latest
+          NAME=6-listen shot -GSRScreenshotTab listen
+          NAME=7-contact shot -GSRScreenshotTab contact
           # App Store Connect refuses screenshots with an alpha channel: save JPEGs.
           for f in screenshots/*.png; do
             sips -s format jpeg -s formatOptions 92 "$f" --out "${f%.png}.jpg" >/dev/null && rm "$f"
@@ -143,6 +146,20 @@ jobs:
       - name: Compare forms.json with the live pages
         run: python3 ios/tools/forms_from_site.py --check
 
+  listen:
+    name: Audio Articles and Podcast pages still read
+    if: github.event_name != 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    container: swift:6.2
+    timeout-minutes: 20
+    continue-on-error: ${{ github.event_name == 'pull_request' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read the live pages with the app's own code
+        env:
+          GSR_LIVE_SITE: "1"
+        run: cd ios/GSRKit && swift test --filter LiveSiteTests
+
   testflight:
     name: Upload to TestFlight
     if: github.event_name == 'workflow_dispatch' && inputs.testflight
@@ -165,7 +182,7 @@ jobs:
             [ -n "${!v}" ] || missing="$missing $v"
           done
           if [ -n "$missing" ]; then
-            echo "::error::Missing repository secrets:$missing. Add them under Settings > Secrets and variables > Actions: ASC_KEY_ID and ASC_ISSUER_ID (an Admin-role team key from App Store Connect > Users and Access > Integrations), ASC_KEY_P8 (the AuthKey .p8 contents, raw or base64), APPLE_TEAM_ID. The app record for com.granitestatereport.app must exist in App Store Connect before the first upload. Full steps: docs/GSR_iOS_App_Launch_Checklist_v1_2026-10-05.md."
+            echo "::error::Missing repository secrets:$missing. Add them under Settings > Secrets and variables > Actions: ASC_KEY_ID and ASC_ISSUER_ID (an Admin-role team key from App Store Connect > Users and Access > Integrations), ASC_KEY_P8 (the AuthKey .p8 contents, raw or base64), APPLE_TEAM_ID. The app record for com.granitestatereport.app must exist in App Store Connect before the first upload. Full steps: docs/GSR_iOS_App_Launch_Checklist_v2_2026-10-13.md."
             exit 1
           fi
       - name: Tools and project

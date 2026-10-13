@@ -28,6 +28,9 @@ struct ContactView: View {
                         Text("Messages are encrypted end to end, and you can set them to disappear. A username lets you reach the editor without handing over your phone number. Use a personal phone, never a work one.")
                             .font(.footnote).foregroundStyle(GSRTheme.ink2)
                     }
+                    Button { openURL(GSRContact.signalLink) } label: {
+                        Label("Open the chat in Signal", systemImage: "bubble.left.and.text.bubble.right")
+                    }
                     Button { copy(GSRContact.signalUsername, label: "Signal username") } label: {
                         Label("Copy the Signal username", systemImage: "doc.on.doc")
                     }

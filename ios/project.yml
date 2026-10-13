@@ -60,8 +60,11 @@ targets:
         # app, with progress on the Lock Screen. Identifiers are this prefix plus an id.
         BGTaskSchedulerPermittedIdentifiers:
           - com.granitestatereport.app.send.*
+        # processing: a send keeps going after you leave the app (iOS 26).
+        # audio: an audio article or podcast episode keeps playing with the screen locked.
         UIBackgroundModes:
           - processing
+          - audio
         UIApplicationShortcutItems:
           - UIApplicationShortcutItemType: com.granitestatereport.app.tip
             UIApplicationShortcutItemTitle: Send a Tip

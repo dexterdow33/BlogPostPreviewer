@@ -105,11 +105,14 @@ public actor SubmissionUploader {
     // MARK: Editing while not sending
 
     /// Replaces the note, fields, and cleaning choice. Ignored while a send is running.
-    public func update(main: String, fields: [String: FieldValue], scrubMedia: Bool) {
+    /// Saves the note, details, and the cleaning choice. `quick` replaces the Quick details
+    /// when given; nil leaves them as they are.
+    public func update(main: String, fields: [String: FieldValue], scrubMedia: Bool, quick: QuickValues? = nil) {
         guard !sending, submission.phase != .sent else { return }
         submission.main = main
         submission.fields = fields
         submission.scrubMedia = scrubMedia
+        if let quick { submission.quick = quick }
         publish()
     }
 
@@ -169,7 +172,7 @@ public actor SubmissionUploader {
     public func switchForm(to newForm: DropForm) -> Bool {
         guard !sending, submission.token == nil, submission.phase == .draft else { return false }
         form = newForm
-        submission.form = newForm.form
+        submission.form = newForm.id
         submission.fields = newForm.defaultFields
         publish()
         return true
@@ -292,7 +295,7 @@ public actor SubmissionUploader {
     /// the box most likely closed it on that earlier `finish`: say so rather than send twice.
     private func finishOnce(token: String) async throws {
         let client = self.client
-        let main = submission.main
+        let main = submission.mainForSending(in: form)
         let fields = submission.fieldsForSending(in: form)
         var unanswered = submission.finishTriedAt != nil
         submission.finishTriedAt = Date()

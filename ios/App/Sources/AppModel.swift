@@ -7,7 +7,7 @@ import SwiftUI
 final class AppRouter: ObservableObject {
     static let shared = AppRouter()
 
-    enum Tab: Hashable { case send, latest, contact }
+    enum Tab: Hashable { case send, latest, listen, contact }
 
     enum Route: Hashable {
         /// A drop box. `nonce` makes each opening a fresh screen.
@@ -23,10 +23,11 @@ final class AppRouter: ObservableObject {
 
     private init() {
         // App Store screenshots: the CI workflow launches the simulator build with
-        // -GSRScreenshotTab latest|contact or -GSRScreenshotForm <form> to open a screen.
+        // -GSRScreenshotTab latest|listen|contact or -GSRScreenshotForm <door> to open a screen.
         let d = UserDefaults.standard
         switch d.string(forKey: "GSRScreenshotTab") {
         case "latest": tab = .latest
+        case "listen": tab = .listen
         case "contact": tab = .contact
         default: break
         }
