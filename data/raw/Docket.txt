@@ -24175,7 +24175,7 @@
 2026|0675|6/3/2026 1:28:40 PM|HB635|H|   Full Committee Work Session: 06/15/2026 10:00 am GP 159|6/3/2026 1:28:40 PM
 2026|0387|6/3/2026 1:28:55 PM|HB660|H|   Full Committee Work Session: 06/15/2026 10:00 am GP 159|6/3/2026 1:28:55 PM
 2026|2821|6/3/2026 1:29:15 PM|HB1293|H|   Full Committee Work Session: 06/15/2026 10:00 am GP 159|6/3/2026 1:29:15 PM
-2026|3187|6/3/2026 1:29:29 PM|HB1599|H|   Full Committee Work Session: 06/15/2026 10:00 am GP 159|6/3/2026 1:29:29 PM
+2026|3187|6/3/2026 1:29:29 PM|HB1599|H|   Full Committee Work Session: 06/15/2026 10:00 am GP 159|10/12/2026 8:52:58 AM
 2026|3232|6/3/2026 1:29:46 PM|HB1646|H|   Full Committee Work Session: 06/15/2026 10:00 am GP 159|6/3/2026 1:29:46 PM
 2026|3209|6/3/2026 1:30:02 PM|HB1647|H|   Full Committee Work Session: 06/15/2026 10:00 am GP 159|6/3/2026 1:30:02 PM
 2026|3178|6/3/2026 1:30:19 PM|HB1648|H|   Full Committee Work Session: 06/15/2026 10:00 am GP 159|6/3/2026 1:30:19 PM
@@ -25308,7 +25308,7 @@
 2026|3209|9/14/2026 10:10:43 AM|HB1647|H| Interim Study Report: Recommended for Future Legislation  09/02/2026 (Vote 12-6; )|9/14/2026 10:10:43 AM
 2026|0213|9/14/2026 10:12:09 AM|HB224|H| Interim Study Report: Recommended for Future Legislation  09/02/2026 (Vote 11-7; )|9/14/2026 10:12:09 AM
 2026|0675|9/14/2026 10:13:40 AM|HB635|H| Interim Study Report: Not Recommended for Future Legislation  09/02/2026 (Vote 18-0; )|9/14/2026 10:13:40 AM
-2026|3187|9/14/2026 10:15:35 AM|HB1599|H| Interim Study Report: Not Recommended for Future Legislation  09/02/2026 (Vote 18-0; )|9/14/2026 10:15:35 AM
+2026|3187|9/14/2026 10:15:35 AM|HB1599|H| Interim Study Report: Not Recommended for Future Legislation  09/02/2026 (Vote 18-0; )|10/12/2026 8:53:04 AM
 2026|0605|9/14/2026 10:17:35 AM|HB417|H| Interim Study Report: Not Recommended for Future Legislation  09/02/2026 (Vote 18-0; )|9/14/2026 10:17:35 AM
 2026|0387|9/14/2026 10:18:34 AM|HB660|H| Interim Study Report: Recommended for Future Legislation  09/02/2026 (Vote 18-0; )|9/14/2026 10:18:34 AM
 2026|0038|9/15/2026 3:58:02 PM|HB100|H|   Full Committee Work Session: 09/29/2026 10:00 am GP 228|9/15/2026 3:58:02 PM
@@ -25431,3 +25431,4 @@
 2026|1129|10/7/2026 3:43:52 PM|SB193|H|   Full Committee Work Session: 10/15/2026 10:30 am GP 231|10/7/2026 3:43:52 PM
 2026|2253|10/7/2026 3:44:23 PM|SB425|H|   Full Committee Work Session: 10/15/2026 10:30 am GP 231|10/7/2026 3:44:23 PM
 2026|3269|10/7/2026 3:44:43 PM|SB669|H|   Full Committee Work Session: 10/15/2026 10:30 am GP 231|10/7/2026 3:44:43 PM
+2026|3187|10/12/2026 8:52:50 AM|HB1599|H|  Executive Session: 06/15/2026 10:30 am GP 159|10/12/2026 8:53:04 AM
