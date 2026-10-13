@@ -25,7 +25,11 @@ public enum Doors {
         case "archive", "research", "wildlife", "unexplained":
             let symbols = ["archive": "archivebox", "research": "tablecells", "wildlife": "pawprint", "unexplained": "moon.stars"]
             let symbol = symbols[form.id] ?? "tray.and.arrow.up"
-            return Door(label: form.menu?.label ?? form.title, blurb: form.menu?.blurb ?? form.dek ?? "", symbol: symbol)
+            var blurb = form.menu?.blurb ?? form.dek ?? ""
+            // The Archive's "What happens next": a record sent here is checked, has private
+            // information removed, and is then published. Say so before the door opens.
+            if form.id == "archive" { blurb += ". Published after the editor checks it and removes private information." }
+            return Door(label: form.menu?.label ?? form.title, blurb: blurb, symbol: symbol)
         case "story":
             return Door(label: "For anyone", blurb: "Something a town, agency, court, school, or police department did to you or in front of you.", symbol: "person.wave.2")
         case "nothing":
