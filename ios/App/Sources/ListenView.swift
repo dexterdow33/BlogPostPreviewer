@@ -70,7 +70,6 @@ struct ListenView: View {
     }
 
     @EnvironmentObject private var listen: ListenModel
-    @EnvironmentObject private var player: AudioPlayer
     @State private var shelf: Shelf = .articles
     @State private var query = ""
     @State private var voice: VoiceFilter = .all
@@ -91,7 +90,7 @@ struct ListenView: View {
                 case .podcast: episodes
                 }
 
-                Text("Most audio articles play from ElevenLabs’ servers; the rest, and the podcast, play from granitestatereport.com, as they do on the site. Those servers see your IP address. Where you stopped in each recording is kept on this phone only.")
+                Text("Most audio articles play from ElevenLabs’ servers; the rest, and the podcast, play from granitestatereport.com, as they do on the site. Those servers see your IP address. Where you stopped in each recording stays in the app on this phone, left out of backups.")
                     .font(.caption)
                     .foregroundStyle(GSRTheme.ink3)
                     .listRowBackground(GSRTheme.paper2)
@@ -299,6 +298,9 @@ struct EpisodeView: View {
                 Text([episode.made, episode.hosts, episode.duration].filter { !$0.isEmpty }.joined(separator: " · "))
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(GSRTheme.ink3)
+                if let made = episode.madeNote {
+                    Text(made).font(.caption).foregroundStyle(GSRTheme.ink2)
+                }
                 Text(episode.summary).font(GSRTheme.serif(.body)).foregroundStyle(GSRTheme.ink)
                 Button(isCurrent && player.isPlaying ? "Pause" : "Play the episode") {
                     if isCurrent { player.toggle() } else { player.play(playable) }
@@ -307,7 +309,7 @@ struct EpisodeView: View {
 
                 if !episode.note.isEmpty {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Listener’s note")
+                        Text(episode.noteHeading ?? "Listener’s note")
                             .font(GSRTheme.serif(.headline, bold: true))
                             .foregroundStyle(GSRTheme.navy)
                         ForEach(episode.note, id: \.self) { n in

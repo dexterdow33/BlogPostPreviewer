@@ -160,6 +160,8 @@ final class AppModel: ObservableObject {
         models.removeAll()
         draftByForm.removeAll()
         store?.wipe()
+        // Where each recording was left says what was listened to: that goes too.
+        AudioPlayer.shared.eraseListening()
         // Picker and recorder copies waiting in the app's temporary folder go too.
         let fm = FileManager.default
         for name in (try? fm.contentsOfDirectory(atPath: fm.temporaryDirectory.path)) ?? [] {

@@ -159,6 +159,11 @@ public final class ComposeModel: ObservableObject, Identifiable {
         form = newForm
         // Its debounced save goes to the same uploader, which already has the new form.
         fields = newForm.defaultFields
+        // Quick details belong to the page that asked for them: keep only what the new page
+        // asks for too, so nothing hidden stays in the draft.
+        let keys = Set(newForm.quick?.fields.map(\.key) ?? [])
+        let chip = quick.chip.flatMap { newForm.quick?.chips.contains($0) == true ? $0 : nil }
+        quick = QuickValues(values: quick.values.filter { keys.contains($0.key) }, chip: chip)
         // A page that asks for original files starts with cleaning off, the others with it
         // on. Follow the new page unless the sender already changed the switch.
         if scrubMedia == !oldForm.asksForOriginals { scrubMedia = !newForm.asksForOriginals }

@@ -101,7 +101,7 @@ struct ContactView: View {
             .background(GSRTheme.paper2.ignoresSafeArea())
             .navigationTitle("Contact")
             .sheet(item: $page) { p in SafariView(url: p.url).ignoresSafeArea() }
-            .confirmationDialog("Delete every unsent draft and file the app is holding? Anything mid-send stops. This cannot be undone.",
+            .confirmationDialog("Delete every unsent draft and file the app is holding, and where you stopped in each recording? Anything mid-send or playing stops. This cannot be undone.",
                                 isPresented: $confirmWipe, titleVisibility: .visible) {
                 Button("Delete everything", role: .destructive) { app.wipe() }
             }

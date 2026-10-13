@@ -20,7 +20,7 @@ Checked against the live site on October 13, 2026, by reading the pages and the 
 | Wild New Hampshire puts Fish and Game, Operation Game Thief, and USDA numbers first | `/wildlife/` | Shown at the top of that screen. The numbers dial on tap. |
 | Drop box warning, October 10 and 11: notices go to the newsroom's Gmail and the editor's personal Gmail; files are encrypted on arrival; notices give counts and sizes only | Nothing to See Here v2.3; the Archive's version log | The app's safety note, the store description, and the policy draft use the new wording. The old "files attached under 15 MB" line is gone everywhere. |
 | Audio Articles page: 187 recordings, 181 in a voice clone of your voice, 6 synthetic | `/audio-library/` | New Listen tab, with the page's note on the voices at the top, word for word. |
-| Podcast page: 27 episodes, AI hosts, listener's notes, transcripts | `/podcast/` | Same tab. Each episode shows its listener's note, the articles discussed, and the transcript. |
+| Podcast page: 27 episodes, AI hosts, listener's notes, "How this episode was made" notes, transcripts | `/podcast/` | Same tab. Each episode shows its note under the page's own heading, any production line, the articles discussed, and the transcript. |
 | The Send menu lists GSR tools | Site-wide menu | Listed under the stories on the Latest tab. |
 | A Signal username link on the Send a Tip page | `/tips/` | Contact tab: "Open the chat in Signal". |
 | Page text versions: Send a Tip, Tell Us Your Story, Inside the Building 1.3 to 1.5; Nothing to See Here 2.1 to 2.3 | Page bylines | Read-first text regenerated from the pages. |
@@ -34,6 +34,10 @@ These are site issues, not app issues. I changed nothing on the site.
 2. **The policy does not name ElevenLabs.** Article pages load `elevenlabs.io/player/audioNativeHelper.js` and an ElevenLabs player under the byline, and 181 of the 187 audio articles play from `eleven-public-cdn.elevenlabs.io`. The draft adds an entry.
 3. **A third email address.** The site-wide "Reach the editor" menu says "Email dexterdow@granitestatereport.com". The Send a Tip page body and the footer say granitestatereport@gmail.com. Your standing instructions list granitestatereport@gmail.com as GSR-facing and dexterdow33@gmail.com as editor-direct, and do not mention the granitestatereport.com address. The domain does have mail service (its MX records point to Titan). The app keeps granitestatereport@gmail.com, matching the Send a Tip page. Tell me if the domain address should replace it.
 4. **Research Files sends are unlabeled.** The site's Quick details script does not run on `/research-files/`, so those sends arrive as plain tips. The app does the same. If you want them labeled, change the site's script and the app follows.
+
+## Review
+
+An independent review of the code found no compile errors (the Mac build agrees) and nine problems, all fixed before this version: a failed recording could not be retried without closing the player; a call ending could restart audio you had paused; switching recordings could erase a saved place; the delete button left listening positions behind; those positions went into backups while the app said they stayed on the phone; scripted episodes' "How this episode was made" note was headed "Listener's note"; seven episodes' production lines were dropped; Quick details stayed hidden in a draft after switching drop boxes; and the Listen tab redrew twice a second during playback.
 
 ## What I could not verify
 
