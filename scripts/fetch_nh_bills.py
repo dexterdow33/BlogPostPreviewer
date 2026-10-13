@@ -41,6 +41,7 @@ import argparse
 import collections
 import datetime as dt
 import hashlib
+from html import unescape as html_unescape
 import json
 import os
 import re
@@ -436,6 +437,8 @@ def main() -> int:
     # saved copies, so its build time says nothing about how fresh the data is.
     fetched_marker = os.path.join(raw_dir, "_fetched_at.txt")
     reused_copy = False
+    served_empty: list[str] = []   # required or optional files the dump served with no content
+    source_errors: list[str] = []  # error lines the download page itself printed
     if args.offline:
         for name in list(REQUIRED_FILES) + OPTIONAL_FILES:
             p = os.path.join(raw_dir, name)
@@ -447,6 +450,10 @@ def main() -> int:
         idx = fetch(BASE)
         if idx:
             html = decode(idx)
+            # The download page is also the dump's generator. When generation fails it prints
+            # its own errors ("Error Deleting File ...", "Error Generating ... File ...").
+            page_text = html_unescape(re.sub(r"<[^>]+>", "\n", html))
+            source_errors = sorted({re.sub(r"\s+", " ", line).strip() for line in page_text.split("\n") if re.match(r"\s*Error (Deleting|Generating)\b", line)})
             links = sorted(set(re.findall(r'href="([^"]+\.(?:txt|csv|zip|pdf|xls|xlsx))"', html, re.I)))
             open(os.path.join(raw_dir, "_directory_index.html"), "w", encoding="utf-8").write(html)
             report.append("## Directory index\n\n" + ("\n".join(f"- {l}" for l in links) if links else "_no file links in index_") + "\n")
@@ -457,6 +464,7 @@ def main() -> int:
                 report.append(f"## {name}\n\n_not available_\n"); continue
             text = decode(data)
             if len(text.strip()) < 64:
+                served_empty.append(name)
                 # The dump sometimes serves a 3-byte file. Keep yesterday's copy if we have one.
                 prev = os.path.join(raw_dir, name)
                 if os.path.exists(prev) and os.path.getsize(prev) > 1024:
@@ -472,6 +480,11 @@ def main() -> int:
                 open(os.path.join(raw_dir, name), "w", encoding="utf-8", newline="\n").write(text)
         if all(n in texts for n in REQUIRED_FILES) and not reused_copy:
             open(fetched_marker, "w", encoding="utf-8").write(now.isoformat(timespec="seconds") + "\n")
+        # What the source looked like on this fetch; daytime rebuilds carry it forward unchanged.
+        json.dump({"checked_at": now.isoformat(timespec="seconds"), "served_empty": served_empty, "page_errors": source_errors},
+                  open(os.path.join(raw_dir, "_source_status.json"), "w", encoding="utf-8"), indent=1)
+        if source_errors:
+            report.append("## Source page errors\n\nThe download page printed these messages when it was fetched:\n\n" + "\n".join(f"- {e}" for e in source_errors) + "\n")
         for session in wanted:
             print(f"Fetching RSS bill list for {session}", flush=True)
             data = fetch(RSS_URL.format(session=session), retries=1, timeout=90)
@@ -480,6 +493,15 @@ def main() -> int:
 
     fetched_at = open(fetched_marker, encoding="utf-8").read().strip() if os.path.exists(fetched_marker) else None
     report.append(f"_Files last pulled from the General Court: {fetched_at or 'unknown'}._\n")
+    status_path = os.path.join(raw_dir, "_source_status.json")
+    source_status = json.load(open(status_path, encoding="utf-8")) if os.path.exists(status_path) else None
+    if source_status and all(n in source_status.get("served_empty", []) for n in REQUIRED_FILES):
+        msg = f"The General Court served every required file empty on {source_status.get('checked_at')}; the copies last pulled {fetched_at or 'unknown'} were kept."
+        if source_status.get("page_errors"):
+            msg += f" Its download page printed {len(source_status['page_errors'])} error line(s)."
+        report.append(f"_{msg}_\n")
+        if not args.offline:
+            print(f"::warning::{msg}", flush=True)
 
     for name, text in texts.items():
         lines = [l for l in text.replace("\r\n", "\n").split("\n") if l.strip()]
@@ -784,7 +806,7 @@ def main() -> int:
     old = os.path.join(out_dir, "legislator_votes.json")
     if os.path.exists(old):
         os.remove(old)
-    json.dump({"generated_at": now.isoformat(timespec="seconds"), "fetched_at": fetched_at, "as_of": today.isoformat(), "sessions": emitted, "source": BASE}, open(os.path.join(out_dir, "index.json"), "w", encoding="utf-8"), indent=2)
+    json.dump({"generated_at": now.isoformat(timespec="seconds"), "fetched_at": fetched_at, "as_of": today.isoformat(), "sessions": emitted, "source": BASE, "source_status": source_status}, open(os.path.join(out_dir, "index.json"), "w", encoding="utf-8"), indent=2)
 
     write_report(raw_dir, report)
     print("\n" + "=" * 78 + "\nDISCOVERY REPORT\n" + "=" * 78 + "\n" + "\n".join(report))

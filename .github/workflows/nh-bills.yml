@@ -5,8 +5,9 @@ name: NH bill tracker refresh
 #
 # Schedule: the General Court asks automated clients to use the site between
 # 9 p.m. and 6 a.m. Eastern. GitHub starts scheduled runs late, sometimes by
-# hours (the 07:35 UTC slot ran at 14:03 and 14:43 UTC on Oct 1-2, 2026, after
-# the dump had gone empty for the day). So the job is offered every hour from
+# hours (the 07:35 UTC slot ran at 14:03 and 14:43 UTC on Oct 1-2, 2026, in the
+# daytime hours the General Court asks automated clients to avoid). So the job
+# is offered every hour from
 # 02:17 to 09:17 UTC (22:17-05:17 EDT, 21:17-04:17 EST). The first slot that
 # fetches a full set of files wins; the later slots see a fresh fetch and stop.
 
@@ -68,8 +69,7 @@ jobs:
       - name: Decide whether to fetch
         id: plan
         # The General Court asks automated clients to stay off the site between
-        # 6 a.m. and 9 p.m. Eastern, and in those hours the dump is often empty.
-        # Any run in that window rebuilds from the saved raw files instead of
+        # 6 a.m. and 9 p.m. Eastern. Any run in that window rebuilds from the saved raw files instead of
         # fetching, unless a manual run sets force_fetch. A scheduled run stops
         # early when the files were pulled in the last 18 hours (an earlier slot
         # already got them) or, in the daytime, when the data was rebuilt in the
