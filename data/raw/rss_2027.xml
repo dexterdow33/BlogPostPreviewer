@@ -1,1 +1,8 @@
-Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+  <channel>
+    <title>NH General Court - Legislation Query RSS Feed</title>
+    <link>http://gencourt.state.nh.us/bill_Status/</link>
+    <description>Legislation Query RSS Feed</description>
+  </channel>
+</rss>
