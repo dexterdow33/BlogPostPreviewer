@@ -1,3 +1,15 @@
 __pycache__/
 *.pyc
 .DS_Store
+
+# iOS app (ios/): XcodeGen writes the project, plists and entitlements from ios/project.yml
+ios/GSR.xcodeproj/
+ios/App/Info.plist
+ios/App/GSR.entitlements
+ios/ShareExtension/Info.plist
+ios/ShareExtension/GSRShare.entitlements
+ios/GSRKit/.build/
+ios/GSRKit/.swiftpm/
+ios/build/
+*.xcarchive
+DerivedData/
