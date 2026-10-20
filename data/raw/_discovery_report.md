@@ -1,6 +1,6 @@
 # NH dynamicdatadump discovery report
 
-Generated 2026-10-19T07:47:00+00:00
+Generated 2026-10-20T07:35:14+00:00
 
 ## Directory index
 
@@ -9,7 +9,7 @@ Generated 2026-10-19T07:47:00+00:00
 - /misc/General%20Court%20Harassment%20Policy%20and%20Addendum-1%202020.pdf
 - /misc/State House Complex Public Conduct Policy 2023.pdf
 
-_Files last pulled from the General Court: 2026-10-19T07:47:00+00:00._
+_Files last pulled from the General Court: 2026-10-20T07:35:14+00:00._
 
 ## LSRs.txt
 
@@ -137,8 +137,8 @@ sponsor rows with bill-page document id and title
 
 docket actions (one row per action)
 
-- bytes: 3,237,915; rows: 25,452; sha256: 64fa29fd2af1476d
-- field-count histogram: 7: 25452
+- bytes: 3,240,929; rows: 25,472; sha256: e25b5f24dcf2f6cc
+- field-count histogram: 7: 25472
 
 
 ```
@@ -343,15 +343,15 @@ Session years: {'2026': 1387}
 
 ## Parse: Docket.txt
 
-{"lines": 25452, "records": 25452, "expected_fields": 7, "joined": 0, "irregular": 0}
+{"lines": 25472, "records": 25472, "expected_fields": 7, "joined": 0, "irregular": 0}
 
-Session years: {'2025': 9812, '2026': 15640}
+Session years: {'2025': 9812, '2026': 15660}
 
 
 ### Most common docket action patterns
 
 ```
-   939  Executive Session: <date> <n>:<n> am GP <n>
+   940  Executive Session: <date> <n>:<n> am GP <n>
    682  Enrolled Adopted, VV, (In recess <date>); SJ <n>
    658  Enrolled (in recess of) <date> HJ <n> P. <n>
    632  Public Hearing: <date> <n>:<n> am GP <n>
