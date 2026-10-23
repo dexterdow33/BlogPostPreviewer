@@ -25385,8 +25385,8 @@
 2026|2429|10/5/2026 12:04:10 PM|HB1779|H|Executive Session: 10/21/2026 10:00 am GP 230|10/5/2026 12:04:10 PM
 2026|2920|10/5/2026 12:03:27 PM|HB1404|H|   Subcommittee Work Session: 10/21/2026 09:30 am GP 230|10/5/2026 12:03:27 PM
 2026|2429|10/5/2026 12:04:07 PM|HB1779|H|   Subcommittee Work Session: 10/21/2026 09:30 am GP 230|10/5/2026 12:04:07 PM
-2026|0045|10/5/2026 12:22:52 PM|HB65|H| Interim Study Report: Not Recommended for Future Legislation  09/30/2026 (Vote 5-4; )|10/5/2026 12:22:52 PM
-2026|0883|10/5/2026 12:33:31 PM|HB459|H| Interim Study Report: Recommended for Future Legislation  10/01/2026 (Vote 9-0; )|10/5/2026 12:33:31 PM
+2026|0045|10/5/2026 12:22:52 PM|HB65|H| Interim Study Report: Not Recommended for Future Legislation  09/30/2026 (Vote 5-4;)|10/22/2026 9:45:23 AM
+2026|0883|10/5/2026 12:33:31 PM|HB459|H| Interim Study Report: Recommended for Future Legislation  10/01/2026 (Vote 9-0;)|10/22/2026 9:44:43 AM
 2026|0298|10/5/2026 12:34:23 PM|HB604|H| Interim Study Report: Not Recommended for Future Legislation  10/01/2026 (Vote 9-0; )|10/5/2026 12:34:23 PM
 2026|2452|10/5/2026 12:35:18 PM|HB1050|H| Interim Study Report: Recommended for Future Legislation  10/01/2026 (Vote 8-1; )|10/5/2026 12:35:18 PM
 2026|2759|10/5/2026 12:38:12 PM|HB1251|H| Interim Study Report: Not Recommended for Future Legislation  10/01/2026 (Vote 9-0; )|10/5/2026 12:38:12 PM
@@ -25432,7 +25432,7 @@
 2026|2253|10/7/2026 3:44:23 PM|SB425|H|   Full Committee Work Session: 10/15/2026 10:30 am GP 231|10/7/2026 3:44:23 PM
 2026|3269|10/7/2026 3:44:43 PM|SB669|H|   Full Committee Work Session: 10/15/2026 10:30 am GP 231|10/7/2026 3:44:43 PM
 2026|3187|10/12/2026 8:52:50 AM|HB1599|H|  Executive Session: 06/15/2026 10:30 am GP 159|10/12/2026 8:53:04 AM
-2026|0450|10/14/2026 2:03:46 PM|HB303|H|Interim Study Report: Without Recommendation  10/13/2026 (Vote 7-7; )|10/14/2026 2:08:50 PM
+2026|0450|10/14/2026 2:03:46 PM|HB303|H|Interim Study Report: Without Recommendation  10/13/2026 (Vote 7-7;)|10/22/2026 9:45:47 AM
 2026|2762|10/14/2026 2:04:54 PM|HB1767|H| Interim Study Report: Not Recommended for Future Legislation  10/14/2026 (Vote 14-0; )|10/14/2026 2:06:33 PM
 2026|2762|10/14/2026 2:06:30 PM|HB1767|H|  Executive Session: 10/14/2026 10:00 am GP 229|10/14/2026 2:06:33 PM
 2026|2001|10/14/2026 2:07:33 PM|SB416|H| Interim Study Report: Recommended for Future Legislation  10/14/2026 (Vote 12-2; )|10/14/2026 2:07:54 PM
@@ -25482,3 +25482,15 @@
 2026|0984|10/21/2026 3:04:22 PM|SB247|H| Interim Study Report: Not Recommended for Future Legislation  10/16/2026 (Vote 11-0; )|10/21/2026 3:04:22 PM
 2026|2064|10/21/2026 3:05:00 PM|SB498|H| Interim Study Report: Not Recommended for Future Legislation  10/16/2026 (Vote 11-0; )|10/21/2026 3:05:00 PM
 2026|2092|10/21/2026 3:06:12 PM|SB647|H| Interim Study Report: Not Recommended for Future Legislation  10/16/2026 (Vote 11-0; )|10/21/2026 3:06:12 PM
+2026|0761|10/22/2026 8:31:30 AM|HB734|H| Interim Study Report: Not Recommended for Future Legislation  10/16/2026 (Vote 9-6; )|10/22/2026 8:31:30 AM
+2026|3074|10/22/2026 11:33:42 AM|HB1669|H| Interim Study Report: Not Recommended for Future Legislation  10/21/2026 (Vote 11-1;)|10/22/2026 11:33:42 AM
+2026|3024|10/22/2026 11:34:36 AM|HB1644|H| Interim Study Report: Not Recommended for Future Legislation  10/21/2026 (Vote 12-0;)|10/22/2026 11:34:36 AM
+2026|2794|10/22/2026 11:35:16 AM|HB1548|H| Interim Study Report: Not Recommended for Future Legislation  10/21/2026 (Vote 11-1;)|10/22/2026 11:35:16 AM
+2026|2920|10/22/2026 11:35:45 AM|HB1404|H| Interim Study Report: Not Recommended for Future Legislation  10/21/2026 (Vote 7-1;)|10/22/2026 11:35:45 AM
+2026|2429|10/22/2026 11:36:27 AM|HB1779|H| Interim Study Report: Recommended for Future Legislation  10/21/2026 (Vote 8-0;)|10/22/2026 11:36:27 AM
+2026|3026|10/22/2026 11:37:05 AM|HB1372|H| Interim Study Report: Not Recommended for Future Legislation  10/22/2026 (Vote 12-0;)|10/22/2026 11:37:05 AM
+2026|2783|10/22/2026 11:37:55 AM|HB1784|H| Interim Study Report: Not Recommended for Future Legislation  10/22/2026 (Vote 13-0;)|10/22/2026 11:37:55 AM
+2026|3178|10/22/2026 11:38:41 AM|HB1648|H| Interim Study Report: Not Recommended for Future Legislation  10/06/2026 (Vote 13-1;)|10/22/2026 11:38:41 AM
+2026|3072|10/22/2026 11:39:11 AM|HB1787|H| Interim Study Report: Not Recommended for Future Legislation  10/07/2026 (Vote 13-1;)|10/22/2026 11:39:11 AM
+2026|3222|10/22/2026 11:39:45 AM|HB1800|H| Interim Study Report: Not Recommended for Future Legislation  10/07/2026 (Vote 13-1;)|10/22/2026 11:39:45 AM
+2026|2158|10/22/2026 11:40:19 AM|SB542|H| Interim Study Report: Not Recommended for Future Legislation  10/07/2026 (Vote 12-2;)|10/22/2026 11:40:19 AM
