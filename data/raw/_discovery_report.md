@@ -1,6 +1,6 @@
 # NH dynamicdatadump discovery report
 
-Generated 2026-10-23T07:32:56+00:00
+Generated 2026-10-24T07:17:52+00:00
 
 ## Directory index
 
@@ -9,7 +9,7 @@ Generated 2026-10-23T07:32:56+00:00
 - /misc/General%20Court%20Harassment%20Policy%20and%20Addendum-1%202020.pdf
 - /misc/State House Complex Public Conduct Policy 2023.pdf
 
-_Files last pulled from the General Court: 2026-10-23T07:32:56+00:00._
+_Files last pulled from the General Court: 2026-10-24T07:17:52+00:00._
 
 ## LSRs.txt
 
@@ -137,8 +137,8 @@ sponsor rows with bill-page document id and title
 
 docket actions (one row per action)
 
-- bytes: 3,244,557; rows: 25,496; sha256: 372944dc187fc51a
-- field-count histogram: 7: 25496
+- bytes: 3,246,951; rows: 25,512; sha256: 7ef7f537290e5a88
+- field-count histogram: 7: 25512
 
 
 ```
@@ -343,9 +343,9 @@ Session years: {'2026': 1387}
 
 ## Parse: Docket.txt
 
-{"lines": 25496, "records": 25496, "expected_fields": 7, "joined": 0, "irregular": 0}
+{"lines": 25512, "records": 25512, "expected_fields": 7, "joined": 0, "irregular": 0}
 
-Session years: {'2025': 9812, '2026': 15684}
+Session years: {'2025': 9812, '2026': 15700}
 
 
 ### Most common docket action patterns
