@@ -1,0 +1,187 @@
+<!-- wp:html -->
+<style>
+.gsa-part{--paper:#fbfaf7;--card:#ffffff;--ink:#23211e;--muted:#6c6557;--faint:#8a8276;--navy:#1a2e4a;--rust:#b14a37;--green:#2c5530;--peach:#f5e8dd;--rule:#d9d2c6;--band:#f3efe7;--shadow:0 10px 34px rgba(26,46,74,.12);--serif:Georgia,'Times New Roman',Times,serif;--sans:'Helvetica Neue',Helvetica,Arial,sans-serif;--mono:'IBM Plex Mono',ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;
+  background:var(--paper) !important;color:var(--ink) !important;font-family:var(--serif) !important;font-size:17px !important;line-height:1.7 !important;max-width:1040px !important;margin:0 auto !important;padding:0 16px 64px !important;box-sizing:border-box !important;overflow-wrap:break-word;}
+.gsa-part *,.gsa-part *::before,.gsa-part *::after{box-sizing:border-box !important;}
+.gsa-part p,.gsa-part h2,.gsa-part h3,.gsa-part ul,.gsa-part ol,.gsa-part li{font-size:inherit;line-height:inherit;color:inherit;}
+.gsa-part .gsa-mast{text-align:center;border-top:4px solid var(--navy);border-bottom:1px solid var(--rule);padding:18px 0 14px;margin:0}
+.gsa-part .gsa-mast img{display:block;margin:0 auto;width:100%;max-width:400px;height:auto}
+.gsa-part .gsa-mast span{display:block;font-family:var(--sans);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--rust);font-weight:700;margin-top:9px}
+.gsa-part .gsa-head{border-bottom:2px solid var(--navy);padding:34px 0 24px}
+.gsa-part .gsa-eyebrow{font-family:var(--sans);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--rust);font-weight:700;margin:0 0 12px}
+.gsa-part h1.gsa-h1{font-family:var(--serif) !important;font-size:clamp(34px,6vw,46px) !important;line-height:1.08 !important;color:var(--navy) !important;margin:0 0 14px !important;letter-spacing:-.8px;text-wrap:balance;font-weight:700 !important;text-align:left;padding:0;border:0}
+.gsa-part .gsa-dek{font-size:clamp(18px,3vw,21px) !important;line-height:1.5 !important;font-style:italic;color:var(--muted) !important;margin:0 0 22px !important;max-width:62ch}
+.gsa-part .gsa-extent{display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--rule);background:var(--card);box-shadow:var(--shadow)}
+.gsa-part .gsa-ex{flex:1 1 150px;padding:14px 18px;border-right:1px solid var(--rule)}
+.gsa-part .gsa-ex:last-child{border-right:0}
+.gsa-part .gsa-ex b{display:block;white-space:nowrap;font-family:var(--mono);font-size:24px;font-weight:600;color:var(--navy);line-height:1.2;font-variant-numeric:tabular-nums}
+.gsa-part .gsa-ex span{font-family:var(--sans);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);font-weight:700}
+.gsa-part .gsa-access{background:var(--navy);color:#ede7dc;padding:20px 24px;margin:26px 0;font-family:var(--sans);font-size:15px;line-height:1.6}
+.gsa-part .gsa-access b{display:block;color:#fff;font-size:13px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.gsa-part .gsa-access a{color:#e9a18f !important;text-decoration:underline}
+.gsa-part .gsa-controls{position:sticky;top:46px;z-index:5;background:var(--paper);padding:14px 0;border-bottom:1px solid var(--rule);margin-bottom:8px}
+.gsa-part .gsa-searchrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.gsa-part input[type=search]{flex:1 1 260px;min-width:0;font-family:var(--sans);font-size:15px;padding:11px 14px;border:1px solid var(--rule);background:var(--card);color:var(--ink);border-radius:0;width:100%;-webkit-appearance:none;appearance:none}
+.gsa-part input[type=search]:focus-visible{outline:2px solid var(--rust);outline-offset:1px}
+.gsa-part .gsa-filters{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.gsa-part .gsa-filters .gsa-fl{font-family:var(--sans);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);font-weight:700;margin-right:4px;min-width:82px}
+.gsa-part .gsa-filters button{font-family:var(--sans);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:7px 12px;border:1px solid var(--rule);background:var(--card);color:var(--muted);cursor:pointer;border-radius:0;line-height:1.2;box-shadow:none;text-shadow:none}
+.gsa-part .gsa-filters button[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:#fff}
+.gsa-part .gsa-filters button:focus-visible{outline:2px solid var(--rust);outline-offset:1px}
+.gsa-part .gsa-count{font-family:var(--mono);font-size:12px;color:var(--faint);margin:10px 0 0;font-variant-numeric:tabular-nums}
+.gsa-part .gsa-series{margin-top:38px}
+.gsa-part .gsa-series>h2,.gsa-part h2.gsa-h2{font-family:var(--serif) !important;font-size:25px !important;line-height:1.25 !important;color:var(--navy) !important;margin:0 0 6px !important;padding:0 0 7px !important;border:0;border-bottom:2px solid var(--rust) !important;font-weight:700 !important;text-align:left}
+.gsa-part .gsa-prov{font-family:var(--sans);font-size:13.5px !important;line-height:1.6 !important;color:var(--muted) !important;margin:0 0 4px !important;max-width:70ch}
+.gsa-part .gsa-entry{display:grid;grid-template-columns:78px minmax(0,1fr) auto;gap:0 18px;align-items:start;padding:16px 0;border-bottom:1px solid var(--rule)}
+.gsa-part .gsa-acc{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--faint);padding-top:3px;font-variant-numeric:tabular-nums}
+.gsa-part .gsa-body{min-width:0}
+.gsa-part h3.gsa-ttl{font-family:var(--serif) !important;font-size:18px !important;line-height:1.4 !important;color:var(--ink) !important;margin:0 0 4px !important;font-weight:700 !important;padding:0;border:0;text-align:left}
+.gsa-part .gsa-meta{font-family:var(--sans);font-size:12.5px !important;line-height:1.7 !important;color:var(--muted) !important;margin:0 !important}
+.gsa-part .gsa-note{font-family:var(--serif);font-size:15px !important;line-height:1.55 !important;color:var(--muted) !important;margin:6px 0 0 !important;font-style:italic;max-width:64ch}
+.gsa-part .gsa-cite{font-family:var(--sans);font-size:12.5px !important;line-height:1.7 !important;color:var(--muted) !important;margin:6px 0 0 !important;padding-left:12px;border-left:3px solid var(--peach)}
+.gsa-part .gsa-cite span{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--rust);margin-right:6px}
+.gsa-part .gsa-cite a{color:var(--navy) !important;text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:2px}
+.gsa-part .gsa-chip{display:inline-block;font-family:var(--sans);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:3px 7px;margin:0 7px 2px 0;border:1px solid;line-height:1.3;vertical-align:middle}
+.gsa-part .gsa-c-pub{color:var(--green);border-color:var(--green)}
+.gsa-part .gsa-c-own{color:var(--navy);border-color:var(--navy)}
+.gsa-part .gsa-c-tp{color:var(--rust);border-color:var(--rust)}
+.gsa-part .gsa-c-j{color:var(--faint);border-color:var(--rule);background:var(--band)}
+.gsa-part .gsa-get,.gsa-part a.gsa-get{font-family:var(--sans);font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--card) !important;background:var(--navy);border:1px solid var(--navy);padding:9px 13px;text-decoration:none !important;white-space:nowrap;display:inline-block;line-height:1.3;border-radius:0}
+.gsa-part a.gsa-get:hover{background:var(--rust);border-color:var(--rust);color:#fff !important}
+.gsa-part a.gsa-get:focus-visible{outline:2px solid var(--rust);outline-offset:2px}
+.gsa-part .gsa-empty{font-family:var(--sans);font-size:14px;color:var(--faint);padding:26px 0;display:none}
+.gsa-part .gsa-scroll{overflow-x:auto;margin-top:16px}
+.gsa-part table.gsa-held{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:13px;table-layout:fixed;margin:0}
+.gsa-part table.gsa-held th{background:var(--navy);color:#fff;text-align:left;padding:9px 11px;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--navy)}
+.gsa-part table.gsa-held td{padding:9px 11px;border:1px solid var(--rule);vertical-align:top;color:var(--ink);overflow-wrap:anywhere;font-size:13px;line-height:1.5}
+.gsa-part table.gsa-held tr>*:first-child{width:42%}
+.gsa-part table.gsa-held tr:nth-child(even) td{background:var(--band)}
+.gsa-part .gsa-box{background:var(--peach);border:1px solid var(--rule);border-left:6px solid var(--rust);padding:26px 28px;margin-top:42px}
+.gsa-part .gsa-box h2{font-family:var(--serif) !important;font-size:25px !important;color:var(--navy) !important;margin:0 0 10px !important;border:0 !important;padding:0 !important;font-weight:700 !important;line-height:1.25 !important}
+.gsa-part .gsa-box p{margin:0 0 14px;max-width:68ch}
+.gsa-part .gsa-box ol,.gsa-part .gsa-box ul{margin:0 0 18px;padding-left:20px}
+.gsa-part .gsa-box li{margin-bottom:9px;max-width:66ch}
+.gsa-part .gsa-box.gsa-box-navy{background:var(--card);border-left-color:var(--navy)}
+.gsa-part .gsa-box.gsa-box-green{background:var(--card);border-left-color:var(--green)}
+.gsa-part .gsa-statute{background:var(--card);border:1px solid var(--rule);border-left:5px solid var(--green);padding:14px 18px;margin:0 0 16px;font-size:15.5px;line-height:1.6}
+.gsa-part .gsa-statute b{color:var(--green)}
+.gsa-part .gsa-sources{list-style:none;padding:0;margin:8px 0 0;font-family:var(--sans);font-size:14px;line-height:1.7}
+.gsa-part .gsa-sources li{margin:0 0 6px;padding:0}
+.gsa-part .gsa-sources a{color:var(--navy) !important;text-decoration:underline;text-underline-offset:2px}
+.gsa-part .gsa-sources b{color:var(--ink);font-weight:700}
+.gsa-part .gsa-steps{counter-reset:s;list-style:none;padding:0;margin:8px 0 0}
+.gsa-part .gsa-steps li{position:relative;padding-left:38px;margin:0 0 10px;max-width:66ch}
+.gsa-part .gsa-steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:2px;width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-family:var(--sans);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.gsa-part .gsa-foot{font-family:var(--sans);font-size:12px;line-height:18px;color:var(--faint);border-top:2px solid var(--navy);padding:14px 0 0;margin:36px 0 0;text-align:center;letter-spacing:.08em;text-transform:uppercase}
+.gsa-part a{color:var(--rust)}
+.gsa-part .gsa-form-wrap{margin:0}
+/* the theme prints the page title above the content; the archive carries its own masthead and headline */
+body.page-id-6462 h1.page-title{display:none !important}
+@media (max-width:640px){
+  .gsa-part{padding:0 12px 48px !important}
+  .gsa-part .gsa-entry{grid-template-columns:1fr;gap:6px 0}
+  .gsa-part .gsa-acc{padding-top:0}
+  .gsa-part a.gsa-get{justify-self:start;margin-top:8px}
+  .gsa-part .gsa-box{padding:18px 16px}
+  .gsa-part .gsa-filters .gsa-fl{min-width:100%;margin:6px 0 0}
+  .gsa-part .gsa-controls{position:static}
+}
+
+.wp-block-jetpack-contact-form.gsa-form{max-width:1040px;margin:0 auto;padding:0 16px 8px;box-sizing:border-box;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;color:#23211e;background:#fbfaf7}
+.wp-block-jetpack-contact-form.gsa-form label,.wp-block-jetpack-contact-form.gsa-form .grunion-field-label{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#1a2e4a;margin:14px 0 6px}
+.wp-block-jetpack-contact-form.gsa-form input[type=text],.wp-block-jetpack-contact-form.gsa-form input[type=email],.wp-block-jetpack-contact-form.gsa-form textarea,.wp-block-jetpack-contact-form.gsa-form select{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;padding:10px 12px;border:1px solid #d9d2c6;border-radius:0;background:#fff;color:#23211e;width:100%;max-width:640px;box-sizing:border-box}
+.wp-block-jetpack-contact-form.gsa-form textarea{min-height:120px}
+.wp-block-jetpack-contact-form.gsa-form button,.wp-block-jetpack-contact-form.gsa-form .wp-block-button__link{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#fff;background:#1a2e4a;border:1px solid #1a2e4a;padding:11px 16px;border-radius:0;cursor:pointer;text-shadow:none;box-shadow:none}
+.wp-block-jetpack-contact-form.gsa-form button:hover,.wp-block-jetpack-contact-form.gsa-form .wp-block-button__link:hover{background:#b14a37;border-color:#b14a37}
+@media (max-width:640px){.wp-block-jetpack-contact-form.gsa-form{padding:0 12px 8px}}
+</style>
+<div id="gsa" class="gsa-part">
+<div class="gsa-mast"><img src="https://granitestatereport.com/wp-content/uploads/2026/09/gsr-logo-horizontal.png" alt="Granite State Report"><span>Independent New Hampshire Journalism &middot; Northfield, NH</span></div>
+<header class="gsa-head">
+  <p class="gsa-eyebrow">Finding aid &middot; Public records</p>
+  <h1 class="gsa-h1">Granite State Archive</h1>
+  <p class="gsa-dek">Every document Granite State Report has obtained, written, or relied on, listed in one place with the provenance of each one stated plainly. Bring yours.</p>
+  <div class="gsa-extent">
+    <div class="gsa-ex"><b>43</b><span>Items described</span></div>
+    <div class="gsa-ex"><b>5</b><span>Series</span></div>
+    <div class="gsa-ex"><b>61 MB</b><span>Extent</span></div>
+    <div class="gsa-ex"><b>2008&ndash;2026</b><span>Dates of material</span></div>
+    <div class="gsa-ex"><b>19</b><span>Articles that cite them</span></div>
+  </div>
+</header>
+<div class="gsa-access"><b>How this room works</b>
+Free, and it stays free. The records themselves belong to the public: every file listed here sits at a public address on this site, and anyone can read one. What this newsroom made is the index, and the index is open too. Each entry names where the document came from, when, and which Granite State Report articles rest on it. If you hold a public record New Hampshire should be able to see, <a href="#gsa-submit">send it in</a>. Questions or corrections: <a href="mailto:granitestatereport@gmail.com">granitestatereport@gmail.com</a> &middot; (603) 931-9264.</div>
+<div class="gsa-controls">
+  <div class="gsa-searchrow"><input type="search" id="gsa-q" placeholder="Search titles, agencies, accession numbers" aria-label="Search the archive" autocomplete="off"></div>
+  <div class="gsa-filters" role="group" aria-label="Filter by jurisdiction" data-fg="juris"><span class="gsa-fl">Jurisdiction</span>
+    <button type="button" data-f="all" aria-pressed="true">All</button><button type="button" data-f="NH" aria-pressed="false">New Hampshire</button><button type="button" data-f="US" aria-pressed="false">United States</button><button type="button" data-f="World" aria-pressed="false">World</button></div>
+  <div class="gsa-filters" role="group" aria-label="Filter by series" data-fg="tier"><span class="gsa-fl">Series</span>
+    <button type="button" data-f="all" aria-pressed="true">All series</button><button type="button" data-f="records" aria-pressed="false">RSA 91-A records</button><button type="button" data-f="reference" aria-pressed="false">Statutes</button><button type="button" data-f="original" aria-pressed="false">GSR drafting</button><button type="button" data-f="thirdparty" aria-pressed="false">Cited research</button><button type="button" data-f="templates" aria-pressed="false">Templates</button></div>
+  <p class="gsa-count" id="gsa-n" aria-live="polite">43 of 43 items shown</p>
+</div>
+<div id="gsa-index">
+<section class="gsa-series" data-tier="records"><h2>Series I &middot; Records obtained under RSA 91-A</h2><p class="gsa-prov">Governmental records released to Granite State Report by New Hampshire agencies, and the requests and written questions that produced them. Government records carry no copyright. Take them, quote them, republish them.</p>
+<article class="gsa-entry" data-tier="records" data-juris="NH" data-id="5763"><div class="gsa-acc">GSR-5763</div><div class="gsa-body"><h3 class="gsa-ttl">NH Judicial Branch records response</h3><p class="gsa-meta"><span class="gsa-chip gsa-c-pub">Public record</span><span class="gsa-chip gsa-c-j">New Hampshire</span>New Hampshire Judicial Branch &middot; September 16, 2026 &middot; PDF &middot; 106 KB</p><p class="gsa-note">Agency response to a Granite State Report records request.</p></div><a class="gsa-get" href="https://granitestatereport.com/wp-content/uploads/2026/09/NH-Judicial-Branch-Records-Response.pdf" target="_blank" rel="noopener">Download</a></article>
+
+
+
+
+
+</section>
+<section class="gsa-series" data-tier="reference"><h2>Series II &middot; Statutes and state guidance</h2><p class="gsa-prov">The law as it reads and the state's own guidance on it. Public domain.</p>
+<article class="gsa-entry" data-tier="reference" data-juris="NH" data-id="5647"><div class="gsa-acc">GSR-5647</div><div class="gsa-body"><h3 class="gsa-ttl">RSA 91-A, current text</h3><p class="gsa-meta"><span class="gsa-chip gsa-c-pub">Public record</span><span class="gsa-chip gsa-c-j">New Hampshire</span>State of New Hampshire &middot; September 16, 2026 &middot; PDF &middot; 178 KB</p><p class="gsa-note">Access to Governmental Records and Meetings, as amended.</p><p class="gsa-cite"><span>Cited in</span> <a href="https://granitestatereport.com/2026/09/17/new-hampshire-record-index/">New Hampshire Will Sell You a Record. It Will Never Build You an Index.</a> &middot; <a href="https://granitestatereport.com/2026/09/16/attorney-general-right-to-know-manual-rsa-91-a-graded/">The Attorney General’s Right-to-Know Manual Leaves Out the Part Where You Get the Records</a></p></div><a class="gsa-get" href="https://granitestatereport.com/wp-content/uploads/2026/09/rsa-91-a-current-text.pdf" target="_blank" rel="noopener">Download</a></article>
+
+</section>
+<section class="gsa-series" data-tier="original"><h2>Series III &middot; Granite State Report drafting files</h2><p class="gsa-prov">Documents this newsroom wrote. Free to read and share with credit.</p>
+<article class="gsa-entry" data-tier="original" data-juris="NH" data-id="5471"><div class="gsa-acc">GSR-5471</div><div class="gsa-body"><h3 class="gsa-ttl">Proposed New Hampshire Constitution (2032 project)</h3><p class="gsa-meta"><span class="gsa-chip gsa-c-own">GSR original</span><span class="gsa-chip gsa-c-j">New Hampshire</span>Dexter Dow / Granite State Report &middot; September 15, 2026 &middot; PDF &middot; 129 KB</p><p class="gsa-note">Drafting document for the decennial convention question.</p><p class="gsa-cite"><span>Cited in</span> <a href="https://granitestatereport.com/2026/09/15/a-new-constitution-for-new-hampshire-and-the-united-states/">A New Constitution for New Hampshire. Another for the United States. Here Is How It Can Legally Be Done.</a></p></div><a class="gsa-get" href="https://granitestatereport.com/wp-content/uploads/2026/09/Proposed_NH_Constitution_2032_Dexter_Dow_GSR.pdf" target="_blank" rel="noopener">Download</a></article>
+
+
+</section>
+<section class="gsa-series" data-tier="thirdparty"><h2>Series IV &middot; Cited research, rights retained by the publisher</h2><p class="gsa-prov">Reports and papers GSR articles have cited, kept here so the citation can be checked. Copyright stays with each publisher; these copies are held for reference.</p>
+<article class="gsa-entry" data-tier="thirdparty" data-juris="NH" data-id="2655"><div class="gsa-acc">GSR-2655</div><div class="gsa-body"><h3 class="gsa-ttl">A Brief Look at Long-Term Revenue Trends in New Hampshire</h3><p class="gsa-meta"><span class="gsa-chip gsa-c-tp">Cited research</span><span class="gsa-chip gsa-c-j">New Hampshire</span>NH Fiscal Policy Institute &middot; September 8, 2025 &middot; PDF &middot; 1.6 MB</p><p class="gsa-cite"><span>Cited in</span> <a href="https://granitestatereport.com/2025/12/17/economic-uncertainty-in-new-hampshire-slow-hiring-low-unemployment-and-the-fight-over-tax-cuts-vs-public-services/">Economic Uncertainty in New Hampshire: Slow Hiring, Low Unemployment, and the Fight Over Tax Cuts vs. Public Services</a></p></div><a class="gsa-get" href="https://granitestatereport.com/wp-content/uploads/2025/12/NHFPI-Issue-Brief_A-Brief-Look-at-Long-Term-Revenue-Trends-in-New-Hampshire-9.8.25.pdf" target="_blank" rel="noopener">Download</a></article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</section>
+<section class="gsa-series" data-tier="templates"><h2>Series V &middot; Templates and printables</h2><p class="gsa-prov">Forms and print pieces this newsroom uses, offered as they are. Print the request letter and the address labels for your own filings. Print the brochure, the flyer, or a code if you want to put Granite State Report in front of someone. Free; no permission needed.</p>
+<article class="gsa-entry" data-tier="templates" data-juris="NH" data-id="6539"><div class="gsa-acc">GSR-6539</div><div class="gsa-body"><h3 class="gsa-ttl">RSA 91-A request letter template</h3><p class="gsa-meta"><span class="gsa-chip gsa-c-own">Template</span><span class="gsa-chip gsa-c-j">New Hampshire</span>Granite State Report &middot; September 17, 2026 &middot; PDF &middot; 8 KB</p><p class="gsa-note">Fill-in request and follow-up letters under RSA 91-A:4, with the words of the statute behind each line. Three pages. Drafting help, not legal advice.</p><p class="gsa-cite"><span>Read with</span> <a href="https://granitestatereport.com/2026/07/25/rsa-91a-new-hampshire-right-to-know-law-explained/">Your Right to Know: A Working Guide to RSA 91-A &mdash; and the Empty Chair Meant to Enforce It</a></p></div><a class="gsa-get" href="https://granitestatereport.com/wp-content/uploads/2026/09/RSA_91A_Request_Letter_Template_v1_2026-09-17.pdf" target="_blank" rel="noopener">Download</a></article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</section>
+<p class="gsa-empty" id="gsa-empty">Nothing in the room matches that. Clear the search or widen the filters.</p></div>
+
+<section class="gsa-series" data-static="1"><h2 class="gsa-h2">Held out of the index</h2>
+<p class="gsa-prov">Files in the library that are not listed above, and why.</p>
+<div class="gsa-scroll"><table class="gsa-held"><tr><th>File</th><th>Why it is held</th></tr><tr><td>Gmail-Request-for-comment_-the-unincorporated-territory-doctrine-Granite-State-Report.pdf</td><td>Emailed correspondence. Publicly downloadable now. Decide before indexing.</td></tr><tr><td>Proposed_Constitution_2032_Dexter_Dow_GSR.pdf (id 5316)</td><td>Superseded duplicate of id 5469.</td></tr><tr><td>NH-Homebuying-Survey-2025-Research-Report_4_29-1.pdf (id 2660)</td><td>Byte-identical duplicate of id 2599.</td></tr><tr><td>GSR_Commission_Packet_v1_2026-09-04.docx (ids 5360, 5365)</td><td>Two further copies of id 5353.</td></tr><tr><td>DHHS / 91-A .docx source files (ids 5657, 5659, 5687, 5656, 5663)</td><td>Working copies of the PDFs already indexed.</td></tr><tr><td>report.pdf (id 2600)</td><td>Untitled file. Needs provenance before it can be indexed.</td></tr><tr><td>Tumpa-Pal.pptm (id 5767)</td><td>Macro-enabled slide deck, unidentified. Recommend removal from the library.</td></tr><tr><td>PR_NH-Civic-Assembly-Housing.docx (id 5764)</td><td>Third-party press release, unindexed.</td></tr><tr><td>22 article distribution .zip packages</td><td>Production artifacts, 8 MB to 154 MB each. Not archive material.</td></tr></table></div></section>
+
+<section class="gsa-box gsa-box-navy" id="gsa-submit"><h2>Submit a record</h2>
+<p>New Hampshire keeps its records in ten thousand filing cabinets, and most of them never see daylight. If you have one, this is where it can live: a police report, a town or city record, a state agency letter, a court filing, correspondence with a public office, a response to your own Right-to-Know request. Anything a government body produced or sent you.</p>
+<p>Send the document with the form below. Say where it came from and how you got it. That is the whole ask.</p>
+</section>
+</div>
+<!-- /wp:html -->

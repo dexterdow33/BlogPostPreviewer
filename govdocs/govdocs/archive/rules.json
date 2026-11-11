@@ -1,0 +1,47 @@
+{
+  "_about": "Sorts harvested documents into Granite State Archive series. Rules are tried top to bottom; the first match wins. Match keys (all regular expressions, case-insensitive): source, doc_id, title, url, agency, doc_type, host. A document that matches no rule goes to the series its crawler seed names (archive_series in seeds/nh.json), and failing that to a new series named after its agency or website. Add a rule here to create or rename a series; it appears on the archive page with the first document filed under it.",
+  "rules": [
+    {"match": {"source": "^nh-crawl$", "host": "governor\\.nh\\.gov$", "title": "executive order"},
+     "series": {"slug": "governor-executive-orders", "label": "Governor's executive orders"},
+     "juris": "NH", "agency": "Office of the Governor"},
+
+    {"match": {"source": "^courtlistener$", "agency": "^nh$"},
+     "series": {"slug": "nh-supreme-court", "label": "New Hampshire Supreme Court opinions"},
+     "juris": "NH", "agency": "New Hampshire Supreme Court"},
+    {"match": {"source": "^courtlistener$", "agency": "^(nhd|nhb)$"},
+     "series": {"slug": "federal-courts-nh", "label": "Federal courts in New Hampshire: opinions"},
+     "juris": "US"},
+    {"match": {"source": "^courtlistener$", "agency": "^ca1$"},
+     "series": {"slug": "first-circuit", "label": "U.S. Court of Appeals for the First Circuit: opinions"},
+     "juris": "US", "agency": "U.S. Court of Appeals for the First Circuit"},
+    {"match": {"source": "^courtlistener$", "agency": "^scotus$"},
+     "series": {"slug": "us-supreme-court", "label": "U.S. Supreme Court opinions"},
+     "juris": "US", "agency": "Supreme Court of the United States"},
+
+    {"match": {"source": "^federalregister$"},
+     "series": {"slug": "federal-register", "label": "Federal Register"}, "juris": "US"},
+    {"match": {"source": "^govinfo$", "doc_id": "^FR-"},
+     "series": {"slug": "federal-register", "label": "Federal Register"}, "juris": "US"},
+    {"match": {"source": "^govinfo$", "doc_id": "^BILLS-"},
+     "series": {"slug": "congress-bills", "label": "Bills in Congress"}, "juris": "US", "agency": "U.S. Congress"},
+    {"match": {"source": "^govinfo$", "doc_id": "^PLAW-"},
+     "series": {"slug": "public-laws", "label": "Federal public and private laws"}, "juris": "US", "agency": "U.S. Congress"},
+    {"match": {"source": "^govinfo$", "doc_id": "^CFR-"},
+     "series": {"slug": "cfr", "label": "Code of Federal Regulations"}, "juris": "US"},
+    {"match": {"source": "^govinfo$", "doc_id": "^CREC-"},
+     "series": {"slug": "congressional-record", "label": "Congressional Record"}, "juris": "US", "agency": "U.S. Congress"},
+    {"match": {"source": "^govinfo$", "doc_id": "^(CRPT|CHRG)-"},
+     "series": {"slug": "congress-reports-hearings", "label": "Congressional reports and hearings"}, "juris": "US", "agency": "U.S. Congress"},
+    {"match": {"source": "^govinfo$", "doc_id": "^USCOURTS-(nhd|nhb)"},
+     "series": {"slug": "federal-courts-nh", "label": "Federal courts in New Hampshire: opinions"}, "juris": "US"},
+    {"match": {"source": "^govinfo$", "doc_id": "^USCOURTS-"},
+     "series": {"slug": "federal-court-opinions", "label": "Federal court opinions"}, "juris": "US"},
+    {"match": {"source": "^govinfo$", "doc_id": "^BUDGET-"},
+     "series": {"slug": "federal-budget", "label": "Budget of the U.S. Government"}, "juris": "US"},
+    {"match": {"source": "^govinfo$", "doc_id": "^CPD-"},
+     "series": {"slug": "presidential-documents", "label": "Presidential documents"}, "juris": "US"},
+
+    {"match": {"source": "^regulationsgov$"},
+     "series": {"slug": "federal-rulemaking", "label": "Federal rulemaking dockets (Regulations.gov)"}, "juris": "US"}
+  ]
+}
