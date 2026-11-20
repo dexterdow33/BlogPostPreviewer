@@ -211,7 +211,7 @@
 425|Packard|Sherman|A.|H|6002|8|16|R|70 Old Derry Road| |Londonderry|NH|03053-2218|sherman.packard@gc.nh.gov
 6966|McGhee|Kat||H|4031|6|35|D|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Kat.McGhee@gc.nh.gov
 768|Rollins|Skip|A.|H|1025|10|3|R|5 Willow Street||Newport|NH|03773-2823|skip.rollins@gc.nh.gov
-496|Schmidt|Peter|B|H|5036|9|14|D|PO Box 1468||Dover|NH|03821-1468|peterbarrettschmidt@gmail.com
+496|Schmidt|Peter|B|H|5036|9|14|D|PO Box 1468||Dover|NH|03821-1468|Peter.Schmidt@gc.nh.gov
 452|Smith|Marjorie|K.|H|4064|9|10|D||100 Piscataqua Road|Durham|NH|03824-3326|msmithpen@aol.com 
 656|Smith|Steven|D|H|2006|10|3|R|PO Box 624||Charlestown|NH|03603-0624|Steven.Smith@gc.nh.gov
 599|Soucy|Timothy|A.|H|4098|7|21|D|11 Princeton Street||Concord|NH|03301-2333|Tim.Soucy@gc.nh.gov

@@ -1,6 +1,6 @@
 # NH dynamicdatadump discovery report
 
-Generated 2026-11-19T10:21:21+00:00
+Generated 2026-11-20T10:01:31+00:00
 
 ## Directory index
 
@@ -9,7 +9,7 @@ Generated 2026-11-19T10:21:21+00:00
 - /misc/General%20Court%20Harassment%20Policy%20and%20Addendum-1%202020.pdf
 - /misc/State House Complex Public Conduct Policy 2023.pdf
 
-_Files last pulled from the General Court: 2026-11-19T10:21:21+00:00._
+_Files last pulled from the General Court: 2026-11-20T10:01:31+00:00._
 
 ## LSRs.txt
 
@@ -189,7 +189,7 @@ sponsors in sequence, with prime flag
 
 legislator roster
 
-- bytes: 43,365; rows: 406; sha256: 9e46896e084f45ae
+- bytes: 43,359; rows: 406; sha256: 814a7b4789014b60
 - field-count histogram: 15: 406
 
 
