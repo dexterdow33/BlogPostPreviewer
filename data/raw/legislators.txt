@@ -238,7 +238,7 @@
 901|Osborne|Jason|M.|H|2001|8|2|R|65 Miner Road||Auburn|NH|03032-3974|Jason@Osborne4NH.com
 880|Luneau|David|J.|H|5018|7|9|D|211 Putney Hill Road||Hopkinton|NH|03229-2510|dluneauNH@gmail.com
 863|Rice|Kimberly|A|H|1017|6|38|R|9 Hickory Street||Hudson|NH|03051-4759|Kimberly.Rice@gc.nh.gov
-10694|Perez|Kristine||H|2071|8|16|R|5 Wesley Drive||Londonderry|NH|03053-3544|Kristine.Perez@gc.nh.gov
+10694|Perez|Kristine||H|2071|8|16|R|5 Wesley Drive||Londonderry|NH|03053-3544|
 10579|Peternel|Katy||H|2015|2|6|R|State House-House Member Mail|107 North Main Street|Concord|NH|03301|Katy.Peternel@gc.nh.gov
 10676|Polozov|Yury||H|1038|7|10|R|1465 Hooksett Road Unit 393||Hooksett|NH|03106-1878|Yury.Polozov@gc.nh.gov
 10697|Popovici-Muller|Daniel||H|3088|8|17|R|12 Clarke Farm Road||Windham|NH|03087-1851|Daniel.PopoviciMuller@gc.nh.gov
